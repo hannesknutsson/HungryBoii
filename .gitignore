@@ -1,0 +1,8 @@
+#Exclude IntejjiJ project files
+.idea/*
+
+#Exclude build directory
+target/*
+
+#Exclude local iml file
+*.iml
