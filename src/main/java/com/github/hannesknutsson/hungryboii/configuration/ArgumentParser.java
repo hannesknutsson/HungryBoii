@@ -3,8 +3,12 @@ package com.github.hannesknutsson.hungryboii.configuration;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ArgumentParser {
+
+    private static Logger LOG = LoggerFactory.getLogger(ArgumentParser.class);
 
     @Option(name = "-t", aliases = {"--token"}, required = true,
             usage = "Specify discord API token")
@@ -16,9 +20,12 @@ public class ArgumentParser {
 
         try {
             parser.parseArgument(args);
+            LOG.info("Successfully parsed input argument(s)!");
         } catch (CmdLineException e) {
-            System.err.println("Bad input argument(s) when starting bot: " + e.getMessage() + ".\nUsage:\n");
+            LOG.info("Failed parsing input argument(s) when starting bot!");
+            System.err.println("\n\n");
             parser.printUsage(System.err);
+            System.err.println("\n\n");
             errorFree = false;
         }
         return errorFree;

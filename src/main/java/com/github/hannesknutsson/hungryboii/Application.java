@@ -7,10 +7,16 @@ import com.github.hannesknutsson.hungryboii.structure.classes.restaurants.Osterg
 import com.github.hannesknutsson.hungryboii.utilities.managers.ApplicationManager;
 import com.github.hannesknutsson.hungryboii.utilities.managers.CommandManager;
 import com.github.hannesknutsson.hungryboii.utilities.managers.RestaurantManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Application {
 
+    private static Logger LOG = LoggerFactory.getLogger(Application.class);
+
     public static void main(String[] args) {
+
+        LOG.info("Initializing HungryBoii...");
 
         //Register any new commands here (derivatives of abstract class "Command")
         CommandManager.registerCommand(new Help());

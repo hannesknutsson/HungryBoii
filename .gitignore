@@ -1,6 +1,9 @@
 #Exclude IntejjiJ project files
 .idea/*
 
+#Exclude logging folder
+log/*
+
 #Exclude build directory
 target/*
 

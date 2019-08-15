@@ -8,10 +8,14 @@ import com.github.hannesknutsson.hungryboii.utilities.statichelpers.EmbedHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class ListMenu extends Command {
+
+    Logger LOG = LoggerFactory.getLogger(ListMenu.class);
 
     public ListMenu() {
         super("!hungry");
@@ -24,8 +28,8 @@ public class ListMenu extends Command {
 
     @Override
     public void executeCommand(GuildMessageReceivedEvent event) {
-        List<Restaurant> restaurants = RestaurantManager.getRegisteredRestaurants();
 
+        List<Restaurant> restaurants = RestaurantManager.getRegisteredRestaurants();
         EmbedBuilder embedBuilder = EmbedHelper.getCommandReplyEmbed(event);
 
         embedBuilder.setTitle("Todays lunch alternatives");
@@ -48,5 +52,6 @@ public class ListMenu extends Command {
         }
 
         event.getChannel().sendMessage(embedBuilder.build()).queue();
+        LOG.info("Responded to event with list of restaurants and dishes!");
     }
 }

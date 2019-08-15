@@ -46,7 +46,7 @@ public class Ostergatan implements Restaurant {
         List<Element> elementlist = null;
         try {
             elementlist = HttpHelper.getDocumentPage(targetUrl).select("body > div > div > div > div > p:eq(8)");
-        } catch (IOException | ParserConfigurationException | SAXException e) {
+        } catch (IOException e) {
             throw new CouldNotRefreshException("Östergatans restaurang failed to refresh!", e);
         }
 

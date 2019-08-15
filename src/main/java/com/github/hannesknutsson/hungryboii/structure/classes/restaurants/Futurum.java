@@ -41,10 +41,10 @@ public class Futurum implements Restaurant {
     @Override
     public void refreshData() throws CouldNotRefreshException {
 
-        List<Element> elementlist = null;
+        List<Element> elementlist;
         try {
             elementlist = HttpHelper.getDocumentPage(targetUrl).select("div:eq(0) > div:eq(0) > span.day:eq(0), div > section.day-alternative > strong > span");
-        } catch (IOException | ParserConfigurationException | SAXException e) {
+        } catch (IOException e) {
             throw new CouldNotRefreshException("Futurum failed to refresh!", e);
         }
 

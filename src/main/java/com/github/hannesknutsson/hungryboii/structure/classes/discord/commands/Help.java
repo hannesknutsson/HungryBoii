@@ -6,8 +6,12 @@ import com.github.hannesknutsson.hungryboii.utilities.statichelpers.EmbedHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Help extends Command {
+
+    Logger LOG = LoggerFactory.getLogger(Help.class);
 
     public Help() {
         super("!help");
@@ -34,5 +38,6 @@ public class Help extends Command {
         }
 
         event.getChannel().sendMessage(embedBuilder.build()).queue();
+        LOG.info("Responded to event with list of available commands and their descriptions!");
     }
 }

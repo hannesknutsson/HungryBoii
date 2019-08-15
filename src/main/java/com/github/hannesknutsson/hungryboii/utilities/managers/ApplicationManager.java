@@ -5,10 +5,14 @@ import com.github.hannesknutsson.hungryboii.structure.classes.discord.events.Mes
 import com.github.hannesknutsson.hungryboii.utilities.workers.MenuGatherer;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 
 public class ApplicationManager {
+
+    private static Logger LOG = LoggerFactory.getLogger(ApplicationManager.class);
 
     private static boolean botHasStarted = false;
 
@@ -18,13 +22,16 @@ public class ApplicationManager {
                 JDA discordBot = new JDABuilder(ArgumentParser.getDiscordApiToken()).build();
                 discordBot.addEventListener(new MessageReceived());
                 MenuGatherer.startGathering();
+                LOG.info("Application started successfully!");
                 botHasStarted = true;
             } catch (LoginException | IllegalArgumentException e) {
+                LOG.error("Application failed to start, {} received", e.toString());
                 botHasStarted = false;
             }
 
             return botHasStarted;
         } else {
+            LOG.error("Application failed to start, already running");
             return false;
         }
     }
