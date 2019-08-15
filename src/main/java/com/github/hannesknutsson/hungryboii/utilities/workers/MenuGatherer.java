@@ -44,7 +44,7 @@ public class MenuGatherer {
     }
 
     private static void refreshRestaurant(Restaurant target) {
-        LOG.info("Refreshing menu of {}", target.getName());
+        LOG.info("Refreshing menu for {}", target.getName());
         try {
             target.refreshData();
         } catch (CouldNotRefreshException e) {
