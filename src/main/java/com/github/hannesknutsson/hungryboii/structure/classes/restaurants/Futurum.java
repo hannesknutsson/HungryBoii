@@ -1,31 +1,41 @@
 package com.github.hannesknutsson.hungryboii.structure.classes.restaurants;
 
 import com.github.hannesknutsson.hungryboii.structure.classes.Dish;
-import com.github.hannesknutsson.hungryboii.structure.exceptions.CouldNotRefreshException;
+import com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus;
+import com.github.hannesknutsson.hungryboii.structure.enumerations.Weekday;
+import com.github.hannesknutsson.hungryboii.structure.exceptions.ParsingOutdated;
+import com.github.hannesknutsson.hungryboii.structure.exceptions.TotallyBrokenDudeException;
+import com.github.hannesknutsson.hungryboii.structure.exceptions.WebPageBroken;
 import com.github.hannesknutsson.hungryboii.structure.templates.Restaurant;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.HttpHelper;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.xml.sax.SAXException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus.*;
 import static com.github.hannesknutsson.hungryboii.utilities.statichelpers.TimeHelper.getDayOfWeek;
 
 public class Futurum implements Restaurant {
 
+    private static Logger LOG = LoggerFactory.getLogger(Futurum.class);
+
     private static final String name = "Futurum";
     private static final String targetUrl = "https://eurest.mashie.com/public/menu/restaurang+futurum/9ab27099?country=se";
+    private static final String filterQuery = "div:eq(0) > div:eq(0) > span.day:eq(0), div > section.day-alternative > strong > span";
+    private static RestaurantStatus status;
 
-    CopyOnWriteArrayList<Dish> availableDishes;
+    private CopyOnWriteArrayList<Dish> availableDishes;
 
     public Futurum() {
         availableDishes = new CopyOnWriteArrayList<>();
+        status = RestaurantStatus.UNINITIALIZED;
     }
 
     @Override
@@ -39,38 +49,61 @@ public class Futurum implements Restaurant {
     }
 
     @Override
-    public void refreshData() throws CouldNotRefreshException {
+    public RestaurantStatus getStatus() {
+        return status;
+    }
 
-        List<Element> elementlist;
+    @Override
+    public void refreshData() {
         try {
-            elementlist = HttpHelper.getDocumentPage(targetUrl).select("div:eq(0) > div:eq(0) > span.day:eq(0), div > section.day-alternative > strong > span");
-        } catch (IOException e) {
-            throw new CouldNotRefreshException("Futurum failed to refresh!", e);
+            Document webPage = HttpHelper.getWebPage(targetUrl);
+            List<Element> elementList = filterWebpage(webPage, filterQuery);
+            Map<Weekday, List<String>> mealsGroupedByDays = parseElementsToMealMap(elementList);
+            List<String> todaysAlternatives = mealsGroupedByDays.get(getDayOfWeek());
+
+            availableDishes.clear();
+
+            //We should have five days worth of alternatives and more than one alternative for today to have succeeded
+            if (mealsGroupedByDays.size() != 5 || todaysAlternatives.size() <= 0) {
+                throw new ParsingOutdated();
+            }
+
+            for (String alternative : todaysAlternatives) {
+                availableDishes.add(new Dish(alternative));
+            }
+
+            status = OK;
+
+        } catch (WebPageBroken exception) {
+            status = WEBSITE_BROKEN;
+            LOG.error("Failed to refresh menu. Futurums WEBSITE seems to be broken..");
+        } catch (ParsingOutdated | TotallyBrokenDudeException parsingOutdated) {
+            status = PARSING_BROKEN;
+            LOG.error("Failed to refresh menu. The PARSING of futurums website seems to be broken..");
         }
+    }
 
-        Map<Integer, List<String>> mealsSortedByDays = new HashMap<>();
+    private List<Element> filterWebpage(Document toFilter, String filterQuery) throws WebPageBroken {
+        return toFilter.select(filterQuery);
+    }
 
+    private Map<Weekday, List<String>> parseElementsToMealMap(List<Element> elementList) throws TotallyBrokenDudeException {
+        Map<Weekday, List<String>> mealsGroupedByDays = new HashMap<>();
         List<String> tmpList = null;
-        int i = 0;
-        for (Element e : elementlist) {
+        int dayCounter = 0;
+
+        for (Element e : elementList) {
             if (!e.hasClass("container-week")) {
                 if (e.hasClass("day")) {
                     tmpList = new ArrayList<>();
-                    mealsSortedByDays.put(i++, tmpList);
+                    mealsGroupedByDays.put(getDayOfWeek(dayCounter++), tmpList);
                 } else {
                     if (tmpList != null)
                         tmpList.add(e.text());
                 }
             }
         }
-
-        List<String> todaysAlternatives = mealsSortedByDays.get(getDayOfWeek());
-        availableDishes.clear();
-
-        if (todaysAlternatives != null) {
-            for (String alternative : todaysAlternatives) {
-                availableDishes.add(new Dish(alternative));
-            }
-        }
+        return mealsGroupedByDays;
     }
+
 }

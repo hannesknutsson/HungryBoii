@@ -9,16 +9,13 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Help extends Command {
+public class Help implements Command {
 
     Logger LOG = LoggerFactory.getLogger(Help.class);
 
-    public Help() {
-        super("!help");
-    }
-
-    private static MessageEmbed.Field getCommandAsField(Command toConvert) {
-        return new MessageEmbed.Field(toConvert.getCommandSyntax(), toConvert.getCommandDescription(), false);
+    @Override
+    public String getCommandSyntax() {
+        return "!help";
     }
 
     @Override
@@ -38,6 +35,10 @@ public class Help extends Command {
         }
 
         event.getChannel().sendMessage(embedBuilder.build()).queue();
-        LOG.info("Responded to event with list of available commands and their descriptions!");
+        LOG.info("{} requested help", event.getAuthor().getAsTag());
+    }
+
+    private static MessageEmbed.Field getCommandAsField(Command toConvert) {
+        return new MessageEmbed.Field(toConvert.getCommandSyntax(), toConvert.getCommandDescription(), false);
     }
 }

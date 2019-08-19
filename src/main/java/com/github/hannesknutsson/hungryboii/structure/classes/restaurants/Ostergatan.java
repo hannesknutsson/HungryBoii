@@ -1,15 +1,20 @@
 package com.github.hannesknutsson.hungryboii.structure.classes.restaurants;
 
 import com.github.hannesknutsson.hungryboii.structure.classes.Dish;
-import com.github.hannesknutsson.hungryboii.structure.exceptions.CouldNotRefreshException;
+import com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus;
+import com.github.hannesknutsson.hungryboii.structure.enumerations.Weekday;
+import com.github.hannesknutsson.hungryboii.structure.exceptions.ParsingOutdated;
+import com.github.hannesknutsson.hungryboii.structure.exceptions.TotallyBrokenDudeException;
+import com.github.hannesknutsson.hungryboii.structure.exceptions.WebPageBroken;
 import com.github.hannesknutsson.hungryboii.structure.templates.Restaurant;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.HttpHelper;
+import com.github.hannesknutsson.hungryboii.utilities.statichelpers.TimeHelper;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
-import org.xml.sax.SAXException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,17 +22,23 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
+import static com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus.*;
+import static com.github.hannesknutsson.hungryboii.structure.enumerations.Weekday.NOT_A_WEEKDAY;
 import static com.github.hannesknutsson.hungryboii.utilities.statichelpers.TimeHelper.getDayOfWeek;
 
 public class Ostergatan implements Restaurant {
 
+    private static Logger LOG = LoggerFactory.getLogger(Ostergatan.class);
+
     private static final String name = "Östergatans restaurang";
     private static final String targetUrl = "https://www.ostergatansrestaurang.se/";
+    private static RestaurantStatus status;
 
-    CopyOnWriteArrayList<Dish> availableDishes;
+    private CopyOnWriteArrayList<Dish> availableDishes;
 
     public Ostergatan() {
         availableDishes = new CopyOnWriteArrayList<>();
+        status = UNINITIALIZED;
     }
 
     @Override
@@ -41,16 +52,47 @@ public class Ostergatan implements Restaurant {
     }
 
     @Override
-    public void refreshData() throws CouldNotRefreshException {
+    public RestaurantStatus getStatus() {
+        return status;
+    }
 
-        List<Element> elementlist = null;
+    @Override
+    public void refreshData() {
         try {
-            elementlist = HttpHelper.getDocumentPage(targetUrl).select("body > div > div > div > div > p:eq(8)");
-        } catch (IOException e) {
-            throw new CouldNotRefreshException("Östergatans restaurang failed to refresh!", e);
-        }
+            Document webPage = HttpHelper.getWebPage(targetUrl);
+            List<Element> elementList = filterWebPage(webPage, "body > div > div > div > div > p:eq(8)");
+            Map<Weekday, List<String>> mealsGroupedByDays = parseElementsToMealMap(elementList);
+            List<String> todaysAlternatives = mealsGroupedByDays.get(getDayOfWeek());
+            availableDishes.clear();
 
-        List<TextNode> textNodes = new ArrayList<>(elementlist)
+            if (mealsGroupedByDays.size() != 5 && todaysAlternatives.size() <= 0) {
+                throw new ParsingOutdated();
+            }
+
+            if (todaysAlternatives != null) {
+                for (String alternative : todaysAlternatives) {
+                    availableDishes.add(new Dish(alternative));
+                }
+            }
+
+            status = OK;
+        } catch (WebPageBroken exception) {
+            status = WEBSITE_BROKEN;
+            LOG.error("Failed to refresh menu. Östergatans WEBSITE seems to be broken..");
+        } catch (ParsingOutdated | TotallyBrokenDudeException parsingOutdated) {
+            status = PARSING_BROKEN;
+            LOG.error("Failed to refresh menu. The PARSING of Östergatans website seems to be broken..");
+        }
+    }
+
+    private List<Element> filterWebPage(Document toFilter, String filterQuery) {
+        return toFilter.select(filterQuery);
+    }
+
+    private Map<Weekday, List<String>> parseElementsToMealMap(List<Element> elementList) throws ParsingOutdated {
+        Map<Weekday, List<String>> mealsGroupedByDays = new HashMap<>();
+
+        List<TextNode> textNodes = new ArrayList<>(elementList)
                 .stream()
                 .flatMap(element -> element.childNodesCopy().stream())
                 .collect(Collectors.toList())
@@ -65,50 +107,19 @@ public class Ostergatan implements Restaurant {
         textNodes.remove(textNodes.size() - 1);
         textNodes.remove(textNodes.size() - 1);
 
-        Map<Integer, List<String>> mealsSortedByDays = new HashMap<>();
-
         List<String> tmpList = null;
         for (TextNode node : textNodes) {
             String nodeString = node.text();
-            if (nodeString.length() < 8) {
-                int day;
-                switch (nodeString.toLowerCase()) {
-                    case "måndag":
-                        day = 0;
-                        break;
-                    case "tisdag":
-                        day = 1;
-                        break;
-                    case "onsdag":
-                        day = 2;
-                        break;
-                    case "torsdag":
-                        day = 3;
-                        break;
-                    case "fredag":
-                        day = 4;
-                        break;
-                    default:
-                        day = -1;
-                }
-                if (day >= 0 && day < 5) {
-                    tmpList = new ArrayList<>();
-                    mealsSortedByDays.put(day, tmpList);
-                }
-            } else {
+            Weekday attemptToParsedDay = TimeHelper.parseStringToWeekday(nodeString);
+            if (attemptToParsedDay == NOT_A_WEEKDAY) {
                 if (tmpList != null) {
                     tmpList.add(nodeString);
                 }
+            } else {
+                tmpList = new ArrayList<>();
+                mealsGroupedByDays.put(attemptToParsedDay, tmpList);
             }
         }
-
-        List<String> todaysAlternatives = mealsSortedByDays.get(getDayOfWeek());
-        availableDishes.clear();
-
-        if (todaysAlternatives != null) {
-            for (String alternative : todaysAlternatives) {
-                availableDishes.add(new Dish(alternative));
-            }
-        }
+        return mealsGroupedByDays;
     }
 }

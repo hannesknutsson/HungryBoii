@@ -2,17 +2,9 @@ package com.github.hannesknutsson.hungryboii.structure.templates;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-public abstract class Command {
+public abstract interface Command {
 
-    private String syntax;
-
-    protected Command(String syntax) {
-        this.syntax = syntax;
-    }
-
-    public String getCommandSyntax() {
-        return syntax;
-    }
+    public String getCommandSyntax();
 
     public abstract String getCommandDescription();
 

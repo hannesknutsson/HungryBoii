@@ -35,21 +35,16 @@ public class MenuGatherer {
             gatheringTask = new Retriever();
         }
 
-        LOG.info("Scheduling worker to refresh restaurant menus every {} {}s", intervalTime, intervalUnit.toString().toLowerCase());
+        LOG.debug("Scheduling worker to refresh restaurant menus every {} {}s", intervalTime, intervalUnit.toString().toLowerCase());
         executorService.scheduleAtFixedRate(gatheringTask, 0, intervalTime, intervalUnit);
-        LOG.info("Worker started");
+        LOG.debug("Worker started");
     }
 
     private MenuGatherer() {
     }
 
     private static void refreshRestaurant(Restaurant target) {
-        LOG.info("Refreshing menu for {}", target.getName());
-        try {
-            target.refreshData();
-        } catch (CouldNotRefreshException e) {
-            target.getTodaysDishes().clear(); //TODO lägg till restaurant status som ger olika meddelanden och så ;)
-            LOG.error("Failed to refresh menu for {}", target.getName(), e);
-        }
+        LOG.debug("Refreshing menu for {}", target.getName());
+        target.refreshData();
     }
 }
