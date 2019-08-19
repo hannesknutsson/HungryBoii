@@ -1,6 +1,7 @@
 package com.github.hannesknutsson.hungryboii.structure.classes.discord.commands;
 
 import com.github.hannesknutsson.hungryboii.structure.classes.Dish;
+import com.github.hannesknutsson.hungryboii.structure.exceptions.TotallyBrokenDudeException;
 import com.github.hannesknutsson.hungryboii.structure.templates.Command;
 import com.github.hannesknutsson.hungryboii.structure.templates.Restaurant;
 import com.github.hannesknutsson.hungryboii.utilities.managers.RestaurantManager;
@@ -12,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
+import static com.github.hannesknutsson.hungryboii.utilities.statichelpers.TimeHelper.isWeekend;
 
 public class ListMenu implements Command {
 
@@ -30,9 +33,23 @@ public class ListMenu implements Command {
     @Override
     public void executeCommand(GuildMessageReceivedEvent event) {
 
-        List<Restaurant> restaurants = RestaurantManager.getRegisteredRestaurants();
         EmbedBuilder embedObject = EmbedHelper.getCommandReplyEmbed(event);
+        boolean weekend;
 
+        try {
+            weekend = isWeekend();
+            if (!weekend) {
+                sendMenuReply(embedObject, event);
+            } else {
+                sendWeekendReply(embedObject, event);
+            }
+        } catch (TotallyBrokenDudeException e) {
+            sendApologyReply(embedObject, event);
+        }
+    }
+
+    private void sendMenuReply(EmbedBuilder embedObject, GuildMessageReceivedEvent event) {
+        List<Restaurant> restaurants = RestaurantManager.getRegisteredRestaurants();
         for (Restaurant restaurant : restaurants) {
             MessageEmbed.Field addToEmbed = null;
             switch (restaurant.getStatus()) {
@@ -65,6 +82,22 @@ public class ListMenu implements Command {
         LOG.info("{} requested the menus", event.getAuthor().getAsTag());
     }
 
+    private void sendWeekendReply(EmbedBuilder embedObject, GuildMessageReceivedEvent event) {
+        embedObject.setTitle("Weekend");
+        embedObject.setDescription("I'm not able to retrieve lunch alternatives for the restaurants on weekends.");
+
+        event.getChannel().sendMessage(embedObject.build()).queue();
+        LOG.info("{} requested the menus on a weekend", event.getAuthor().getAsTag());
+    }
+
+    private void sendApologyReply(EmbedBuilder embedObject, GuildMessageReceivedEvent event) {
+        embedObject.setTitle("Ooopsie");
+        embedObject.setDescription("I just received a TotallyBrokenDudeException. Something must have broken spectacularly!");
+
+        event.getChannel().sendMessage(embedObject.build()).queue();
+        LOG.info("{} requested the menus, but broken", event.getAuthor().getAsTag());
+    }
+
     private MessageEmbed.Field compileMenu(Restaurant menuSource) {
         StringBuilder alternativeDescriptionBuilder = new StringBuilder();
         for (Dish dish : menuSource.getTodaysDishes()) {
@@ -72,5 +105,4 @@ public class ListMenu implements Command {
         }
         return new MessageEmbed.Field(menuSource.getName(), alternativeDescriptionBuilder.toString(), false);
     }
-
 }

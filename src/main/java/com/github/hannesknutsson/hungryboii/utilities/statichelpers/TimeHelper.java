@@ -1,7 +1,6 @@
 package com.github.hannesknutsson.hungryboii.utilities.statichelpers;
 
 import com.github.hannesknutsson.hungryboii.structure.enumerations.Weekday;
-import com.github.hannesknutsson.hungryboii.structure.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.TotallyBrokenDudeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +12,10 @@ import static com.github.hannesknutsson.hungryboii.structure.enumerations.Weekda
 public class TimeHelper {
 
     static Logger LOG = LoggerFactory.getLogger(TimeHelper.class);
+
+    public static boolean isWeekend() throws TotallyBrokenDudeException {
+        return getDayOfWeek() == SATURDAY || getDayOfWeek() == SUNDAY;
+    }
 
     public static Weekday getDayOfWeek() throws TotallyBrokenDudeException {
         Calendar myDate = Calendar.getInstance();
@@ -51,7 +54,7 @@ public class TimeHelper {
         return today;
     }
 
-    public static Weekday parseStringToWeekday(String toParse) throws ParsingOutdated {
+    public static Weekday parseStringToWeekday(String toParse) {
         toParse = toParse.trim().toLowerCase();
         Weekday actualDay;
         switch (toParse) {
