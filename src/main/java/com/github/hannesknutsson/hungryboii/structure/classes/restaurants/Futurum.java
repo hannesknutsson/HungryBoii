@@ -95,8 +95,13 @@ public class Futurum implements Restaurant {
         for (Element e : elementList) {
             if (!e.hasClass("container-week")) {
                 if (e.hasClass("day")) {
-                    tmpList = new ArrayList<>();
-                    mealsGroupedByDays.put(getDayOfWeek(dayCounter++), tmpList);
+                    if (dayCounter == 5) {
+                        break;
+                    } else {
+                        tmpList = new ArrayList<>();
+                        mealsGroupedByDays.put(getDayOfWeek(dayCounter), tmpList);
+                        dayCounter++;
+                    }
                 } else {
                     if (tmpList != null)
                         tmpList.add(e.text());
