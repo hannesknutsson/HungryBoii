@@ -1,6 +1,5 @@
 package com.github.hannesknutsson.hungryboii.utilities.workers;
 
-import com.github.hannesknutsson.hungryboii.structure.exceptions.CouldNotRefreshException;
 import com.github.hannesknutsson.hungryboii.structure.templates.Restaurant;
 import com.github.hannesknutsson.hungryboii.utilities.managers.RestaurantManager;
 import org.slf4j.Logger;

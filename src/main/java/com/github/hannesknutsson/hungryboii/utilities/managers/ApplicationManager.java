@@ -16,8 +16,8 @@ public class ApplicationManager {
 
     private static boolean botHasStarted = false;
 
-    public static Boolean start(String [] args) {
-        if(!botHasStarted && ArgumentParser.parseArguments(args)) {
+    public static Boolean start(String[] args) {
+        if (!botHasStarted && ArgumentParser.parseArguments(args)) {
             try {
                 JDA discordBot = new JDABuilder(ArgumentParser.getDiscordApiToken()).build();
                 discordBot.addEventListener(new MessageReceived());
@@ -39,8 +39,6 @@ public class ApplicationManager {
     public static boolean isRunning() {
         return botHasStarted;
     }
-
-
 
 
 }
