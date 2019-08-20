@@ -1,12 +1,11 @@
 package com.github.hannesknutsson.hungryboii.structure.classes.restaurants;
 
 import com.github.hannesknutsson.hungryboii.structure.classes.Dish;
-import com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus;
 import com.github.hannesknutsson.hungryboii.structure.enumerations.Weekday;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.TotallyBrokenDudeException;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.WebPageBroken;
-import com.github.hannesknutsson.hungryboii.structure.templates.Restaurant;
+import com.github.hannesknutsson.hungryboii.structure.templates.SimpleRestaurant;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.HttpHelper;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.TimeHelper;
 import org.jsoup.nodes.Document;
@@ -26,34 +25,19 @@ import static com.github.hannesknutsson.hungryboii.structure.enumerations.Restau
 import static com.github.hannesknutsson.hungryboii.structure.enumerations.Weekday.NOT_A_WEEKDAY;
 import static com.github.hannesknutsson.hungryboii.utilities.statichelpers.TimeHelper.getDayOfWeek;
 
-public class Ostergatan implements Restaurant {
+public class Ostergatan extends SimpleRestaurant {
 
     private static Logger LOG = LoggerFactory.getLogger(Ostergatan.class);
 
-    private static final String name = "Östergatans restaurang";
     private static final String targetUrl = "https://www.ostergatansrestaurang.se/";
-    private static RestaurantStatus status;
-
-    private CopyOnWriteArrayList<Dish> availableDishes;
 
     public Ostergatan() {
-        availableDishes = new CopyOnWriteArrayList<>();
-        status = UNINITIALIZED;
-    }
-
-    @Override
-    public String getName() {
-        return name;
+        super("Östergatans restaurang");
     }
 
     @Override
     public CopyOnWriteArrayList<Dish> getTodaysDishes() {
         return availableDishes;
-    }
-
-    @Override
-    public RestaurantStatus getStatus() {
-        return status;
     }
 
     @Override

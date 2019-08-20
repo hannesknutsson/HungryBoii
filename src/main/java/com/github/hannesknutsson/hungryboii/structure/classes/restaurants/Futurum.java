@@ -1,12 +1,11 @@
 package com.github.hannesknutsson.hungryboii.structure.classes.restaurants;
 
 import com.github.hannesknutsson.hungryboii.structure.classes.Dish;
-import com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus;
 import com.github.hannesknutsson.hungryboii.structure.enumerations.Weekday;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.TotallyBrokenDudeException;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.WebPageBroken;
-import com.github.hannesknutsson.hungryboii.structure.templates.Restaurant;
+import com.github.hannesknutsson.hungryboii.structure.templates.SimpleRestaurant;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.HttpHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,35 +21,20 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus.*;
 import static com.github.hannesknutsson.hungryboii.utilities.statichelpers.TimeHelper.getDayOfWeek;
 
-public class Futurum implements Restaurant {
+public class Futurum extends SimpleRestaurant {
 
     private static Logger LOG = LoggerFactory.getLogger(Futurum.class);
 
-    private static final String name = "Futurum";
     private static final String targetUrl = "https://eurest.mashie.com/public/menu/restaurang+futurum/9ab27099?country=se";
     private static final String filterQuery = "div:eq(0) > div:eq(0) > span.day:eq(0), div > section.day-alternative > strong > span";
-    private static RestaurantStatus status;
-
-    private CopyOnWriteArrayList<Dish> availableDishes;
 
     public Futurum() {
-        availableDishes = new CopyOnWriteArrayList<>();
-        status = RestaurantStatus.UNINITIALIZED;
-    }
-
-    @Override
-    public String getName() {
-        return name;
+        super("Futurum");
     }
 
     @Override
     public CopyOnWriteArrayList<Dish> getTodaysDishes() {
         return availableDishes;
-    }
-
-    @Override
-    public RestaurantStatus getStatus() {
-        return status;
     }
 
     @Override

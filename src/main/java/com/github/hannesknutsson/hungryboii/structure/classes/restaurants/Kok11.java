@@ -1,10 +1,9 @@
 package com.github.hannesknutsson.hungryboii.structure.classes.restaurants;
 
 import com.github.hannesknutsson.hungryboii.structure.classes.Dish;
-import com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.WebPageBroken;
-import com.github.hannesknutsson.hungryboii.structure.templates.Restaurant;
+import com.github.hannesknutsson.hungryboii.structure.templates.SimpleRestaurant;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.HttpHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,35 +17,20 @@ import java.util.stream.Collectors;
 
 import static com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus.*;
 
-public class Kok11 implements Restaurant {
+public class Kok11 extends SimpleRestaurant {
 
     private static Logger LOG = LoggerFactory.getLogger(Kok11.class);
 
-    private static final String name = "Kök 11";
     private static final String targetUrl = "http://www.kok11.se/dagenslunch-vaxjo";
     private static final String filterQuery = "div > div > div > div > div > h2";
-    private static RestaurantStatus status;
-
-    private CopyOnWriteArrayList<Dish> availableDishes;
 
     public Kok11() {
-        availableDishes = new CopyOnWriteArrayList<>();
-        status = UNINITIALIZED;
-    }
-
-    @Override
-    public String getName() {
-        return name;
+        super("Kök 11");
     }
 
     @Override
     public CopyOnWriteArrayList<Dish> getTodaysDishes() {
         return availableDishes;
-    }
-
-    @Override
-    public RestaurantStatus getStatus() {
-        return status;
     }
 
     @Override
