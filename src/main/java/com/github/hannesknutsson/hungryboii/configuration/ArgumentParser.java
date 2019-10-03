@@ -28,6 +28,9 @@ public class ArgumentParser {
             System.err.println("\n\n");
             errorFree = false;
         }
+
+        LOG.info("Using token: *{}*", discordApiToken);
+
         return errorFree;
     }
 
