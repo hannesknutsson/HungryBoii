@@ -29,8 +29,6 @@ public class ArgumentParser {
             errorFree = false;
         }
 
-        LOG.info("Using token: *{}*", discordApiToken);
-
         return errorFree;
     }
 
