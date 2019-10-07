@@ -17,6 +17,7 @@ public class MessageReceived extends ListenerAdapter {
             Command appropriateHandler = CommandManager.getCommandBySyntax(event.getMessage().getContentRaw());
             if (appropriateHandler != null) {
                 appropriateHandler.executeCommand(event);
+                LOG.info("{} from the server \"{}\" requested \"{}\" in the text channel \"{}\"", event.getAuthor().getAsTag(), event.getMessage().getGuild().getName(), event.getMessage().getContentRaw(), event.getMessage().getChannel().getName());
             }
         }
     }
