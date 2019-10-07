@@ -1,6 +1,7 @@
 package com.github.hannesknutsson.hungryboii.utilities.managers;
 
 import com.github.hannesknutsson.hungryboii.configuration.ArgumentParser;
+import com.github.hannesknutsson.hungryboii.structure.classes.discord.events.InvitedToNewGuild;
 import com.github.hannesknutsson.hungryboii.structure.classes.discord.events.MessageReceived;
 import com.github.hannesknutsson.hungryboii.utilities.workers.MenuGatherer;
 import net.dv8tion.jda.api.JDA;
@@ -23,6 +24,7 @@ public class ApplicationManager {
             try {
                 discordBot = new JDABuilder(ArgumentParser.getDiscordApiToken()).build();
                 discordBot.addEventListener(new MessageReceived());
+                discordBot.addEventListener(new InvitedToNewGuild());
                 MenuGatherer.startGathering();
                 LOG.info("Application started successfully!");
                 botHasStarted = true;
