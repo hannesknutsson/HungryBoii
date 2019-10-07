@@ -16,10 +16,12 @@ public class ApplicationManager {
 
     private static boolean botHasStarted = false;
 
+    private static JDA discordBot;
+
     public static Boolean start(String[] args) {
         if (!botHasStarted && ArgumentParser.parseArguments(args)) {
             try {
-                JDA discordBot = new JDABuilder(ArgumentParser.getDiscordApiToken()).build();
+                discordBot = new JDABuilder(ArgumentParser.getDiscordApiToken()).build();
                 discordBot.addEventListener(new MessageReceived());
                 MenuGatherer.startGathering();
                 LOG.info("Application started successfully!");
@@ -40,5 +42,7 @@ public class ApplicationManager {
         return botHasStarted;
     }
 
-
+    protected static JDA getMainJDAObject() {
+        return discordBot;
+    }
 }

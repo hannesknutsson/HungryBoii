@@ -1,17 +1,12 @@
 package com.github.hannesknutsson.hungryboii.structure.classes.discord.commands;
 
 import com.github.hannesknutsson.hungryboii.structure.templates.Command;
+import com.github.hannesknutsson.hungryboii.structure.templates.StaticReplyCommand;
 import com.github.hannesknutsson.hungryboii.utilities.managers.CommandManager;
-import com.github.hannesknutsson.hungryboii.utilities.statichelpers.EmbedHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class Help implements Command {
-
-    Logger LOG = LoggerFactory.getLogger(Help.class);
+public class Help extends StaticReplyCommand {
 
     @Override
     public String getCommandSyntax() {
@@ -24,18 +19,14 @@ public class Help implements Command {
     }
 
     @Override
-    public void executeCommand(GuildMessageReceivedEvent event) {
-        EmbedBuilder embedBuilder = EmbedHelper.getCommandReplyEmbed(event);
-
-        embedBuilder.setTitle("This is the amazing HungryBoii lunch menu bot");
-        embedBuilder.setDescription("You have requested help, and help you shall receive!\nBelow are the commands available:");
+    protected EmbedBuilder staticReply() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
 
         for (Command genericCommand : CommandManager.getAvailableCommands()) {
             embedBuilder.addField(getCommandAsField(genericCommand));
         }
 
-        event.getChannel().sendMessage(embedBuilder.build()).queue();
-        LOG.info("{} requested help", event.getAuthor().getAsTag());
+        return embedBuilder;
     }
 
     private static MessageEmbed.Field getCommandAsField(Command toConvert) {

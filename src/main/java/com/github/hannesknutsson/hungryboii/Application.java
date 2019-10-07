@@ -1,6 +1,7 @@
 package com.github.hannesknutsson.hungryboii;
 
 import com.github.hannesknutsson.hungryboii.structure.classes.discord.commands.Help;
+import com.github.hannesknutsson.hungryboii.structure.classes.discord.commands.Info;
 import com.github.hannesknutsson.hungryboii.structure.classes.discord.commands.ListMenu;
 import com.github.hannesknutsson.hungryboii.structure.classes.restaurants.Futurum;
 import com.github.hannesknutsson.hungryboii.structure.classes.restaurants.Kok11;
@@ -22,6 +23,7 @@ public class Application {
         //Register any new commands here (derivatives of abstract class "Command")
         CommandManager.registerCommand(new Help());
         CommandManager.registerCommand(new ListMenu());
+        CommandManager.registerCommand(new Info());
 
         //Register any new restaurants here (implementations of interface "Restaurant")
         RestaurantManager.registerRestaurant(new Futurum());
