@@ -1,11 +1,10 @@
 #Where we start
 FROM openjdk:12-alpine
 
-#APK
-RUN apk update
-RUN apk upgrade
+#Get APK up to date
+RUN apk update && apk upgrade
 
-#Maven
+#Install Maven
 RUN apk add maven
 
 #Git
@@ -22,6 +21,10 @@ RUN cp -r /HungryBoiiGit/target/HungryBoii-distributable/* /Executables
 
 #Remove Git repo
 RUN rm -rf /HungryBoiiGit
+
+#Add user and group for running as unprivileged user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
 
 #Define how to start
 WORKDIR /Executables
