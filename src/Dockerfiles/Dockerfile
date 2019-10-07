@@ -26,9 +26,15 @@ RUN adduser -S appuser -G appgroup
 
 #Add logging directory and allow unprivileged user to create files there
 RUN mkdir /HungryBoii/log
-RUN chown appuser /HungryBoii/log
+
+#Bring these commands back later
+#RUN chown -R appuser /HungryBoii/log
+#RUN chgrp -R appgroup /HungryBoii/log
+#RUN chmod -R 644 /HungryBoii/log
 
 #Define how to start
-USER appuser
+
+#Bring this command back later
+#USER appuser
 WORKDIR /HungryBoii
 ENTRYPOINT ["java", "-jar", "HungryBoii-1.0-SNAPSHOT.jar"]
