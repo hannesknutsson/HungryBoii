@@ -53,7 +53,6 @@ public class CommandManager {
     }
 
     public static Command getCommandBySyntax(String syntax) {
-        LOG.debug("Command requested by syntax: {}", syntax);
         return getCommandMap().get(syntax);
     }
 

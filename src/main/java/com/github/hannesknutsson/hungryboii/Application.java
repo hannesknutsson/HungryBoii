@@ -6,6 +6,7 @@ import com.github.hannesknutsson.hungryboii.structure.classes.discord.commands.L
 import com.github.hannesknutsson.hungryboii.structure.classes.restaurants.Futurum;
 import com.github.hannesknutsson.hungryboii.structure.classes.restaurants.Kok11;
 import com.github.hannesknutsson.hungryboii.structure.classes.restaurants.Ostergatan;
+import com.github.hannesknutsson.hungryboii.structure.classes.restaurants.VidaArena;
 import com.github.hannesknutsson.hungryboii.utilities.managers.ApplicationManager;
 import com.github.hannesknutsson.hungryboii.utilities.managers.CommandManager;
 import com.github.hannesknutsson.hungryboii.utilities.managers.RestaurantManager;
@@ -29,6 +30,7 @@ public class Application {
         RestaurantManager.registerRestaurant(new Futurum());
         RestaurantManager.registerRestaurant(new Ostergatan());
         RestaurantManager.registerRestaurant(new Kok11());
+        RestaurantManager.registerRestaurant(new VidaArena());
 
         ApplicationManager.start(args);
     }

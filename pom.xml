@@ -49,11 +49,11 @@
             <version>2.7</version>
         </dependency>
 
-        <!-- log4j for implementing the slf4j interface -->
+        <!-- To be able to parse image menus -->
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.7</version>
+            <groupId>net.sourceforge.tess4j</groupId>
+            <artifactId>tess4j</artifactId>
+            <version>4.4.0</version>
         </dependency>
 
     </dependencies>
@@ -93,6 +93,28 @@
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
                             <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.name}-distributable/tessdata</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/tessdata</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>
