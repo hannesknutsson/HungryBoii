@@ -29,11 +29,6 @@ public class Kok11 extends SimpleRestaurant {
     }
 
     @Override
-    public CopyOnWriteArrayList<Dish> getTodaysDishes() {
-        return availableDishes;
-    }
-
-    @Override
     public void refreshData() {
         try {
             Document webPage = HttpHelper.getWebPage(targetUrl);

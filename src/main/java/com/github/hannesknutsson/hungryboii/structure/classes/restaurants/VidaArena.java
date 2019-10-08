@@ -40,11 +40,6 @@ public class VidaArena extends SimpleRestaurant {
     }
 
     @Override
-    public CopyOnWriteArrayList<Dish> getTodaysDishes() {
-        return availableDishes;
-    }
-
-    @Override
     public void refreshData() {
         try {
             //Retrieve image URL
