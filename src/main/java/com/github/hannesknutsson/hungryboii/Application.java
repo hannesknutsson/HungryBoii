@@ -30,7 +30,7 @@ public class Application {
         RestaurantManager.registerRestaurant(new Futurum());
         RestaurantManager.registerRestaurant(new Ostergatan());
         RestaurantManager.registerRestaurant(new Kok11());
-        //RestaurantManager.registerRestaurant(new VidaArena());
+        RestaurantManager.registerRestaurant(new VidaArena());
 
         ApplicationManager.start(args);
     }

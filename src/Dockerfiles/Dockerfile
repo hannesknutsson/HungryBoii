@@ -20,6 +20,9 @@ FROM openjdk:12-alpine AS FinalImageStage
 #Copy the compiled JAR-file from the previous stage
 COPY --from=BuildingStage /HungryBoiiGit/target/HungryBoii-distributable /HungryBoii
 
+#Add Tesseract package
+RUN apk add tesseract-ocr
+
 #Add unprivileged user and group
 RUN addgroup -S appgroup
 RUN adduser -S appuser -G appgroup
