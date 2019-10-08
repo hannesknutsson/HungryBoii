@@ -56,7 +56,7 @@
             <!-- Why we use old version https://github.com/nguyenq/tess4j/issues/105 -->
             <!-- 4.1.0 might just work https://github.com/sirfz/tesserocr/issues/165 -->
             <!-- 5.0.0 will probably work when it is released -->
-            <version>4.1.0</version>
+            <version>4.0.0</version>
         </dependency>
 
     </dependencies>
