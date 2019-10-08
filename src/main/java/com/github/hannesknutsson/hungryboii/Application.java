@@ -22,9 +22,9 @@ public class Application {
         LOG.info("Initializing HungryBoii...");
 
         //Register any new commands here (derivatives of abstract class "Command")
-        CommandManager.registerCommand(new Help());
         CommandManager.registerCommand(new ListMenu());
         CommandManager.registerCommand(new Info());
+        CommandManager.registerCommand(new Help());
 
         //Register any new restaurants here (implementations of interface "Restaurant")
         RestaurantManager.registerRestaurant(new Futurum());

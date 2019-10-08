@@ -17,12 +17,11 @@ RUN mvn -f /HungryBoiiGit clean install
 #Create second stage in our build to leave the Git and Maven packages behind
 FROM openjdk:12-alpine AS FinalImageStage
 
-ENV LC_ALL C
-
 #Copy the compiled JAR-file from the previous stage
 COPY --from=BuildingStage /HungryBoiiGit/target/HungryBoii-distributable /HungryBoii
 
-#Add Tesseract package
+#Add Tesseract package and environment variables
+ENV LC_ALL C
 RUN apk add tesseract-ocr
 
 #Add unprivileged user and group
