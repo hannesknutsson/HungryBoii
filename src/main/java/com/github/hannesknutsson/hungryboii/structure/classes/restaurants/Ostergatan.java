@@ -1,6 +1,8 @@
 package com.github.hannesknutsson.hungryboii.structure.classes.restaurants;
 
 import com.github.hannesknutsson.hungryboii.structure.classes.Dish;
+import com.github.hannesknutsson.hungryboii.structure.classes.OpenHours;
+import com.github.hannesknutsson.hungryboii.structure.classes.Time;
 import com.github.hannesknutsson.hungryboii.structure.enumerations.Weekday;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.TotallyBrokenDudeException;
@@ -27,7 +29,7 @@ public class Ostergatan extends SimpleRestaurant {
     private static final String targetUrl = "https://www.ostergatansrestaurang.se/";
 
     public Ostergatan() {
-        super("Östergatans restaurang");
+        super("Östergatans restaurang", new OpenHours(new Time(11, 30), new Time(14, 0)));
     }
 
     @Override

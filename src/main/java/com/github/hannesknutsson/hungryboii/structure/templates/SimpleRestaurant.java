@@ -1,6 +1,7 @@
 package com.github.hannesknutsson.hungryboii.structure.templates;
 
 import com.github.hannesknutsson.hungryboii.structure.classes.Dish;
+import com.github.hannesknutsson.hungryboii.structure.classes.OpenHours;
 import com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus;
 
 import java.util.List;
@@ -12,11 +13,14 @@ import static com.github.hannesknutsson.hungryboii.structure.enumerations.Restau
 public abstract class SimpleRestaurant implements Restaurant {
 
     private String name;
+    private OpenHours openHours;
+
     protected RestaurantStatus status;
     protected CopyOnWriteArrayList<Dish> availableDishes;
 
-    public SimpleRestaurant(String name) {
+    public SimpleRestaurant(String name, OpenHours openHours) {
         this.name = name;
+        this.openHours = openHours;
         availableDishes = new CopyOnWriteArrayList<>();
         status = UNINITIALIZED;
     }
@@ -35,6 +39,11 @@ public abstract class SimpleRestaurant implements Restaurant {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public OpenHours getOpenHours() {
+        return openHours;
     }
 
     @Override

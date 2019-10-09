@@ -1,6 +1,8 @@
 package com.github.hannesknutsson.hungryboii.structure.classes.restaurants;
 
 import com.github.hannesknutsson.hungryboii.structure.classes.Dish;
+import com.github.hannesknutsson.hungryboii.structure.classes.OpenHours;
+import com.github.hannesknutsson.hungryboii.structure.classes.Time;
 import com.github.hannesknutsson.hungryboii.structure.enumerations.Weekday;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.TotallyBrokenDudeException;
@@ -24,7 +26,7 @@ public class Futurum extends SimpleRestaurant {
     private static final String filterQuery = "div:eq(0) > div:eq(0) > span.day:eq(0), div > section.day-alternative > strong > span";
 
     public Futurum() {
-        super("Futurum");
+        super("Futurum", new OpenHours(new Time(11, 0), new Time(13, 15)));
     }
 
     @Override

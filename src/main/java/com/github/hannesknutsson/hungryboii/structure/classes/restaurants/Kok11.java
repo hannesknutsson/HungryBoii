@@ -1,6 +1,8 @@
 package com.github.hannesknutsson.hungryboii.structure.classes.restaurants;
 
 import com.github.hannesknutsson.hungryboii.structure.classes.Dish;
+import com.github.hannesknutsson.hungryboii.structure.classes.OpenHours;
+import com.github.hannesknutsson.hungryboii.structure.classes.Time;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.WebPageBroken;
 import com.github.hannesknutsson.hungryboii.structure.templates.SimpleRestaurant;
@@ -20,7 +22,7 @@ public class Kok11 extends SimpleRestaurant {
     private static final String filterQuery = "div > div > div > div > div > h2";
 
     public Kok11() {
-        super("Kök 11");
+        super("Kök 11", new OpenHours(new Time(11, 30), new Time(14, 0)));
     }
 
     @Override

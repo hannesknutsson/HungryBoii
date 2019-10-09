@@ -1,6 +1,8 @@
 package com.github.hannesknutsson.hungryboii.structure.classes.restaurants;
 
 import com.github.hannesknutsson.hungryboii.structure.classes.Dish;
+import com.github.hannesknutsson.hungryboii.structure.classes.OpenHours;
+import com.github.hannesknutsson.hungryboii.structure.classes.Time;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.OCRException;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.TotallyBrokenDudeException;
@@ -25,7 +27,7 @@ import static com.github.hannesknutsson.hungryboii.structure.enumerations.Restau
 public class VidaArena extends SimpleRestaurant {
 
     public VidaArena() {
-        super("Vida Arena");
+        super("Vida Arena", new OpenHours(new Time(11, 30), new Time(14, 0)));
     }
 
     @Override

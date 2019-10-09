@@ -96,6 +96,7 @@ public class ListMenu implements Command {
         for (Dish dish : menuSource.getTodaysDishes()) {
             alternativeDescriptionBuilder.append("    * ").append(dish.name).append("\n");
         }
-        return new MessageEmbed.Field(menuSource.getName(), alternativeDescriptionBuilder.toString(), false);
+        String restaurantTitle = menuSource.getName() + " (" + menuSource.getOpenHours().toString() + ")";
+        return new MessageEmbed.Field(restaurantTitle, alternativeDescriptionBuilder.toString(), false);
     }
 }
