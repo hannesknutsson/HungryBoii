@@ -27,7 +27,7 @@ import static com.github.hannesknutsson.hungryboii.structure.enumerations.Restau
 public class VidaArena extends SimpleRestaurant {
 
     public VidaArena() {
-        super("Vida Arena", new OpenHours(new Time(11, 30), new Time(14, 0)));
+        super("Vida Arena", 109, new OpenHours(new Time(11, 30), new Time(14, 0)));
     }
 
     @Override

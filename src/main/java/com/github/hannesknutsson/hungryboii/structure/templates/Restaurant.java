@@ -12,6 +12,8 @@ public interface Restaurant {
 
     OpenHours getOpenHours();
 
+    int getPrice();
+
     CopyOnWriteArrayList<Dish> getTodaysDishes();
 
     RestaurantStatus getStatus();

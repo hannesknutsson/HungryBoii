@@ -26,7 +26,7 @@ public class Futurum extends SimpleRestaurant {
     private static final String filterQuery = "div:eq(0) > div:eq(0) > span.day:eq(0), div > section.day-alternative > strong > span";
 
     public Futurum() {
-        super("Futurum", new OpenHours(new Time(11, 0), new Time(13, 15)));
+        super("Futurum", 90, new OpenHours(new Time(11, 0), new Time(13, 15)));
     }
 
     @Override

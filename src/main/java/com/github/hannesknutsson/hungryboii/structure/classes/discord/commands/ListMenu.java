@@ -92,11 +92,14 @@ public class ListMenu implements Command {
     }
 
     private MessageEmbed.Field compileMenu(Restaurant menuSource) {
+
         StringBuilder alternativeDescriptionBuilder = new StringBuilder();
+        String restaurantInfo = "Open: " + menuSource.getOpenHours() + " | Price: " + menuSource.getPrice() + ":-\n";
+        alternativeDescriptionBuilder.append(restaurantInfo);
+
         for (Dish dish : menuSource.getTodaysDishes()) {
             alternativeDescriptionBuilder.append("    * ").append(dish.name).append("\n");
         }
-        String restaurantTitle = menuSource.getName() + " (" + menuSource.getOpenHours().toString() + ")";
-        return new MessageEmbed.Field(restaurantTitle, alternativeDescriptionBuilder.toString(), false);
+        return new MessageEmbed.Field(menuSource.getName(), alternativeDescriptionBuilder.toString(), false);
     }
 }

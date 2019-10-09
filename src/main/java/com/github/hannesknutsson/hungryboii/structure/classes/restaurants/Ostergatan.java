@@ -29,7 +29,7 @@ public class Ostergatan extends SimpleRestaurant {
     private static final String targetUrl = "https://www.ostergatansrestaurang.se/";
 
     public Ostergatan() {
-        super("Östergatans restaurang", new OpenHours(new Time(11, 30), new Time(14, 0)));
+        super("Östergatans restaurang", 95, new OpenHours(new Time(11, 30), new Time(14, 0)));
     }
 
     @Override

@@ -22,7 +22,7 @@ public class Kok11 extends SimpleRestaurant {
     private static final String filterQuery = "div > div > div > div > div > h2";
 
     public Kok11() {
-        super("Kök 11", new OpenHours(new Time(11, 30), new Time(14, 0)));
+        super("Kök 11", 105, new OpenHours(new Time(11, 30), new Time(14, 0)));
     }
 
     @Override

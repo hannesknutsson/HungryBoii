@@ -14,13 +14,15 @@ public abstract class SimpleRestaurant implements Restaurant {
 
     private String name;
     private OpenHours openHours;
+    private int price;
 
     protected RestaurantStatus status;
     protected CopyOnWriteArrayList<Dish> availableDishes;
 
-    public SimpleRestaurant(String name, OpenHours openHours) {
+    public SimpleRestaurant(String name, int price, OpenHours openHours) {
         this.name = name;
         this.openHours = openHours;
+        this.price = price;
         availableDishes = new CopyOnWriteArrayList<>();
         status = UNINITIALIZED;
     }
@@ -44,6 +46,11 @@ public abstract class SimpleRestaurant implements Restaurant {
     @Override
     public OpenHours getOpenHours() {
         return openHours;
+    }
+
+    @Override
+    public int getPrice() {
+        return price;
     }
 
     @Override
