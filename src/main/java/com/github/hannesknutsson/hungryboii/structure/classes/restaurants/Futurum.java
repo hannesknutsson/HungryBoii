@@ -9,21 +9,16 @@ import com.github.hannesknutsson.hungryboii.structure.templates.SimpleRestaurant
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.HttpHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus.*;
 import static com.github.hannesknutsson.hungryboii.utilities.statichelpers.TimeHelper.getDayOfWeek;
 
 public class Futurum extends SimpleRestaurant {
-
-    private static Logger LOG = LoggerFactory.getLogger(Futurum.class);
 
     private static final String targetUrl = "https://eurest.mashie.com/public/menu/restaurang+futurum/9ab27099?country=se";
     private static final String filterQuery = "div:eq(0) > div:eq(0) > span.day:eq(0), div > section.day-alternative > strong > span";
@@ -55,10 +50,8 @@ public class Futurum extends SimpleRestaurant {
 
         } catch (WebPageBroken exception) {
             status = WEBSITE_BROKEN;
-            LOG.error("Failed to refresh menu. Futurums WEBSITE seems to be broken..");
         } catch (ParsingOutdated | TotallyBrokenDudeException parsingOutdated) {
             status = PARSING_BROKEN;
-            LOG.error("Failed to refresh menu. The PARSING of futurums website seems to be broken..");
         }
     }
 

@@ -26,6 +26,9 @@ public class Help extends StaticReplyCommand {
             embedBuilder.addField(getCommandAsField(genericCommand));
         }
 
+        embedBuilder.setTitle("HungryBoii Commands");
+        embedBuilder.setDescription("Following are the commands available for use with this exquisite bot");
+
         return embedBuilder;
     }
 

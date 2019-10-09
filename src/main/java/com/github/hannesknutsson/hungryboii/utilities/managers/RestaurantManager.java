@@ -18,7 +18,7 @@ public class RestaurantManager {
         if (!ApplicationManager.isRunning()) {
             getRegisteredRestaurants().add(toRegister);
             success = true;
-            LOG.info("Restaurant registered: {}", toRegister.getName());
+            LOG.debug("Restaurant registered: {}", toRegister.getName());
         } else {
             LOG.error("Can not register restaurant after application start: {}", toRegister.getName());
         }
@@ -30,7 +30,7 @@ public class RestaurantManager {
         if (!ApplicationManager.isRunning()) {
             success = getRegisteredRestaurants().remove(toUnregister);
             if (success) {
-                LOG.info("Restaurant unregistered: {}", toUnregister.getName());
+                LOG.debug("Restaurant unregistered: {}", toUnregister.getName());
             } else {
                 LOG.error("Failed to unregister restaurant: {}", toUnregister.getName());
             }

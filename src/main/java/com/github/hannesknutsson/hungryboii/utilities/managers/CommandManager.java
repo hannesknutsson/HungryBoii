@@ -20,7 +20,7 @@ public class CommandManager {
             Command potentiallyConflictingCommand = getCommandBySyntax(toRegister.getCommandSyntax());
             if (potentiallyConflictingCommand == null) {
                 getCommandMap().put(toRegister.getCommandSyntax(), toRegister);
-                LOG.info("Command registered: {}", toRegister.getCommandSyntax());
+                LOG.debug("Command registered: {}", toRegister.getCommandSyntax());
                 success = true;
             } else {
                 LOG.error("Aborting registration of command, command with the same syntax already registered: {}", potentiallyConflictingCommand.getCommandSyntax());
@@ -36,7 +36,7 @@ public class CommandManager {
         if (!ApplicationManager.isRunning()) {
             Command potentiallyRemovedCommand = getCommandMap().remove(syntax);
             if (potentiallyRemovedCommand != null) {
-                LOG.info("Command unregistered: {}", potentiallyRemovedCommand.getCommandSyntax());
+                LOG.debug("Command unregistered: {}", potentiallyRemovedCommand.getCommandSyntax());
                 success = true;
             } else {
                 LOG.error("Failed to unregister command: {}", syntax);

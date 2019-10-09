@@ -1,16 +1,11 @@
 package com.github.hannesknutsson.hungryboii.structure.classes.discord.commands;
 
-import com.github.hannesknutsson.hungryboii.structure.classes.discord.events.MessageReceived;
 import com.github.hannesknutsson.hungryboii.structure.templates.StaticReplyCommand;
 import com.github.hannesknutsson.hungryboii.utilities.managers.DiscordTaskManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Info extends StaticReplyCommand {
-
-    Logger LOG = LoggerFactory.getLogger(Info.class);
 
     @Override
     public String getCommandSyntax() {
@@ -34,7 +29,7 @@ public class Info extends StaticReplyCommand {
         MessageEmbed.Field dockerHubField = new MessageEmbed.Field("DockerHub image", "https://cloud.docker.com/u/hannesknutsson/repository/docker/hannesknutsson/hungryboii", false);
         MessageEmbed.Field inviteField = new MessageEmbed.Field("Invite this bot to your server", "https://discordapp.com/oauth2/authorize?client_id=610906357339652259&permissions=67584&scope=bot", false);
 
-        String hankeMention = DiscordTaskManager.getUserById(234711759309504513L);
+        String hankeMention = DiscordTaskManager.getUserById(234711759309504513L).getAsMention();
         MessageEmbed.Field contributors = new MessageEmbed.Field("Contributors", "So far it is only " + hankeMention + " that has put his heart into this beautiful creation :cry:", false);
 
         embedBuilder.addField(genericInfo);

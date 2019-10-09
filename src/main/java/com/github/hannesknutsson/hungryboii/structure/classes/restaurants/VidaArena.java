@@ -9,31 +9,20 @@ import com.github.hannesknutsson.hungryboii.structure.templates.SimpleRestaurant
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.HttpHelper;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.OpticalCharacterRecognitionHelper;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.TimeHelper;
-import net.sourceforge.tess4j.Tesseract;
-import org.jsoup.nodes.Attribute;
-import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus.*;
 
 public class VidaArena extends SimpleRestaurant {
-
-    Logger LOG = LoggerFactory.getLogger(VidaArena.class);
 
     public VidaArena() {
         super("Vida Arena");
@@ -79,12 +68,13 @@ public class VidaArena extends SimpleRestaurant {
                     throw new TotallyBrokenDudeException();
             }
 
-            List<String> resultlist = null;
+            List<String> resultlist;
             try {
                 resultlist = OpticalCharacterRecognitionHelper.parseImageArea(image, areaToCapture);
             } catch (OCRException e) {
-                e.printStackTrace();
+                throw new ParsingOutdated("Failed parsing image");
             }
+
             resultlist = resultlist.stream().filter(str -> !str.isEmpty()).collect(Collectors.toList());
 
             List<Dish> availableDishesNonSynchronous = resultlist.stream().map(Dish::new).collect(Collectors.toList());
@@ -95,10 +85,10 @@ public class VidaArena extends SimpleRestaurant {
             status = OK;
         } catch (WebPageBroken exception) {
             status = WEBSITE_BROKEN;
-            LOG.error("Failed to refresh menu. Östergatans WEBSITE seems to be broken..");
         } catch (TotallyBrokenDudeException weekend) {
             status = WEEKEND;
-            LOG.error("Failed to refresh menu. It truly seems like it is some kind of weekend..");
+        } catch (ParsingOutdated ocrBroken) {
+            status = PARSING_BROKEN;
         }
     }
 

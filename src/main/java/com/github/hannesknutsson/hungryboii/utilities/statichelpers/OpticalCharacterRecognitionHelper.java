@@ -26,7 +26,7 @@ public class OpticalCharacterRecognitionHelper {
 
     private static Tesseract getTesseract() {
         if (tessInstance == null) {
-            tessInstance = new Tesseract(); //TODO When parsing images it prints a message to std err saying the image has no dpi. Try to suppress this.
+            tessInstance = new Tesseract();
             tessInstance.setDatapath("./tessdata");
             tessInstance.setLanguage("swe");
             tessInstance.setHocr(false);

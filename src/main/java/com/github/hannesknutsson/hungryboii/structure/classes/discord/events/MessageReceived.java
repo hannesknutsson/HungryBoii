@@ -12,12 +12,11 @@ public class MessageReceived extends ListenerAdapter {
     private static Logger LOG = LoggerFactory.getLogger(MessageReceived.class);
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        LOG.debug("Event received: {}", event);
         if (!event.getAuthor().isBot()) {
             Command appropriateHandler = CommandManager.getCommandBySyntax(event.getMessage().getContentRaw());
             if (appropriateHandler != null) {
                 appropriateHandler.executeCommand(event);
-                LOG.info("{} from the server \"{}\" requested \"{}\" in the text channel \"{}\"", event.getAuthor().getAsTag(), event.getMessage().getGuild().getName(), event.getMessage().getContentRaw(), event.getMessage().getChannel().getName());
+                LOG.info("\"{}\" from the server \"{}\" requested \"{}\" in the text channel \"{}\"", event.getAuthor().getAsTag(), event.getMessage().getGuild().getName(), event.getMessage().getContentRaw(), event.getMessage().getChannel().getName());
             }
         }
     }

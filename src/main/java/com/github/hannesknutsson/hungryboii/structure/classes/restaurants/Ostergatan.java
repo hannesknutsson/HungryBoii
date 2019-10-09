@@ -11,14 +11,11 @@ import com.github.hannesknutsson.hungryboii.utilities.statichelpers.TimeHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 import static com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus.*;
@@ -26,8 +23,6 @@ import static com.github.hannesknutsson.hungryboii.structure.enumerations.Weekda
 import static com.github.hannesknutsson.hungryboii.utilities.statichelpers.TimeHelper.getDayOfWeek;
 
 public class Ostergatan extends SimpleRestaurant {
-
-    private static Logger LOG = LoggerFactory.getLogger(Ostergatan.class);
 
     private static final String targetUrl = "https://www.ostergatansrestaurang.se/";
 
@@ -57,10 +52,8 @@ public class Ostergatan extends SimpleRestaurant {
             status = OK;
         } catch (WebPageBroken exception) {
             status = WEBSITE_BROKEN;
-            LOG.error("Failed to refresh menu. Östergatans WEBSITE seems to be broken..");
         } catch (ParsingOutdated | TotallyBrokenDudeException parsingOutdated) {
             status = PARSING_BROKEN;
-            LOG.error("Failed to refresh menu. The PARSING of Östergatans website seems to be broken..");
         }
     }
 

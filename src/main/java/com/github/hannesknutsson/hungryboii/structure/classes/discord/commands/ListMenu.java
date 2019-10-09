@@ -9,16 +9,12 @@ import com.github.hannesknutsson.hungryboii.utilities.statichelpers.EmbedHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 import static com.github.hannesknutsson.hungryboii.utilities.statichelpers.TimeHelper.isWeekend;
 
 public class ListMenu implements Command {
-
-    Logger LOG = LoggerFactory.getLogger(ListMenu.class);
 
     @Override
     public String getCommandSyntax() {
@@ -79,7 +75,6 @@ public class ListMenu implements Command {
         embedObject.setDescription("These are the lunch alternatives the restaurants are offering today");
 
         event.getChannel().sendMessage(embedObject.build()).queue();
-        LOG.info("{} requested the menus", event.getAuthor().getAsTag());
     }
 
     private void sendWeekendReply(EmbedBuilder embedObject, GuildMessageReceivedEvent event) {
@@ -87,7 +82,6 @@ public class ListMenu implements Command {
         embedObject.setDescription("I'm not able to retrieve lunch alternatives for the restaurants on weekends.");
 
         event.getChannel().sendMessage(embedObject.build()).queue();
-        LOG.info("{} requested the menus on a weekend", event.getAuthor().getAsTag());
     }
 
     private void sendApologyReply(EmbedBuilder embedObject, GuildMessageReceivedEvent event) {
@@ -95,7 +89,6 @@ public class ListMenu implements Command {
         embedObject.setDescription("I just received a TotallyBrokenDudeException. Something must have broken spectacularly!");
 
         event.getChannel().sendMessage(embedObject.build()).queue();
-        LOG.info("{} requested the menus, but broken", event.getAuthor().getAsTag());
     }
 
     private MessageEmbed.Field compileMenu(Restaurant menuSource) {

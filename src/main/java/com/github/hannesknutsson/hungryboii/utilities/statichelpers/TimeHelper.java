@@ -2,16 +2,12 @@ package com.github.hannesknutsson.hungryboii.utilities.statichelpers;
 
 import com.github.hannesknutsson.hungryboii.structure.enumerations.Weekday;
 import com.github.hannesknutsson.hungryboii.structure.exceptions.TotallyBrokenDudeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Calendar;
 
 import static com.github.hannesknutsson.hungryboii.structure.enumerations.Weekday.*;
 
 public class TimeHelper {
-
-    static Logger LOG = LoggerFactory.getLogger(TimeHelper.class);
 
     public static boolean isWeekend() throws TotallyBrokenDudeException {
         return getDayOfWeek() == SATURDAY || getDayOfWeek() == SUNDAY;
@@ -48,7 +44,6 @@ public class TimeHelper {
                 today = SUNDAY;
                 break;
             default:
-                LOG.error("Failed to determine what day today is??? Computer is supposedly drunk.");
                 throw new TotallyBrokenDudeException();
         }
         return today;

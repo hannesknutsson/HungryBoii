@@ -30,6 +30,7 @@ public class MenuGatherer {
         if (executorService == null) {
             executorService = Executors.newSingleThreadScheduledExecutor();
         }
+
         if (gatheringTask == null) {
             gatheringTask = new Retriever();
         }

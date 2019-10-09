@@ -8,18 +8,13 @@ import com.github.hannesknutsson.hungryboii.utilities.statichelpers.HttpHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 import static com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus.*;
 
 public class Kok11 extends SimpleRestaurant {
-
-    private static Logger LOG = LoggerFactory.getLogger(Kok11.class);
 
     private static final String targetUrl = "http://www.kok11.se/dagenslunch-vaxjo";
     private static final String filterQuery = "div > div > div > div > div > h2";
@@ -47,10 +42,8 @@ public class Kok11 extends SimpleRestaurant {
 
         } catch (WebPageBroken exception) {
             status = WEBSITE_BROKEN;
-            LOG.error("Failed to refresh menu. Kök11's WEBSITE seems to be broken..");
         } catch (ParsingOutdated parsingOutdated) {
             status = PARSING_BROKEN;
-            LOG.error("Failed to refresh menu. The PARSING of Kök11's website seems to be broken..");
         }
     }
 }

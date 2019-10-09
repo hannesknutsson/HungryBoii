@@ -12,6 +12,6 @@ public class InvitedToNewGuild extends ListenerAdapter {
     Logger LOG = LoggerFactory.getLogger(InvitedToNewGuild.class);
 
     public void onGuildJoin(@Nonnull GuildJoinEvent event) {
-        LOG.info("Yay! We got invited to a new guild!: {}", event.getGuild().getName());
+        LOG.info("Yay! We got invited to a new guild!: \"{}\"", event.getGuild().getName());
     }
 }
