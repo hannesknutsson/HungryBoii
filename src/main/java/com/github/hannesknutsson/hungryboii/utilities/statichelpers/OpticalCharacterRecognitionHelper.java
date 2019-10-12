@@ -1,6 +1,6 @@
 package com.github.hannesknutsson.hungryboii.utilities.statichelpers;
 
-import com.github.hannesknutsson.hungryboii.structure.exceptions.OCRException;
+import com.github.hannesknutsson.hungryboii.exceptions.OCRException;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 

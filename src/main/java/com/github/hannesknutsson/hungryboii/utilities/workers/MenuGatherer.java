@@ -1,7 +1,7 @@
 package com.github.hannesknutsson.hungryboii.utilities.workers;
 
-import com.github.hannesknutsson.hungryboii.structure.templates.Restaurant;
-import com.github.hannesknutsson.hungryboii.utilities.managers.RestaurantManager;
+import com.github.hannesknutsson.hungryboii.structure.restaurants.abstractions.Restaurant;
+import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.RestaurantManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,7 @@ public class MenuGatherer {
     private static class Retriever implements Runnable {
         @Override
         public void run() {
-            RestaurantManager.getRegisteredRestaurants().parallelStream().forEach(MenuGatherer::refreshRestaurant);
+            RestaurantManager.getInstance().getRegisteredRestaurants().parallelStream().forEach(MenuGatherer::refreshRestaurant);
         }
     }
 

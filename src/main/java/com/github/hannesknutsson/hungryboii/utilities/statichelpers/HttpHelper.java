@@ -1,6 +1,6 @@
 package com.github.hannesknutsson.hungryboii.utilities.statichelpers;
 
-import com.github.hannesknutsson.hungryboii.structure.exceptions.WebPageBroken;
+import com.github.hannesknutsson.hungryboii.exceptions.WebPageBroken;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 

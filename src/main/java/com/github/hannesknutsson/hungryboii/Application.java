@@ -1,37 +1,77 @@
 package com.github.hannesknutsson.hungryboii;
 
-import com.github.hannesknutsson.hungryboii.structure.classes.discord.commands.Help;
-import com.github.hannesknutsson.hungryboii.structure.classes.discord.commands.Info;
-import com.github.hannesknutsson.hungryboii.structure.classes.discord.commands.ListMenu;
-import com.github.hannesknutsson.hungryboii.structure.classes.restaurants.Futurum;
-import com.github.hannesknutsson.hungryboii.structure.classes.restaurants.Kok11;
-import com.github.hannesknutsson.hungryboii.structure.classes.restaurants.Ostergatan;
-import com.github.hannesknutsson.hungryboii.structure.classes.restaurants.VidaArena;
-import com.github.hannesknutsson.hungryboii.utilities.managers.ApplicationManager;
-import com.github.hannesknutsson.hungryboii.utilities.managers.CommandManager;
-import com.github.hannesknutsson.hungryboii.utilities.managers.RestaurantManager;
+import com.github.hannesknutsson.hungryboii.configuration.ArgumentParser;
+import com.github.hannesknutsson.hungryboii.structure.discord.commands.implementations.Help;
+import com.github.hannesknutsson.hungryboii.structure.discord.commands.implementations.Info;
+import com.github.hannesknutsson.hungryboii.structure.discord.commands.implementations.ListMenu;
+import com.github.hannesknutsson.hungryboii.structure.discord.events.InvitedToNewGuild;
+import com.github.hannesknutsson.hungryboii.structure.discord.events.MessageReceived;
+import com.github.hannesknutsson.hungryboii.structure.discord.events.ReactionReceived;
+import com.github.hannesknutsson.hungryboii.structure.discord.reactionactions.RemoveReplyOnRequest;
+import com.github.hannesknutsson.hungryboii.structure.restaurants.implementations.Futurum;
+import com.github.hannesknutsson.hungryboii.structure.restaurants.implementations.Kok11;
+import com.github.hannesknutsson.hungryboii.structure.restaurants.implementations.Ostergatan;
+import com.github.hannesknutsson.hungryboii.structure.restaurants.implementations.VidaArena;
+import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.CommandManager;
+import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.ReactionActionManager;
+import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.RestaurantManager;
+import com.github.hannesknutsson.hungryboii.utilities.statichelpers.DiscordHelper;
+import com.github.hannesknutsson.hungryboii.utilities.workers.MenuGatherer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.security.auth.login.LoginException;
 
 public class Application {
 
     private static Logger LOG = LoggerFactory.getLogger(Application.class);
 
+    private static boolean botHasStarted = false;
+
     public static void main(String[] args) {
 
         LOG.info("Initializing HungryBoii...");
 
-        //Register any new commands here (derivatives of abstract class "Command")
-        CommandManager.registerCommand(new ListMenu());
-        CommandManager.registerCommand(new Info());
-        CommandManager.registerCommand(new Help());
+        //Register any new commands here (derivatives of interface class "Command")
+        CommandManager.getInstance().register(new ListMenu());
+        CommandManager.getInstance().register(new Info());
+        CommandManager.getInstance().register(new Help());
+
+        //Register any new reaction actions here (derivatives of interface class "ReactionAction")
+        ReactionActionManager.getInstance().register(new RemoveReplyOnRequest());
 
         //Register any new restaurants here (implementations of interface "Restaurant")
-        RestaurantManager.registerRestaurant(new Futurum());
-        RestaurantManager.registerRestaurant(new Ostergatan());
-        RestaurantManager.registerRestaurant(new Kok11());
-        RestaurantManager.registerRestaurant(new VidaArena());
+        RestaurantManager.getInstance().register(new Futurum());
+        RestaurantManager.getInstance().register(new Ostergatan());
+        RestaurantManager.getInstance().register(new Kok11());
+        RestaurantManager.getInstance().register(new VidaArena());
 
-        ApplicationManager.start(args);
+        start(args);
+    }
+
+    public static Boolean start(String[] args) {
+        if (!botHasStarted && ArgumentParser.parseArguments(args)) {
+            try {
+                DiscordHelper.initialize();
+                DiscordHelper.addEventlistener(new MessageReceived());
+                DiscordHelper.addEventlistener(new InvitedToNewGuild());
+                DiscordHelper.addEventlistener(new ReactionReceived());
+                MenuGatherer.startGathering();
+                LOG.debug("Application started successfully!");
+                botHasStarted = true;
+            } catch (LoginException | IllegalArgumentException e) {
+                LOG.error("Application failed to start, {} received", e.toString());
+                botHasStarted = false;
+            }
+
+            return botHasStarted;
+        } else {
+            LOG.error("Application failed to start, already running");
+            return false;
+        }
+    }
+
+    public static boolean isRunning() {
+        return botHasStarted;
     }
 }

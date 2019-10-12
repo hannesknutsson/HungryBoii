@@ -1,7 +1,7 @@
 package com.github.hannesknutsson.hungryboii.utilities.statichelpers;
 
 import com.github.hannesknutsson.hungryboii.structure.enumerations.Weekday;
-import com.github.hannesknutsson.hungryboii.structure.exceptions.TotallyBrokenDudeException;
+import com.github.hannesknutsson.hungryboii.exceptions.TotallyBrokenDudeException;
 
 import java.util.Calendar;
 
