@@ -28,10 +28,7 @@ public abstract class SimpleRestaurant implements Restaurant {
     }
 
     @Override
-    public final CopyOnWriteArrayList<Dish> getTodaysDishes() {     //TODO this mothod is rather ugly
-        List<Dish> cleanAvaliableDishes = availableDishes.stream().map(dish -> new Dish(dish.name.replace("\n", " "))).collect(Collectors.toList());
-        availableDishes.clear();
-        availableDishes.addAll(cleanAvaliableDishes);
+    public final CopyOnWriteArrayList<Dish> getTodaysDishes() {
         return availableDishes;
     }
 

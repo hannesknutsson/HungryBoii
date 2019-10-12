@@ -77,15 +77,9 @@ public class ListMenu implements Command {
         }
 
         embedObject.setTitle("Todays lunch alternatives");
-        embedObject.setDescription("Before using the services of this bot, please consder using a låda in the future.\nThese are the lunch alternatives the restaurants are offering today:");
+        embedObject.setDescription("Before using the services of this bot, please consider using a låda in the future.\nThese are the lunch alternatives the restaurants are offering today:");
 
         return event.getChannel().sendMessage(embedObject.build());
-
-        /*
-        response.queue(ourResponse -> {
-            CommandToReplyMapper.addCommandReplyPair(event.getMessageIdLong(), ourResponse);
-        });
-        */
     }
 
     private MessageAction sendWeekendReply(EmbedBuilder embedObject, GuildMessageReceivedEvent event) {
