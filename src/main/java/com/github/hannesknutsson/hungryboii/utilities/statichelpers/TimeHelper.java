@@ -15,32 +15,32 @@ public class TimeHelper {
 
     public static Weekday getDayOfWeek() throws TotallyBrokenDudeException {
         Calendar myDate = Calendar.getInstance();
-        int dayNumber = myDate.get(Calendar.DAY_OF_WEEK) - 2; //Because weeks start on mondays, not sundays. And because arrays start on 0, not 1
+        int dayNumber = myDate.get(Calendar.DAY_OF_WEEK);
         return getDayOfWeek(dayNumber);
     }
 
-    public static Weekday getDayOfWeek(int dayNumber) throws TotallyBrokenDudeException {
+    private static Weekday getDayOfWeek(int dayNumber) throws TotallyBrokenDudeException {
         Weekday today;
         switch (dayNumber) {
-            case 0:
+            case 2:
                 today = MONDAY;
                 break;
-            case 1:
+            case 3:
                 today = TUESDAY;
                 break;
-            case 2:
+            case 4:
                 today = WEDNESDAY;
                 break;
-            case 3:
+            case 5:
                 today = THURSDAY;
                 break;
-            case 4:
+            case 6:
                 today = FRIDAY;
                 break;
-            case 5:
+            case 7:
                 today = SATURDAY;
                 break;
-            case 6:
+            case 1:
                 today = SUNDAY;
                 break;
             default:

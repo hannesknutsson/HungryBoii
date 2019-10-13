@@ -12,10 +12,7 @@ import com.github.hannesknutsson.hungryboii.utilities.statichelpers.HttpHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus.*;
 import static com.github.hannesknutsson.hungryboii.utilities.statichelpers.TimeHelper.getDayOfWeek;
@@ -57,13 +54,14 @@ public class Futurum extends SimpleRestaurant {
         }
     }
 
-    private List<Element> filterWebpage(Document toFilter, String filterQuery) throws WebPageBroken {
+    private List<Element> filterWebpage(Document toFilter, String filterQuery) {
         return toFilter.select(filterQuery);
     }
 
-    private Map<Weekday, List<String>> parseElementsToMealMap(List<Element> elementList) throws TotallyBrokenDudeException {
+    private Map<Weekday, List<String>> parseElementsToMealMap(List<Element> elementList) {
         Map<Weekday, List<String>> mealsGroupedByDays = new HashMap<>();
         List<String> tmpList = null;
+        List<Weekday> dayList = Arrays.asList(Weekday.MONDAY, Weekday.TUESDAY, Weekday.WEDNESDAY, Weekday.THURSDAY, Weekday.FRIDAY);
         int dayCounter = 0;
 
         for (Element e : elementList) {
@@ -73,7 +71,7 @@ public class Futurum extends SimpleRestaurant {
                         break;
                     } else {
                         tmpList = new ArrayList<>();
-                        mealsGroupedByDays.put(getDayOfWeek(dayCounter), tmpList);
+                        mealsGroupedByDays.put(dayList.get(dayCounter), tmpList);
                         dayCounter++;
                     }
                 } else {
