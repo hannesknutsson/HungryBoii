@@ -1,6 +1,5 @@
 package com.github.hannesknutsson.hungryboii.utilities.statichelpers;
 
-import com.github.hannesknutsson.hungryboii.configuration.ArgumentParser;
 import com.github.hannesknutsson.hungryboii.configuration.PropertyStore;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
