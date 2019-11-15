@@ -4,9 +4,7 @@ import com.github.hannesknutsson.hungryboii.structure.dataclasses.Dish;
 import com.github.hannesknutsson.hungryboii.structure.dataclasses.OpenHours;
 import com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus;
 
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
 import static com.github.hannesknutsson.hungryboii.structure.enumerations.RestaurantStatus.UNINITIALIZED;
 

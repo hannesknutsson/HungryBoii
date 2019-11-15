@@ -1,6 +1,7 @@
 package com.github.hannesknutsson.hungryboii.utilities.statichelpers;
 
 import com.github.hannesknutsson.hungryboii.configuration.ArgumentParser;
+import com.github.hannesknutsson.hungryboii.configuration.PropertyStore;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -39,7 +40,7 @@ public class DiscordHelper {
 
     public static void initialize() throws LoginException {
         if (discordBot == null) {
-            discordBot = new JDABuilder(ArgumentParser.getDiscordApiToken()).build();
+            discordBot = new JDABuilder(PropertyStore.getInstance().getDiscordApiToken()).build();
         }
     }
 

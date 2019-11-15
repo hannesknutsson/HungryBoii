@@ -10,9 +10,13 @@ public class ArgumentParser {
 
     private static Logger LOG = LoggerFactory.getLogger(ArgumentParser.class);
 
-    @Option(name = "-t", aliases = {"--token"}, required = true,
+    @Option(name = "-t", aliases = {"--token"},
             usage = "Specify discord API token")
     private static String discordApiToken = null;
+
+    @Option(name = "-c", aliases = {"--config"},
+            usage = "Specify alternative configuration location")
+    private static String configurationPath ="conf/HungryBoii.conf";
 
     public static boolean parseArguments(String... args) {
         CmdLineParser parser = new CmdLineParser(new ArgumentParser());
@@ -35,7 +39,11 @@ public class ArgumentParser {
     private ArgumentParser() {
     }
 
-    public static String getDiscordApiToken() {
+    static String getDiscordApiToken() {
         return discordApiToken;
+    }
+
+    static String getConfigurationPath() {
+        return configurationPath;
     }
 }

@@ -49,6 +49,13 @@
             <version>2.7</version>
         </dependency>
 
+        <!-- To easily read configuration files -->
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+
         <!-- To be able to parse image menus -->
         <dependency>
             <groupId>net.sourceforge.tess4j</groupId>
