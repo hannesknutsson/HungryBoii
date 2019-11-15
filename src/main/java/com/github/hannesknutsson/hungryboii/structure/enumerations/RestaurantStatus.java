@@ -5,9 +5,5 @@ public enum RestaurantStatus {
     WEEKEND,
     UNINITIALIZED,
     WEBSITE_BROKEN,
-    PARSING_BROKEN,
-
-
-    NR_OF_REESTAURANT_STATUSES,
-    NO_STATUS
+    PARSING_BROKEN
 }
