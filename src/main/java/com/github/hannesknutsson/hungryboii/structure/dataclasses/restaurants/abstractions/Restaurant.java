@@ -1,4 +1,4 @@
-package com.github.hannesknutsson.hungryboii.structure.restaurants.abstractions;
+package com.github.hannesknutsson.hungryboii.structure.dataclasses.restaurants.abstractions;
 
 import com.github.hannesknutsson.hungryboii.structure.dataclasses.Dish;
 import com.github.hannesknutsson.hungryboii.structure.dataclasses.OpenHours;

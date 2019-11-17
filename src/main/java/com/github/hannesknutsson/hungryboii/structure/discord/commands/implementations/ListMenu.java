@@ -3,7 +3,7 @@ package com.github.hannesknutsson.hungryboii.structure.discord.commands.implemen
 import com.github.hannesknutsson.hungryboii.structure.dataclasses.Dish;
 import com.github.hannesknutsson.hungryboii.structure.discord.commands.abstractions.Command;
 import com.github.hannesknutsson.hungryboii.exceptions.TotallyBrokenDudeException;
-import com.github.hannesknutsson.hungryboii.structure.restaurants.abstractions.Restaurant;
+import com.github.hannesknutsson.hungryboii.structure.dataclasses.restaurants.abstractions.Restaurant;
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.RestaurantManager;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord.EmbedHelper;
 import net.dv8tion.jda.api.EmbedBuilder;

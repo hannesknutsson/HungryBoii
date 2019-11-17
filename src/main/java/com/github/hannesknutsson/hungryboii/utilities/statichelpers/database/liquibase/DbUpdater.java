@@ -15,7 +15,7 @@ public class DbUpdater {
 
     private DbUpdater() {}
 
-    public static void executeLiquibase() throws LiquibaseException {
+    public static void verifyAndUpdateDatabase() throws LiquibaseException {
         Connection connection = DbConnectionHolder.getInstance().getLiquibaseDbConnection();
         Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
         Liquibase liquibase = new Liquibase("liquibase/masterChangelog.xml", new ClassLoaderResourceAccessor(), database);

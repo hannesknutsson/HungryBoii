@@ -1,9 +1,9 @@
-package com.github.hannesknutsson.hungryboii.structure.restaurants.implementations;
+package com.github.hannesknutsson.hungryboii.structure.dataclasses.restaurants.implementations;
 
 import com.github.hannesknutsson.hungryboii.structure.dataclasses.Dish;
 import com.github.hannesknutsson.hungryboii.structure.dataclasses.OpenHours;
 import com.github.hannesknutsson.hungryboii.structure.dataclasses.Time;
-import com.github.hannesknutsson.hungryboii.structure.restaurants.abstractions.SimpleRestaurant;
+import com.github.hannesknutsson.hungryboii.structure.dataclasses.restaurants.abstractions.SimpleRestaurant;
 import com.github.hannesknutsson.hungryboii.exceptions.OCRException;
 import com.github.hannesknutsson.hungryboii.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.exceptions.TotallyBrokenDudeException;

@@ -1,6 +1,5 @@
 package com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord;
 
-import com.github.hannesknutsson.hungryboii.configuration.MasterConfiguration;
 import com.github.hannesknutsson.hungryboii.configuration.subconfigs.discord.DiscordSettings;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;

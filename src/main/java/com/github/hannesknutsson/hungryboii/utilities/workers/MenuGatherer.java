@@ -1,6 +1,6 @@
 package com.github.hannesknutsson.hungryboii.utilities.workers;
 
-import com.github.hannesknutsson.hungryboii.structure.restaurants.abstractions.Restaurant;
+import com.github.hannesknutsson.hungryboii.structure.dataclasses.restaurants.abstractions.Restaurant;
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.RestaurantManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

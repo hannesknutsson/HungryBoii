@@ -17,8 +17,6 @@ public class SqlSettings {
     private SqlUser liquibaseUser;
     private SqlUser hibernateUser;
 
-    private String hibernateDriverClass;
-
     private String hibernateDialectClass;
     private boolean hibernatePrintQueries;
     private SqlSettings() {
@@ -64,16 +62,12 @@ public class SqlSettings {
         return hibernateUser;
     }
 
-    public String getHibernateDriverClass() {
-        return hibernateDriverClass;
-    }
-
     public String getHibernateDialectClass() {
         return hibernateDialectClass;
     }
 
-    public boolean isHibernatePrintQueries() {
-        return hibernatePrintQueries;
+    public String isHibernatePrintQueries() {
+        return ((Boolean) hibernatePrintQueries).toString();
     }
 
     private void readEndpoint() {
@@ -92,7 +86,6 @@ public class SqlSettings {
 
     private void readHibernate() {
         Config hibernateConfig = sqlConfig.getConfig("hibernate");
-        hibernateDriverClass = hibernateConfig.getString("connectionDriverClass");
         hibernateDialectClass = hibernateConfig.getString("dialectClass");
         hibernatePrintQueries = hibernateConfig.getBoolean("printQueries");
     }

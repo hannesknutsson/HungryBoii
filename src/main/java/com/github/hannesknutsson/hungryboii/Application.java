@@ -1,6 +1,7 @@
 package com.github.hannesknutsson.hungryboii;
 
 import com.github.hannesknutsson.hungryboii.configuration.ArgumentParser;
+import com.github.hannesknutsson.hungryboii.structure.dataclasses.DiscordUser;
 import com.github.hannesknutsson.hungryboii.structure.discord.commands.implementations.Help;
 import com.github.hannesknutsson.hungryboii.structure.discord.commands.implementations.Info;
 import com.github.hannesknutsson.hungryboii.structure.discord.commands.implementations.ListMenu;
@@ -8,17 +9,19 @@ import com.github.hannesknutsson.hungryboii.structure.discord.events.InvitedToNe
 import com.github.hannesknutsson.hungryboii.structure.discord.events.MessageReceived;
 import com.github.hannesknutsson.hungryboii.structure.discord.events.ReactionReceived;
 import com.github.hannesknutsson.hungryboii.structure.discord.reactionactions.RemoveReplyOnRequest;
-import com.github.hannesknutsson.hungryboii.structure.restaurants.implementations.Futurum;
-import com.github.hannesknutsson.hungryboii.structure.restaurants.implementations.Kok11;
-import com.github.hannesknutsson.hungryboii.structure.restaurants.implementations.Ostergatan;
-import com.github.hannesknutsson.hungryboii.structure.restaurants.implementations.VidaArena;
+import com.github.hannesknutsson.hungryboii.structure.dataclasses.restaurants.implementations.Futurum;
+import com.github.hannesknutsson.hungryboii.structure.dataclasses.restaurants.implementations.Kok11;
+import com.github.hannesknutsson.hungryboii.structure.dataclasses.restaurants.implementations.Ostergatan;
+import com.github.hannesknutsson.hungryboii.structure.dataclasses.restaurants.implementations.VidaArena;
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.CommandManager;
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.ReactionActionManager;
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.RestaurantManager;
+import com.github.hannesknutsson.hungryboii.utilities.statichelpers.database.hibernate.EntityCoupler;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.database.liquibase.DbUpdater;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord.DiscordHelper;
 import com.github.hannesknutsson.hungryboii.utilities.workers.MenuGatherer;
 import liquibase.exception.LiquibaseException;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +57,8 @@ public class Application {
     public static Boolean start(String[] args) {
         if (!botHasStarted && ArgumentParser.parseArguments(args)) {
             try {
-                DbUpdater.executeLiquibase();
+                DbUpdater.verifyAndUpdateDatabase();
+                EntityCoupler.initialize();
                 DiscordHelper.initialize();
                 DiscordHelper.addEventlistener(new MessageReceived());
                 DiscordHelper.addEventlistener(new InvitedToNewGuild());
