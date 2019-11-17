@@ -5,7 +5,7 @@ import com.github.hannesknutsson.hungryboii.structure.discord.commands.abstracti
 import com.github.hannesknutsson.hungryboii.exceptions.TotallyBrokenDudeException;
 import com.github.hannesknutsson.hungryboii.structure.restaurants.abstractions.Restaurant;
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.RestaurantManager;
-import com.github.hannesknutsson.hungryboii.utilities.statichelpers.EmbedHelper;
+import com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord.EmbedHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;

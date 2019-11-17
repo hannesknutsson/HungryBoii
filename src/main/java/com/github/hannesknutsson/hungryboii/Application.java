@@ -15,8 +15,10 @@ import com.github.hannesknutsson.hungryboii.structure.restaurants.implementation
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.CommandManager;
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.ReactionActionManager;
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.RestaurantManager;
-import com.github.hannesknutsson.hungryboii.utilities.statichelpers.DiscordHelper;
+import com.github.hannesknutsson.hungryboii.utilities.statichelpers.database.DbUpdater;
+import com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord.DiscordHelper;
 import com.github.hannesknutsson.hungryboii.utilities.workers.MenuGatherer;
+import liquibase.exception.LiquibaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +54,7 @@ public class Application {
     public static Boolean start(String[] args) {
         if (!botHasStarted && ArgumentParser.parseArguments(args)) {
             try {
+                DbUpdater.executeLiquibase();
                 DiscordHelper.initialize();
                 DiscordHelper.addEventlistener(new MessageReceived());
                 DiscordHelper.addEventlistener(new InvitedToNewGuild());
@@ -59,7 +62,7 @@ public class Application {
                 MenuGatherer.startGathering();
                 LOG.debug("Application started successfully!");
                 botHasStarted = true;
-            } catch (LoginException | IllegalArgumentException e) {
+            } catch (LoginException | IllegalArgumentException | LiquibaseException e) {
                 LOG.error("Application failed to start, {} received", e.toString());
                 botHasStarted = false;
             }

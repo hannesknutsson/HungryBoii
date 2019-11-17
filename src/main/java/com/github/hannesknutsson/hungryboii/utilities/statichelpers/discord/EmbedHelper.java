@@ -1,4 +1,4 @@
-package com.github.hannesknutsson.hungryboii.utilities.statichelpers;
+package com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;

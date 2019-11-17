@@ -1,6 +1,7 @@
-package com.github.hannesknutsson.hungryboii.utilities.statichelpers;
+package com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord;
 
-import com.github.hannesknutsson.hungryboii.configuration.PropertyStore;
+import com.github.hannesknutsson.hungryboii.configuration.MasterConfiguration;
+import com.github.hannesknutsson.hungryboii.configuration.subconfigs.discord.DiscordSettings;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -39,7 +40,7 @@ public class DiscordHelper {
 
     public static void initialize() throws LoginException {
         if (discordBot == null) {
-            discordBot = new JDABuilder(PropertyStore.getInstance().getDiscordApiToken()).build();
+            discordBot = new JDABuilder(DiscordSettings.getInstance().getDiscordApiToken()).build();
         }
     }
 
@@ -57,5 +58,9 @@ public class DiscordHelper {
 
     private static User rawGetUserById(long userId) {
         return discordBot.getUserById(userId);
+    }
+
+    void asda() {
+        User asda;
     }
 }

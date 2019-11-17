@@ -1,6 +1,6 @@
 package com.github.hannesknutsson.hungryboii.structure.discord.commands.abstractions;
 
-import com.github.hannesknutsson.hungryboii.utilities.statichelpers.EmbedHelper;
+import com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord.EmbedHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;

@@ -39,7 +39,7 @@ public class ArgumentParser {
     private ArgumentParser() {
     }
 
-    static String getDiscordApiToken() {
+    public static String getDiscordApiToken() {
         return discordApiToken;
     }
 

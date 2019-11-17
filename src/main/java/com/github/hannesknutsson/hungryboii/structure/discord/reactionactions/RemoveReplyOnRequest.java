@@ -1,7 +1,7 @@
 package com.github.hannesknutsson.hungryboii.structure.discord.reactionactions;
 
 import com.github.hannesknutsson.hungryboii.structure.discord.reactionactions.abstractions.SimpleReactionAction;
-import com.github.hannesknutsson.hungryboii.utilities.statichelpers.DiscordHelper;
+import com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord.DiscordHelper;
 import com.github.hannesknutsson.hungryboii.utilities.temporarystorage.CommandToReplyMapper;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;

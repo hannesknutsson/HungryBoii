@@ -1,7 +1,7 @@
 package com.github.hannesknutsson.hungryboii.structure.discord.commands.implementations;
 
 import com.github.hannesknutsson.hungryboii.structure.discord.commands.abstractions.StaticReplyCommand;
-import com.github.hannesknutsson.hungryboii.utilities.statichelpers.DiscordHelper;
+import com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord.DiscordHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
