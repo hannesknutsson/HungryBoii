@@ -27,10 +27,10 @@ public class EntityCoupler {
     }
 
     private void addAnnotatedClasses() {
-        config.addAnnotatedClass(Asda.class);
+        //config.addAnnotatedClass(Asda.class);
     }
 
     public Session getSession() {
-        sessionFactory.openSession();
+        return sessionFactory.openSession();
     }
 }
