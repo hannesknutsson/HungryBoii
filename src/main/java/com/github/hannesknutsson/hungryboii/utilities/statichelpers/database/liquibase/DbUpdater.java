@@ -1,4 +1,4 @@
-package com.github.hannesknutsson.hungryboii.utilities.statichelpers.database;
+package com.github.hannesknutsson.hungryboii.utilities.statichelpers.database.liquibase;
 
 import liquibase.Contexts;
 import liquibase.LabelExpression;
@@ -18,7 +18,7 @@ public class DbUpdater {
     public static void executeLiquibase() throws LiquibaseException {
         Connection connection = DbConnectionHolder.getInstance().getLiquibaseDbConnection();
         Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-        Liquibase liquibase = new Liquibase("liquibaseChangelog.xml", new ClassLoaderResourceAccessor(), database);
+        Liquibase liquibase = new Liquibase("liquibase/masterChangelog.xml", new ClassLoaderResourceAccessor(), database);
         liquibase.update(new Contexts(), new LabelExpression());
     }
 }

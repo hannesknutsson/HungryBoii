@@ -15,7 +15,7 @@ import com.github.hannesknutsson.hungryboii.structure.restaurants.implementation
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.CommandManager;
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.ReactionActionManager;
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.RestaurantManager;
-import com.github.hannesknutsson.hungryboii.utilities.statichelpers.database.DbUpdater;
+import com.github.hannesknutsson.hungryboii.utilities.statichelpers.database.liquibase.DbUpdater;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord.DiscordHelper;
 import com.github.hannesknutsson.hungryboii.utilities.workers.MenuGatherer;
 import liquibase.exception.LiquibaseException;

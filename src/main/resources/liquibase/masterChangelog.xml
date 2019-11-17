@@ -7,6 +7,6 @@
         <runningAs username="liquibase"/>
     </preConditions>
 
-    <include file="liquibaseChangesets/addDiscordUserTable.xml" relativeToChangelogFile="true"/>
+    <include file="changesets/addDiscordUserTable.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

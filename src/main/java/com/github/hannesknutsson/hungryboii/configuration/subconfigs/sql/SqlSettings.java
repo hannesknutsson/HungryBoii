@@ -15,12 +15,17 @@ public class SqlSettings {
     private String databaseName;
 
     private SqlUser liquibaseUser;
+    private SqlUser hibernateUser;
 
-    private SqlUser readAndWriteUser;
+    private String hibernateDriverClass;
+
+    private String hibernateDialectClass;
+    private boolean hibernatePrintQueries;
     private SqlSettings() {
         sqlConfig = MasterConfiguration.getInstance().getSubConfiguration("sql");
         readEndpoint();
         readUsers();
+        readHibernate();
     }
 
     public static SqlSettings getInstance() {
@@ -46,12 +51,29 @@ public class SqlSettings {
         return databaseName;
     }
 
+    public String getConnectionString() {
+        SqlSettings sqlSettings = SqlSettings.getInstance();
+        return sqlSettings.getDriver() + "://" + sqlSettings.getIp() + ":" + sqlSettings.getPort() + "/" + sqlSettings.getDatabaseName();
+    }
+
     public SqlUser getLiquibaseUser() {
         return liquibaseUser;
     }
 
-    public SqlUser getReadAndWriteUser() {
-        return readAndWriteUser;
+    public SqlUser getHibernateUser() {
+        return hibernateUser;
+    }
+
+    public String getHibernateDriverClass() {
+        return hibernateDriverClass;
+    }
+
+    public String getHibernateDialectClass() {
+        return hibernateDialectClass;
+    }
+
+    public boolean isHibernatePrintQueries() {
+        return hibernatePrintQueries;
     }
 
     private void readEndpoint() {
@@ -65,6 +87,13 @@ public class SqlSettings {
     private void readUsers() {
         Config userConfig = sqlConfig.getConfig("users");
         this.liquibaseUser = new SqlUser(userConfig.getConfig("liquibase"));
-        this.readAndWriteUser = new SqlUser(userConfig.getConfig("readAndWrite"));
+        this.hibernateUser = new SqlUser(userConfig.getConfig("hibernate"));
+    }
+
+    private void readHibernate() {
+        Config hibernateConfig = sqlConfig.getConfig("hibernate");
+        hibernateDriverClass = hibernateConfig.getString("connectionDriverClass");
+        hibernateDialectClass = hibernateConfig.getString("dialectClass");
+        hibernatePrintQueries = hibernateConfig.getBoolean("printQueries");
     }
 }
