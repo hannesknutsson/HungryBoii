@@ -25,8 +25,8 @@ ENV LC_ALL C
 RUN apk add tesseract-ocr
 
 #Add unprivileged user and group
-RUN addgroup -S appgroup
-RUN adduser -S appuser -G appgroup
+#RUN addgroup -S appgroup
+#RUN adduser -S appuser -G appgroup
 
 #Add logging directory and allow unprivileged user to create files there
 RUN mkdir /HungryBoii/log

@@ -175,7 +175,7 @@
                 <version>3.0.2</version>
                 <executions>
                     <execution>
-                        <id>copy-resources</id>
+                        <id>copy-conf</id>
                         <phase>install</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -184,11 +184,23 @@
                             <outputDirectory>${project.build.directory}/${project.name}-distributable/conf</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>src/tessdata</directory>
+                                    <directory>src/main/conf</directory>
                                     <filtering>false</filtering>
                                 </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-tess</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.name}-distributable/tess</outputDirectory>
+                            <resources>
                                 <resource>
-                                    <directory>src/main/conf</directory>
+                                    <directory>src/tessdata</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>
