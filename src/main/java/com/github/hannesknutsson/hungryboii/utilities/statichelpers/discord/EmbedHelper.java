@@ -1,6 +1,7 @@
 package com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.awt.*;
@@ -17,12 +18,12 @@ public class EmbedHelper {
     }
 
     public static EmbedBuilder setEmbedFields(EmbedBuilder toGenerify, GuildMessageReceivedEvent event) {
-        return privateSetEmbedFields(toGenerify, event);
+        return setEmbedFields(toGenerify, event.getAuthor());
     }
 
-    private static EmbedBuilder privateSetEmbedFields(EmbedBuilder embedBuilder, GuildMessageReceivedEvent event) {
+    public static EmbedBuilder setEmbedFields(EmbedBuilder embedBuilder, User user) {
         embedBuilder.setColor(embedColor);
-        embedBuilder.setFooter("Request made by " + event.getAuthor().getAsTag(), event.getAuthor().getAvatarUrl());
+        embedBuilder.setFooter("Request made by " + user.getAsTag(), user.getAvatarUrl());
         embedBuilder.setTimestamp(Instant.now());
         return embedBuilder;
     }

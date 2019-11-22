@@ -2,6 +2,7 @@ package com.github.hannesknutsson.hungryboii.utilities.statichelpers.database.hi
 
 import com.github.hannesknutsson.hungryboii.configuration.subconfigs.sql.SqlSettings;
 import com.github.hannesknutsson.hungryboii.structure.dataclasses.DiscordUser;
+import com.github.hannesknutsson.hungryboii.structure.dataclasses.LunchSubscription;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -42,6 +43,7 @@ public class EntityCoupler {
 
     private void addAnnotatedClasses() {
         config.addAnnotatedClass(DiscordUser.class);
+        config.addAnnotatedClass(LunchSubscription.class);
     }
 
     public Session getSession() {

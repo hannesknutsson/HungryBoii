@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="1" author="hannesknutsson">
+        <comment>Creates table for lunch subscriptions</comment>
+        <createTable tableName="lunchsubscription">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="hour" type="int"></column>
+            <column name="minute" type="int"></column>
+        </createTable>
+
+        <addColumn tableName="discorduser">
+            <column name="subscription_id" type="bigint">
+                <constraints foreignKeyName="user_to_subscription" referencedTableName="lunchsubscription" referencedColumnNames="id"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

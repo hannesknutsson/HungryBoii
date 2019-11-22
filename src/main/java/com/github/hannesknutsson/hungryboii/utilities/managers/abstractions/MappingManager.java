@@ -13,32 +13,14 @@ public abstract class MappingManager<T, Y> implements Manager {
 
     private ConcurrentHashMap<T, Y> registeredKeyValuePairs;
 
-    public boolean register(T key, Y value) {
-        boolean success = false;
-        if (!Application.isRunning()) {
-            getRegisteredObjects().put(key, value);
-            success = true;
-            LOG.debug("{}Manager registered: {}", getManagerType(), key.toString());
-        } else {
-            LOG.error("{}Manager can not register {} after application start: {}", getManagerType(), getManagerType(), key.toString());
-        }
-        return success;
+    public void register(T key, Y value) {
+        getRegisteredObjects().put(key, value);
+        LOG.debug("{}Manager registered: {}", getManagerType(), key.toString());
     }
 
-    public boolean unRegister(T toUnRegister) {
-        boolean success = false;
-        if (!Application.isRunning()) {
-            Y removedObject = getRegisteredObjects().remove(toUnRegister);
-            success = removedObject != null;
-            if (success) {
-                LOG.debug("{}Manager unregistered: {}", getManagerType(), toUnRegister.toString());
-            } else {
-                LOG.error("{}Manager failed to unregister {}: {}", getManagerType(), getManagerType(), toUnRegister.toString());
-            }
-        } else {
-            LOG.error("{}Manager can not unregister {} after application start: {}", getManagerType(), getManagerType(), toUnRegister);
-        }
-        return success;
+    public void unRegister(T toUnRegister) {
+        getRegisteredObjects().remove(toUnRegister);
+        LOG.debug("{}Manager unregistered: {}", getManagerType(), toUnRegister.toString());
     }
 
     protected Map<T, Y> getRegisteredObjects() {

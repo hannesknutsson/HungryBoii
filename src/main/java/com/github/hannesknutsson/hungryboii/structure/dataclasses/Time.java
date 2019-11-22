@@ -2,8 +2,8 @@ package com.github.hannesknutsson.hungryboii.structure.dataclasses;
 
 public class Time {
 
-    private int hour;
-    private int minute;
+    public int hour;
+    public int minute;
 
     private boolean correctInput;
 

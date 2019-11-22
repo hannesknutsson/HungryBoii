@@ -14,12 +14,16 @@ public class CommandManager extends MappingManager<String, Command> {
         return new ArrayList<>(getRegisteredObjects().values());
     }
 
-    public boolean register(Command toRegister) {
-        return register(toRegister.getCommandSyntax(), toRegister);
+    public void register(Command toRegister) {
+        register(getFirstWord(toRegister.getCommandSyntax()), toRegister);
     }
 
     public Command getCommandBySyntax(String syntax) {
-        return getRegisteredObjects().get(syntax);
+        return getRegisteredObjects().get(getFirstWord(syntax));
+    }
+
+    private String getFirstWord(String sentence) {
+        return sentence.split(" ", 2)[0];
     }
 
     @Override

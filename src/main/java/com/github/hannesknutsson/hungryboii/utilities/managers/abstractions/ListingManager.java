@@ -13,31 +13,14 @@ public abstract class ListingManager<T> implements Manager {
 
     private List<T> registeredObjects;
 
-    public boolean register(T toRegister) {
-        boolean success = false;
-        if (!Application.isRunning()) {
-            getRegisteredObjects().add(toRegister);
-            success = true;
-            LOG.debug("{}Manager registered: {}", getManagerType(), toRegister.toString());
-        } else {
-            LOG.error("{}Manager can not register {} after application start: {}", getManagerType(), getManagerType(), toRegister.toString());
-        }
-        return success;
+    public void register(T toRegister) {
+        getRegisteredObjects().add(toRegister);
+        LOG.debug("{}Manager registered: {}", getManagerType(), toRegister.toString());
     }
 
-    public boolean unRegister(T toUnRegister) {
-        boolean success = false;
-        if (!Application.isRunning()) {
-            success = getRegisteredObjects().remove(toUnRegister);
-            if (success) {
-                LOG.debug("{}Manager unregistered: {}", getManagerType(), toUnRegister.toString());
-            } else {
-                LOG.error("{}Manager failed to unregister {}: {}", getManagerType(), getManagerType(), toUnRegister.toString());
-            }
-        } else {
-            LOG.error("{}Manager can not unregister {} after application start: {}", getManagerType(), getManagerType(), toUnRegister);
-        }
-        return success;
+    public void unRegister(T toUnRegister) {
+        getRegisteredObjects().remove(toUnRegister);
+        LOG.debug("{}Manager unregistered: {}", getManagerType(), toUnRegister.toString());
     }
 
     protected List<T> getRegisteredObjects() {

@@ -43,7 +43,7 @@ public class ArgumentParser {
         return discordApiToken;
     }
 
-    static String getConfigurationPath() {
+    public static String getConfigurationPath() {
         return configurationPath;
     }
 }

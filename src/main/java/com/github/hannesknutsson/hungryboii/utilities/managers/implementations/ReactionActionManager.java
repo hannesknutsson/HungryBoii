@@ -10,8 +10,8 @@ public class ReactionActionManager extends MappingManager<String, ReactionAction
 
     private static ReactionActionManager reactionActionManager;
 
-    public boolean register(ReactionAction toRegister) {
-        return register(toRegister.getActivator(), toRegister);
+    public void register(ReactionAction toRegister) {
+        register(toRegister.getActivator(), toRegister);
     }
 
     public ReactionAction getReactionActionByActivator(String activator) {

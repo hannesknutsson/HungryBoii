@@ -96,7 +96,7 @@ public class ListMenu implements Command {
         return event.getChannel().sendMessage(embedObject.build());
     }
 
-    private MessageEmbed.Field compileMenu(Restaurant menuSource) {
+    public MessageEmbed.Field compileMenu(Restaurant menuSource) {
 
         StringBuilder alternativeDescriptionBuilder = new StringBuilder();
         String restaurantInfo = "Open: " + menuSource.getOpenHours() + " | Price: " + menuSource.getPrice() + ":-\n";

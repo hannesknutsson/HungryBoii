@@ -2,9 +2,7 @@ package com.github.hannesknutsson.hungryboii;
 
 import com.github.hannesknutsson.hungryboii.configuration.ArgumentParser;
 import com.github.hannesknutsson.hungryboii.structure.dataclasses.DiscordUser;
-import com.github.hannesknutsson.hungryboii.structure.discord.commands.implementations.Help;
-import com.github.hannesknutsson.hungryboii.structure.discord.commands.implementations.Info;
-import com.github.hannesknutsson.hungryboii.structure.discord.commands.implementations.ListMenu;
+import com.github.hannesknutsson.hungryboii.structure.discord.commands.implementations.*;
 import com.github.hannesknutsson.hungryboii.structure.discord.events.InvitedToNewGuild;
 import com.github.hannesknutsson.hungryboii.structure.discord.events.MessageReceived;
 import com.github.hannesknutsson.hungryboii.structure.discord.events.ReactionReceived;
@@ -16,6 +14,7 @@ import com.github.hannesknutsson.hungryboii.structure.dataclasses.restaurants.im
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.CommandManager;
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.ReactionActionManager;
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.RestaurantManager;
+import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.SubscriptionManager;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.database.hibernate.EntityCoupler;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.database.liquibase.DbUpdater;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord.DiscordHelper;
@@ -39,6 +38,8 @@ public class Application {
 
         //Register any new commands here (derivatives of interface class "Command")
         CommandManager.getInstance().register(new ListMenu());
+        CommandManager.getInstance().register(new Subscribe());
+        CommandManager.getInstance().register(new Unsubscribe());
         CommandManager.getInstance().register(new Info());
         CommandManager.getInstance().register(new Help());
 
@@ -60,6 +61,7 @@ public class Application {
                 DbUpdater.verifyAndUpdateDatabase();
                 EntityCoupler.initialize();
                 DiscordHelper.initialize();
+                SubscriptionManager.initialize();
                 DiscordHelper.addEventlistener(new MessageReceived());
                 DiscordHelper.addEventlistener(new InvitedToNewGuild());
                 DiscordHelper.addEventlistener(new ReactionReceived());

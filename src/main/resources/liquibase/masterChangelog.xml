@@ -8,5 +8,6 @@
     </preConditions>
 
     <include file="changesets/addDiscordUserTable.xml" relativeToChangelogFile="true"/>
+    <include file="changesets/addLunchSubscriptions.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

@@ -21,7 +21,8 @@ public class MessageReceived extends ListenerAdapter {
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         if (!event.getAuthor().isBot()) {
-            Command appropriateHandler = CommandManager.getInstance().getCommandBySyntax(event.getMessage().getContentRaw());
+            Command appropriateHandler = CommandManager.getInstance()
+                    .getCommandBySyntax(event.getMessage().getContentRaw());
             if (appropriateHandler != null) {
                 LOG.info("\"{}\" from the server \"{}\" requested \"{}\" in the text channel \"{}\"", event.getAuthor().getAsTag(), event.getMessage().getGuild().getName(), event.getMessage().getContentRaw(), event.getMessage().getChannel().getName());
                 MessageAction response = appropriateHandler.executeCommand(event);
