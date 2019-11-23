@@ -1,17 +1,21 @@
 package com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord;
 
 import com.github.hannesknutsson.hungryboii.configuration.subconfigs.discord.DiscordSettings;
+import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.hooks.EventListener;
+import net.dv8tion.jda.internal.entities.ActivityImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class DiscordHelper {
 
@@ -40,6 +44,11 @@ public class DiscordHelper {
     public static void initialize() throws LoginException {
         if (discordBot == null) {
             discordBot = new JDABuilder(DiscordSettings.getInstance().getDiscordApiToken()).build();
+            try {
+                discordBot.awaitReady();
+            } catch (InterruptedException ignored) {}
+            List<String> allConnectedGuilds = getAllConnectedGuilds().stream().map(guild -> guild.getName()).collect(Collectors.toList());
+            LOG.info("Connected to the following guilds: \"{}\"", String.join("\", \"", allConnectedGuilds));
         }
     }
 
@@ -59,7 +68,11 @@ public class DiscordHelper {
         return discordBot.getUserById(userId);
     }
 
-    void asda() {
-        User asda;
+    public static List<Guild> getAllConnectedGuilds() {
+        return discordBot.getGuilds();
+    }
+
+    public static void setPresence(Activity activity) {
+        discordBot.getPresence().setPresence(activity, false);
     }
 }

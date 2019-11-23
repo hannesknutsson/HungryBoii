@@ -28,7 +28,7 @@ public class ListMenu implements Command {
     }
 
     @Override
-    public MessageAction executeCommand(GuildMessageReceivedEvent event) {
+    public void executeCommand(GuildMessageReceivedEvent event) {
 
         EmbedBuilder embedObject = EmbedHelper.getCommandReplyEmbed(event);
         boolean weekend;
@@ -46,7 +46,7 @@ public class ListMenu implements Command {
             response = sendApologyReply(embedObject, event);
         }
 
-        return response;
+        response.queue();
     }
 
     private MessageAction sendMenuReply(EmbedBuilder embedObject, GuildMessageReceivedEvent event) {

@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
 
 public class ReactionReceived extends ListenerAdapter {
 
-    private static Logger LOG = LoggerFactory.getLogger(MessageReceived.class);
+    private static Logger LOG = LoggerFactory.getLogger(GuildMessageReceived.class);
 
     public void onGuildMessageReactionAdd(@Nonnull GuildMessageReactionAddEvent event) {
         if (!event.getUser().isBot()) {

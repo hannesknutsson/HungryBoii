@@ -7,7 +7,6 @@ import com.github.hannesknutsson.hungryboii.utilities.statichelpers.database.hib
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord.EmbedHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.api.requests.restaction.MessageAction;
 import org.hibernate.Session;
 
 public class Unsubscribe implements Command {
@@ -23,7 +22,7 @@ public class Unsubscribe implements Command {
     }
 
     @Override
-    public MessageAction executeCommand(GuildMessageReceivedEvent event) {
+    public void executeCommand(GuildMessageReceivedEvent event) {
         EmbedBuilder toReturn = EmbedHelper.getCommandReplyEmbed(event);
         try (Session temporarySession = EntityCoupler.getInstance().getSession()) {
             temporarySession.beginTransaction();
@@ -41,6 +40,6 @@ public class Unsubscribe implements Command {
                 toReturn.setDescription("Could not find any subscription in your name :sob:");
             }
         }
-        return event.getChannel().sendMessage(toReturn.build());
+        event.getChannel().sendMessage(toReturn.build()).queue();
     }
 }

@@ -80,10 +80,10 @@ public class SubscriptionManager extends MappingManager<Long, ScheduledFuture> {
 
             ScheduledFuture future = scheduler.scheduleAtFixedRate(scheduledMenu, initialDelayInMillis, oneDayInMillis, TimeUnit.MILLISECONDS);
 
-            LOG.info("Registered daily subscription for {} at {}", user, user.getLunchSubscription());
-
             unRegister(user.getId());
             register(user.getId(), future);
+
+            LOG.info("Registered daily subscription for {} at {}", user, user.getLunchSubscription());
         } else {
             //Not relevant to register
         }
@@ -93,6 +93,7 @@ public class SubscriptionManager extends MappingManager<Long, ScheduledFuture> {
     public void unRegister(Long toUnRegister) {
         ScheduledFuture toCancel = getRegisteredObjects().remove(toUnRegister);
         if (toCancel != null) {
+            LOG.info("Unregistered daily subscription for {}", toUnRegister);
             toCancel.cancel(false);
         }
     }

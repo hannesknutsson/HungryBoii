@@ -2,14 +2,12 @@ package com.github.hannesknutsson.hungryboii.structure.discord.commands.implemen
 
 import com.github.hannesknutsson.hungryboii.structure.dataclasses.DiscordUser;
 import com.github.hannesknutsson.hungryboii.structure.dataclasses.LunchSubscription;
-import com.github.hannesknutsson.hungryboii.structure.dataclasses.Time;
 import com.github.hannesknutsson.hungryboii.structure.discord.commands.abstractions.Command;
 import com.github.hannesknutsson.hungryboii.utilities.managers.implementations.SubscriptionManager;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.database.hibernate.EntityCoupler;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord.EmbedHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.api.requests.restaction.MessageAction;
 import org.hibernate.Session;
 
 public class Subscribe implements Command {
@@ -26,7 +24,7 @@ public class Subscribe implements Command {
     }
 
     @Override
-    public MessageAction executeCommand(GuildMessageReceivedEvent event) {
+    public void executeCommand(GuildMessageReceivedEvent event) {
         EmbedBuilder toReturn;
         if (validateInput(event)) {
             //Do cool stuff
@@ -58,7 +56,7 @@ public class Subscribe implements Command {
             toReturn.setDescription("That's all I'm going to tell you :sweat_smile:");
         }
 
-        return event.getChannel().sendMessage(toReturn.build());
+        event.getChannel().sendMessage(toReturn.build()).queue();
     }
 
     private boolean validateInput(GuildMessageReceivedEvent event) {

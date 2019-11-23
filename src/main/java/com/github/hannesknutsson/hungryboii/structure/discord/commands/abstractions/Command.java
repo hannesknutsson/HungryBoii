@@ -9,5 +9,5 @@ public interface Command  {
 
     String getCommandDescription();
 
-    MessageAction executeCommand(GuildMessageReceivedEvent event);
+    void executeCommand(GuildMessageReceivedEvent event);
 }

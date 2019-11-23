@@ -11,6 +11,10 @@ public class EmbedHelper {
 
     private static Color embedColor = Color.green;
 
+    public static EmbedBuilder getCommandReplyEmbedNoUser() {
+        return setEmbedFields(new EmbedBuilder(), (User) null);
+    }
+
     public static EmbedBuilder getCommandReplyEmbed(GuildMessageReceivedEvent event) {
         EmbedBuilder toReturn = new EmbedBuilder();
         setEmbedFields(toReturn, event);
@@ -23,7 +27,11 @@ public class EmbedHelper {
 
     public static EmbedBuilder setEmbedFields(EmbedBuilder embedBuilder, User user) {
         embedBuilder.setColor(embedColor);
-        embedBuilder.setFooter("Request made by " + user.getAsTag(), user.getAvatarUrl());
+
+        if (user != null) {
+            embedBuilder.setFooter("Request made by " + user.getAsTag(), user.getAvatarUrl());
+        }
+
         embedBuilder.setTimestamp(Instant.now());
         return embedBuilder;
     }
