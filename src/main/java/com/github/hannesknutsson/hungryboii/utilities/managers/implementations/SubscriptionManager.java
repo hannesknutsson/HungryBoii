@@ -17,6 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -45,6 +46,7 @@ public class SubscriptionManager extends MappingManager<Long, ScheduledFuture> {
     }
 
     public static void initialize() {
+        DateTimeZone.setDefault(DateTimeZone.forTimeZone(TimeZone.getDefault()));
         getInstance();
     }
 

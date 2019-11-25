@@ -35,7 +35,7 @@ public class Unsubscribe implements Command {
                 temporarySession.saveOrUpdate(user);
                 temporarySession.flush();
                 SubscriptionManager.getInstance().unRegister(user.getId());
-                toReturn.setDescription("Successfully removed your subscription! :point_right::sunglasses::point_right:");
+                toReturn.setDescription("Successfully removed your subscription! :point_right::sunglasses::point_right:\n\nI am truly happy to see you taking the a step towards\nliving la vida låda! :heart_eyes:");
             } else {
                 toReturn.setDescription("Could not find any subscription in your name :sob:");
             }
