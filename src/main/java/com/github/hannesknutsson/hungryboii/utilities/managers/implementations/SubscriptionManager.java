@@ -8,6 +8,7 @@ import com.github.hannesknutsson.hungryboii.utilities.workers.ScheduledMenu;
 import net.dv8tion.jda.api.entities.User;
 import org.hibernate.Session;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,14 +67,14 @@ public class SubscriptionManager extends MappingManager<Long, ScheduledFuture> {
             LunchSubscription subscription = user.getLunchSubscription();
             ScheduledMenu scheduledMenu = new ScheduledMenu(user.getId());
 
-            DateTime timeToSendPlusOneDay = new DateTime()
+            DateTime timeToSendPlusOneDay = new DateTime(DateTimeZone.getDefault())
                     .withHourOfDay(subscription.getTime().hour)
                     .withMinuteOfHour(subscription.getTime().minute)
                     .withSecondOfMinute(0)
                     .withMillisOfSecond(0)
                     .plusDays(1);
 
-            DateTime now = new DateTime();
+            DateTime now = new DateTime(DateTimeZone.getDefault());
 
             long oneDayInMillis = 24 * 60 * 60 * 1000;
             long initialDelayInMillis = (timeToSendPlusOneDay.getMillis() - now.getMillis()) % oneDayInMillis;
