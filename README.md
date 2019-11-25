@@ -101,12 +101,14 @@ In an environment with Docker installed, run the following commands.
 
 ```
 mkdir HungryBoii
-docker run --name HungryBoii -d -v HungryBoii/:/HungryBoii/log/ hannesknutsson/hungryboii:latest -t <your Discord bot API token>
+docker run --name HungryBoii -e TZ=Europe/Stockholm -d -v HungryBoii/log/:/HungryBoii/log/ -v HungryBoii/conf/:/HungryBoii/conf/ hannesknutsson/hungryboii:latest -t <your Discord bot API token>
 ```
 
 These simple commands will pull the latest Docker image from DockerHub and run it as a daemon for you.
 
 If you want to run a more stable version of the bot, swap out ```hannesknutsson/hungryboii:latest``` to ```hannesknutsson/hungryboii:release-1.0```.
+
+Change the time zone parameter to fit the time zone where it will be used. This enables the subscription feature to be in sync with its users.
 
 #### 3. Building and running a custom Docker image
 
