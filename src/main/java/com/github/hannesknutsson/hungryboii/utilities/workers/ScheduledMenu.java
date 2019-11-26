@@ -26,10 +26,15 @@ public class ScheduledMenu implements Runnable {
 
     @Override
     public void run() {
+        LOG.info("Daily subscription for {} activated", userId);
         User user = DiscordHelper.getUserById(userId);
+        LOG.info("User object retrieved from discord API for {}", user.getAsTag());
         user.openPrivateChannel().queue(privateChannel -> {
+            LOG.info("Private channel object retrieved from discord API for {}", user.getAsTag());
             try {
                 if (!TimeHelper.isWeekend()) {
+                    LOG.info("It's not a weekend {}", user.getAsTag());
+
                     EmbedBuilder toSend = EmbedHelper.setEmbedFields(new EmbedBuilder(), user);
 
                     //I know this doesn't look good, but this is to prepare for the future OSGI implementation transformation
@@ -51,6 +56,7 @@ public class ScheduledMenu implements Runnable {
             } catch (TotallyBrokenDudeException e) {
                 LOG.error("Received a TotallyBrokenDudeException when trying to send {} their daily subscription", user.getAsTag());
             }
+            LOG.info("Done with the subscription for {} for today", user.getAsTag());
         });
     }
 }

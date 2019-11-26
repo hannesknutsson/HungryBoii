@@ -41,7 +41,7 @@ public class SubscriptionManager extends MappingManager<Long, ScheduledFuture> {
             TypedQuery<DiscordUser> allDiscordUsersQuery = temporarySession.createQuery(allDiscordUsers);
             List<DiscordUser> userList = allDiscordUsersQuery.getResultList();
 
-            userList.stream().forEach(this::registerIfRelevant);
+            userList.forEach(this::registerIfRelevant);
         }
     }
 

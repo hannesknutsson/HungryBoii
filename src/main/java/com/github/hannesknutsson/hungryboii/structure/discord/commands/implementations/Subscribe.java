@@ -35,7 +35,6 @@ public class Subscribe implements Command {
                     user = new DiscordUser(event.getAuthor().getIdLong());
                 }
 
-                boolean hadExistingSub = user.getLunchSubscription() != null;
                 LunchSubscription newSub = getLunchSubscriptionFromGuildMessageReceivedEvent(event);
                 user.setLunchSubscription(newSub);
 
