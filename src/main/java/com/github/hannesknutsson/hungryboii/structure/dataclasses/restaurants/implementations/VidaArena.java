@@ -35,8 +35,8 @@ public class VidaArena extends SimpleRestaurant {
         try {
             //Retrieve image URL
             Document webPage = HttpHelper.getWebPage("https://www.vaxjolakers.se/mat-dryck/lunchmeny");
-            List<Element> elementList = filterWebPage(webPage, "body > div > div > div > div:eq(1) > div:eq(0) > div:eq(0) > div > div > img");
-
+            List<Element> elementList = filterWebPage(webPage, "body > div > div > div > div > div > div > div > div > img");
+                ///html/body/div[4]/div[2]/div/div[2]/div[2]/div[1]/div/div/img
             //Retrieve image
             String imageSource = elementList.get(0).getAllElements().get(0).attributes().asList().get(1).toString().replace("\"", "").substring(4);
             URL url;

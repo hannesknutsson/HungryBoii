@@ -20,8 +20,7 @@ public class OpticalCharacterRecognitionHelper {
         } catch (TesseractException e) {
             throw new OCRException("Failed to parse image!");
         }
-        List<String> resultList = Arrays.asList(tessResult.split("\n"));
-        return resultList;
+        return Arrays.asList(tessResult.split("\n"));
     }
 
     private static Tesseract getTesseract() {
