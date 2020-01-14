@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.hooks.EventListener;
+import net.dv8tion.jda.api.requests.RestAction;
 import net.dv8tion.jda.internal.entities.ActivityImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,14 +26,14 @@ public class DiscordHelper {
 
     private static Map<Long, User> frequentUserMap;
 
-    private DiscordHelper() {};
+    private DiscordHelper() {}
 
     public static void removeMessage(String messageId, TextChannel channel) {
         channel.deleteMessageById(messageId).queue();
     }
 
     public static User getUserById(final long userId) {
-        User requestedUser = getFrequentUser(userId) == null ? getFrequentUser(userId) : rawGetUserById(userId);
+        User requestedUser = getFrequentUser(userId) == null ? rawGetUserById(userId) : getFrequentUser(userId);
         LOG.debug("The user ID \"{}\" belongs to \"{}\"", userId, requestedUser.getAsTag());
         return requestedUser;
     }
@@ -47,7 +48,7 @@ public class DiscordHelper {
             try {
                 discordBot.awaitReady();
             } catch (InterruptedException ignored) {}
-            List<String> allConnectedGuilds = getAllConnectedGuilds().stream().map(guild -> guild.getName()).collect(Collectors.toList());
+            List<String> allConnectedGuilds = getAllConnectedGuilds().stream().map(Guild::getName).collect(Collectors.toList());
             LOG.info("Connected to the following guilds: \"{}\"", String.join("\", \"", allConnectedGuilds));
         }
     }
@@ -65,7 +66,14 @@ public class DiscordHelper {
     }
 
     private static User rawGetUserById(long userId) {
-        return discordBot.getUserById(userId);
+        User tmpUser = discordBot.getUserById(userId);
+
+        if (tmpUser == null) {
+            RestAction<User> userRestAction = discordBot.retrieveUserById(userId);
+            tmpUser = userRestAction.complete();
+        }
+
+        return tmpUser;
     }
 
     public static List<Guild> getAllConnectedGuilds() {

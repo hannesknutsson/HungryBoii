@@ -1,5 +1,5 @@
 #Start building from here
-FROM openjdk:12-alpine AS BuildingStage
+FROM openjdk:11-alpine AS BuildingStage
 
 #Get APK up to date
 RUN apk update && apk upgrade
@@ -15,7 +15,7 @@ RUN git clone https://github.com/hannesknutsson/HungryBoii.git /HungryBoiiGit
 RUN mvn -f /HungryBoiiGit clean install
 
 #Create second stage in our build to leave the Git and Maven packages behind
-FROM openjdk:12-alpine AS FinalImageStage
+FROM openjdk:11-alpine AS FinalImageStage
 
 #Copy the compiled JAR-file from the previous stage
 COPY --from=BuildingStage /HungryBoiiGit/target/HungryBoii-distributable /HungryBoii
