@@ -4,6 +4,7 @@ import com.github.hannesknutsson.hungryboii.structure.dataclasses.DiscordUser;
 import com.github.hannesknutsson.hungryboii.structure.dataclasses.LunchSubscription;
 import com.github.hannesknutsson.hungryboii.utilities.managers.abstractions.MappingManager;
 import com.github.hannesknutsson.hungryboii.utilities.statichelpers.database.hibernate.EntityCoupler;
+import com.github.hannesknutsson.hungryboii.utilities.statichelpers.discord.DiscordHelper;
 import com.github.hannesknutsson.hungryboii.utilities.workers.ScheduledMenu;
 import net.dv8tion.jda.api.entities.User;
 import org.hibernate.Session;
@@ -86,7 +87,7 @@ public class SubscriptionManager extends MappingManager<Long, ScheduledFuture> {
             unRegister(user.getId());
             register(user.getId(), future);
 
-            LOG.info("Registered daily subscription for {} at {}", user, user.getLunchSubscription());
+            LOG.info("Registered daily subscription for \"{}\" at {}", DiscordHelper.getUserById(user.getId()).getAsTag(), user.getLunchSubscription());
         } else {
             //Not relevant to register
         }
@@ -96,7 +97,8 @@ public class SubscriptionManager extends MappingManager<Long, ScheduledFuture> {
     public void unRegister(Long toUnRegister) {
         ScheduledFuture toCancel = getRegisteredObjects().remove(toUnRegister);
         if (toCancel != null) {
-            LOG.info("Unregistered daily subscription for {}", toUnRegister);
+            User discordUser = DiscordHelper.getUserById(toUnRegister);
+            LOG.info("Unregistered daily subscription for \"{}\"", discordUser.getAsTag());
             toCancel.cancel(false);
         }
     }

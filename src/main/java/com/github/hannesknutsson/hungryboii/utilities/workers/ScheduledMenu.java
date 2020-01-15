@@ -26,16 +26,13 @@ public class ScheduledMenu implements Runnable {
 
     @Override
     public void run() {
-        LOG.info("Daily subscription for {} activated", userId);
-        User user = DiscordHelper.getUserById(userId);
-        LOG.info("User object retrieved from discord API for {}", user.getAsTag());
-        user.openPrivateChannel().queue(privateChannel -> {
-            LOG.info("Private channel object retrieved from discord API for {}", user.getAsTag());
+        User discordUser = DiscordHelper.getUserById(userId);
+        LOG.info("Daily subscription for \"{}\" activated", discordUser.getAsTag());
+        discordUser.openPrivateChannel().queue(privateChannel -> {
             try {
                 if (!TimeHelper.isWeekend()) {
-                    LOG.info("It's not a weekend {}", user.getAsTag());
 
-                    EmbedBuilder toSend = EmbedHelper.setEmbedFields(new EmbedBuilder(), user);
+                    EmbedBuilder toSend = EmbedHelper.setEmbedFields(new EmbedBuilder(), discordUser);
 
                     //I know this doesn't look good, but this is to prepare for the future OSGI implementation transformation
                     ListMenu lister = (ListMenu) CommandManager.getInstance().getAvailableCommands().stream().filter(command -> command instanceof ListMenu).findAny().get();
@@ -49,14 +46,13 @@ public class ScheduledMenu implements Runnable {
                     toSend.setTitle("Your daily subscription");
                     toSend.setDescription("This is your daily subscription. You can cancel this at any time by typing \"!unsubscribe\" in the server chat (we don't support private chat commands yet..).");
 
-                    LOG.info("Sending daily subscription to {}", user.getAsTag());
+                    LOG.info("Sending daily subscription to \"{}\"", discordUser.getAsTag());
 
                     privateChannel.sendMessage(toSend.build()).queue();
                 }
             } catch (TotallyBrokenDudeException e) {
-                LOG.error("Received a TotallyBrokenDudeException when trying to send {} their daily subscription", user.getAsTag());
+                LOG.error("Received a TotallyBrokenDudeException when trying to send {} their daily subscription", discordUser.getAsTag());
             }
-            LOG.info("Done with the subscription for {} for today", user.getAsTag());
         });
     }
 }

@@ -61,12 +61,12 @@ public class Subscribe implements Command {
     private boolean validateInput(GuildMessageReceivedEvent event) {
         String message = event.getMessage().getContentRaw();
 
-        if (!message.matches("!subscribe ([0-9]{1,2}:[0-9]{1,2})")) {
+        if (!message.matches("!subscribe ([0-9]{1,2}[:.][0-9]{1,2})")) {
             return false;
         }
 
         String timeString = message.split(" ", 2)[1];
-        String[] timeArr = timeString.split(":", 2);
+        String[] timeArr = timeString.split("[:.]", 2);
 
         int hour = Integer.parseInt(timeArr[0]);
         int minute = Integer.parseInt(timeArr[1]);
@@ -83,7 +83,7 @@ public class Subscribe implements Command {
         String message = event.getMessage().getContentRaw();
         if (validateInput(event)) {
             String timeString = message.split(" ", 2)[1];
-            String[] timeArr = timeString.split(":", 2);
+            String[] timeArr = timeString.split("[:.]", 2);
 
             int hour = Integer.parseInt(timeArr[0]);
             int minute = Integer.parseInt(timeArr[1]);
