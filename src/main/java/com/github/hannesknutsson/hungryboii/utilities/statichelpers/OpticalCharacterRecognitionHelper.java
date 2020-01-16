@@ -11,25 +11,30 @@ import java.util.List;
 
 public class OpticalCharacterRecognitionHelper {
 
-    private static Tesseract tessInstance;
-
     public static List<String> parseImageArea(BufferedImage image, Rectangle area) throws OCRException {
-        String tessResult;
+        String tessResult = "";
         try {
-            tessResult = getTesseract().doOCR(image, area);
+            MyTess temporaryTessObject = getFreshTess();
+            tessResult = temporaryTessObject.doOCR(image, area);
+            temporaryTessObject.releaseResources();
         } catch (TesseractException e) {
             throw new OCRException("Failed to parse image!");
         }
         return Arrays.asList(tessResult.split("\n"));
     }
 
-    private static Tesseract getTesseract() {
-        if (tessInstance == null) {
-            tessInstance = new Tesseract();
-            tessInstance.setDatapath("./tess");
-            tessInstance.setLanguage("swe");
-            tessInstance.setHocr(false);
+    private static MyTess getFreshTess() {
+        MyTess newTessObject = new MyTess();
+        newTessObject.setDatapath("./tess");
+        newTessObject.setLanguage("swe");
+        newTessObject.setHocr(false);
+        return newTessObject;
+    }
+
+    public static class MyTess extends Tesseract {
+
+        public void releaseResources() {
+            dispose();
         }
-        return tessInstance;
     }
 }
