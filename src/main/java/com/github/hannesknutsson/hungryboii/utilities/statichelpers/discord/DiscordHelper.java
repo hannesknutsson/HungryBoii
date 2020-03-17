@@ -38,7 +38,7 @@ public class DiscordHelper {
         return requestedUser;
     }
 
-    public static void addEventlistener(EventListener toAdd) {
+    public static void addEventListener(EventListener toAdd) {
         discordBot.addEventListener(toAdd);
     }
 

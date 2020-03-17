@@ -67,10 +67,10 @@ public class Application {
                 EntityCoupler.initialize();
                 DiscordHelper.initialize();
                 SubscriptionManager.initialize();
-                DiscordHelper.addEventlistener(new GuildMessageReceived());
-                DiscordHelper.addEventlistener(new InvitedToNewGuild());
-                DiscordHelper.addEventlistener(new PrivateMessageReceived());
-                DiscordHelper.addEventlistener(new ReactionReceived());
+                DiscordHelper.addEventListener(new GuildMessageReceived());
+                DiscordHelper.addEventListener(new InvitedToNewGuild());
+                DiscordHelper.addEventListener(new PrivateMessageReceived());
+                DiscordHelper.addEventListener(new ReactionReceived());
                 MenuGatherer.startGathering();
                 LOG.debug("Application started successfully!");
                 botHasStarted = true;

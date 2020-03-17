@@ -38,7 +38,7 @@ public class VidaArena extends SimpleRestaurant {
             List<Element> elementList = filterWebPage(webPage, "body > div > div > div > div > div > div > div > div > img");
                 ///html/body/div[4]/div[2]/div/div[2]/div[2]/div[1]/div/div/img
             //Retrieve image
-            String imageSource = elementList.get(0).getAllElements().get(0).attributes().asList().get(1).toString().replace("\"", "").substring(4);
+            String imageSource = elementList.get(1).getAllElements().get(0).attributes().asList().get(1).toString().replace("\"", "").substring(4);
             URL url;
             BufferedImage image;
             try {
