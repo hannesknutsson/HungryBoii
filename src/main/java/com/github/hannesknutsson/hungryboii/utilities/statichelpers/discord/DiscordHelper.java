@@ -44,7 +44,7 @@ public class DiscordHelper {
 
     public static void initialize() throws LoginException {
         if (discordBot == null) {
-            discordBot = new JDABuilder(DiscordSettings.getInstance().getDiscordApiToken()).build();
+            discordBot = JDABuilder.createDefault(DiscordSettings.getInstance().getDiscordApiToken()).build();
             try {
                 discordBot.awaitReady();
             } catch (InterruptedException ignored) {}
