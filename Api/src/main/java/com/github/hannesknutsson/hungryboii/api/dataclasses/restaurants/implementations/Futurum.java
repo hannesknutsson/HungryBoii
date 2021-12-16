@@ -19,11 +19,12 @@ import static com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper.
 
 public class Futurum extends SimpleRestaurant {
 
-    private static final String targetUrl = "https://eurest.mashie.com/public/menu/restaurang+futurum/9ab27099?country=se";
-    private static final String filterQuery = "div:eq(0) > div:eq(0) > span.day:eq(0), div > section.day-alternative > strong > span";
+    private static final String targetUrl = "https://www.restaurangfuturum.se/dagens-lunch";
+//    private static final String filterQuery = "div:eq(0) > div:eq(0) > span.day:eq(0), div > section.day-alternative > strong > span";
+    private static final String filterQuery = "div#TRANSITION_GROUP > div > div:eq(1) > div > div > div > section > div:eq(1) > div:eq(0) > div > div:eq(0) > div:eq(1) > p";
 
     public Futurum() {
-        super("Futurum", 96, new OpenHours(new Time(11, 0), new Time(13, 15)));
+        super("Futurum", 98, new OpenHours(new Time(11, 0), new Time(13, 30)));
     }
 
     @Override
@@ -31,6 +32,7 @@ public class Futurum extends SimpleRestaurant {
         try {
             Document webPage = HttpHelper.getWebPage(targetUrl);
             List<Element> elementList = filterWebpage(webPage, filterQuery);
+            System.out.println("elementList: " + Arrays.toString(elementList.toArray()));
             Map<Weekday, List<String>> mealsGroupedByDays = parseElementsToMealMap(elementList);
             List<String> todaysAlternatives = mealsGroupedByDays.get(getDayOfWeek());
 
