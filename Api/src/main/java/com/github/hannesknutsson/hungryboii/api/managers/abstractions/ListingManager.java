@@ -14,12 +14,12 @@ public abstract class ListingManager<T> implements Manager {
 
     public void register(T toRegister) {
         getRegisteredObjects().add(toRegister);
-        LOG.debug("{}Manager registered: {}", getManagerType(), toRegister.toString());
+        LOG.info("{}Manager registered: {}", getManagerType(), toRegister.toString());
     }
 
     public void unRegister(T toUnRegister) {
         getRegisteredObjects().remove(toUnRegister);
-        LOG.debug("{}Manager unregistered: {}", getManagerType(), toUnRegister.toString());
+        LOG.info("{}Manager unregistered: {}", getManagerType(), toUnRegister.toString());
     }
 
     protected List<T> getRegisteredObjects() {

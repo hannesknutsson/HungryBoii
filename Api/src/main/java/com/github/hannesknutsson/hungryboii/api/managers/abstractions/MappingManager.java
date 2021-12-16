@@ -14,12 +14,12 @@ public abstract class MappingManager<T, Y> implements Manager {
 
     public void register(T key, Y value) {
         getRegisteredObjects().put(key, value);
-        LOG.debug("{}Manager registered: {}", getManagerType(), key.toString());
+        LOG.info("{}Manager registered: {}", getManagerType(), key.toString());
     }
 
     public void unRegister(T toUnRegister) {
         getRegisteredObjects().remove(toUnRegister);
-        LOG.debug("{}Manager unregistered: {}", getManagerType(), toUnRegister.toString());
+        LOG.info("{}Manager unregistered: {}", getManagerType(), toUnRegister.toString());
     }
 
     protected Map<T, Y> getRegisteredObjects() {
