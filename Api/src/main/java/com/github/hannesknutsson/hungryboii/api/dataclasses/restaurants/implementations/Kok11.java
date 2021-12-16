@@ -8,7 +8,6 @@ import com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.abstract
 import com.github.hannesknutsson.hungryboii.api.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.api.exceptions.WebPageBroken;
 import com.github.hannesknutsson.hungryboii.api.statichelpers.HttpHelper;
-import org.apache.log4j.helpers.LogLog;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -26,10 +25,10 @@ public class Kok11 extends SimpleRestaurant {
 
 
     private static final String targetUrl = "https://www.kok11.se/dagens-lunch/";
-    private static final String filterQuery = "div > div > div > div > div > h2";
+    private static final String filterQuery = "div > div > div > div > div > div > ul > li";
 
     public Kok11() {
-        super("Kök 11", 105, new OpenHours(new Time(11, 30), new Time(14, 0)));
+        super("Kök 11", 115, new OpenHours(new Time(11, 30), new Time(13, 30)));
     }
 
     @Override

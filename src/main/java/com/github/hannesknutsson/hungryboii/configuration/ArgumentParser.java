@@ -24,7 +24,7 @@ public class ArgumentParser {
 
         try {
             parser.parseArgument(args);
-            LOG.debug("Successfully parsed input argument(s)!");
+            LOG.info("Successfully parsed input argument(s)!");
         } catch (CmdLineException e) {
             LOG.error("Failed parsing input argument(s) when starting bot!");
             System.err.println("\n\n");
