@@ -1,6 +1,5 @@
 package com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.implementations;
 
-import com.github.hannesknutsson.hungryboii.api.ApiApplication;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Dish;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.OpenHours;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Time;
@@ -37,6 +36,9 @@ public class Kok11 extends SimpleRestaurant {
             Document webPage = HttpHelper.getWebPage(targetUrl);
             List<Element> elementlist = webPage.select(filterQuery);
             List<String> alternatives = elementlist.stream().flatMap(e -> e.childNodesCopy().stream()).map(Node::toString).collect(Collectors.toList());
+            if (alternatives.size() > 0) {
+                alternatives.remove(0);
+            }
             List<Dish> dishes = alternatives.stream().map(Dish::new).collect(Collectors.toList());
 
             availableDishes.clear();
