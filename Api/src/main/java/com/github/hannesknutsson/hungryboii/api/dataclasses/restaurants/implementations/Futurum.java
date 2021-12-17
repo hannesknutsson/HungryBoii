@@ -32,7 +32,6 @@ public class Futurum extends SimpleRestaurant {
         try {
             Document webPage = HttpHelper.getWebPage(targetUrl);
             List<Element> elementList = filterWebpage(webPage, filterQuery);
-            System.out.println("elementList: " + Arrays.toString(elementList.toArray()));
             Map<Weekday, List<String>> mealsGroupedByDays = parseElementsToMealMap(elementList);
             List<String> todaysAlternatives = mealsGroupedByDays.get(getDayOfWeek());
 
@@ -63,26 +62,22 @@ public class Futurum extends SimpleRestaurant {
     private Map<Weekday, List<String>> parseElementsToMealMap(List<Element> elementList) {
         Map<Weekday, List<String>> mealsGroupedByDays = new HashMap<>();
         List<String> tmpList = null;
-        List<Weekday> dayList = Arrays.asList(Weekday.MONDAY, Weekday.TUESDAY, Weekday.WEDNESDAY, Weekday.THURSDAY, Weekday.FRIDAY);
+        List<String> sweDays = Arrays.asList("MÅNDAG", "TISDAG", "ONSDAG", "TORSDAG", "FREDAG");
         int dayCounter = 0;
 
         for (Element e : elementList) {
-            if (!e.hasClass("container-week")) {
-                if (e.hasClass("day")) {
-                    if (dayCounter == 5) {
-                        break;
-                    } else {
-                        tmpList = new ArrayList<>();
-                        mealsGroupedByDays.put(dayList.get(dayCounter), tmpList);
-                        dayCounter++;
-                    }
-                } else {
-                    if (tmpList != null)
-                        tmpList.add(e.text());
+            if (e.childrenSize() > 0) {
+                if (dayCounter < 5 && e.text().contains(sweDays.get(dayCounter)))  {
+                    tmpList = new ArrayList<>();
+                    mealsGroupedByDays.put(Weekday.values()[dayCounter], tmpList);
+                    dayCounter++;
+                }
+            } else {
+                if (tmpList != null) {
+                    tmpList.add(e.text());
                 }
             }
         }
         return mealsGroupedByDays;
     }
-
 }
