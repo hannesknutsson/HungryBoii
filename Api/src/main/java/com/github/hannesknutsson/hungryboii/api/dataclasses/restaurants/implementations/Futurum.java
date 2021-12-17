@@ -71,6 +71,11 @@ public class Futurum extends SimpleRestaurant {
                     tmpList = new ArrayList<>();
                     mealsGroupedByDays.put(Weekday.values()[dayCounter], tmpList);
                     dayCounter++;
+                } else if (e.children().select("br").size() > 0) { // They have a bug where monday's veg is grouped differently
+                    e.children().remove();
+                    if (tmpList != null) {
+                        tmpList.add(e.text());
+                    }
                 }
             } else {
                 if (tmpList != null) {
