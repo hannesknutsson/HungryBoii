@@ -12,6 +12,8 @@ public interface Restaurant  {
 
     String getName();
 
+    String getUrl();
+
     OpenHours getOpenHours();
 
     int getPrice();

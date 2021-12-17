@@ -1,6 +1,7 @@
 package com.github.hannesknutsson.hungryboii.api;
 
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Dish;
+import com.github.hannesknutsson.hungryboii.api.dataclasses.json.Block;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.json.Blocks;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.json.Message;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.abstractions.Restaurant;
@@ -8,6 +9,7 @@ import com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus;
 import com.github.hannesknutsson.hungryboii.api.managers.implementations.RestaurantManager;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.hannesknutsson.hungryboii.api.dataclasses.json.Blocks.buttonElement;
@@ -35,26 +37,24 @@ public class ListMenu {
     }
 
     public String getSlackMenus() {
-/*        List<Restaurant> restaurants = RestaurantManager.getInstance().getRegisteredRestaurants();
-
-        List<Blocks.MarkdownSection> sections;
+        List<Restaurant> restaurants = RestaurantManager.getInstance().getRegisteredRestaurants();
+        List<Block> blocks = new ArrayList<Block>();
+        blocks.add(markdownSection("*Todays lunch* :fork_and_knife:"));
+        blocks.add(divider());
         for (Restaurant restaurant : restaurants) {
             if (restaurant.getStatus().equals(RestaurantStatus.OK)) {
-                String sectionText = format("*<%s>");
-                sections.add(markdownSection(""));
+                String restaurantInfo = "Open: " + restaurant.getOpenHours() + " | Price: " + restaurant.getPrice() + ":-\n";
+                StringBuilder dishes = new StringBuilder();
+                for (Dish dish : restaurant.getTodaysDishes()) {
+                    dishes.append("\t* ").append(dish.name).append("\n");
+                }
+                String sectionText = format("*<%s%s%s>*\n%s\n%s", restaurant.getUrl(), "%7C", restaurant.getName(), restaurantInfo, dishes);
+                blocks.add(markdownSection(sectionText));
             }
-        }*/
+        }
+        blocks.add(Blocks.actions(buttonElement()));
 
-        Message message = Message.home(
-                markdownSection("*Todays lunch* :fork_and_knife:"),
-                divider(),
-                markdownSection("*<https://www.kok11.se/dagens-lunch/%7CKök 11>*\nOpen 11:30-13:30  |  Price 115:-  |  Take-away/kuponger 105:-\n\n\t* Havets Wallenbergare med hummersås, juliennegrönsaker och potatisbakelse (LF)\n\t* Pulled pork med ugnsrostad klyftpotatis, rödkålsslaw och naanbröd (LF)\n\t* Vegetarisk kebab med pitabröd, vitlöksdressing, syrad lök och krispig sallad"),
-                markdownSection("*<https://www.vaxjolakers.se/mat-dryck/lunchmeny%7CVida Arena>*\nOpen 11:30 - 14:00  |  Price 115:-  |  Arenakort 105:-\n\n\t* Helstekt karré med pepparsky och potatisgratäng (G)\n\t* Lasagne med lax och bladspenat\n\t* Fried rice med bbq-marinerad tofu (VGL)"),
-                markdownSection("*<https://ostergatansrestaurang.se/lunch/%7CÖstergatan>*\nOpen 11:00 - 13:30  |  Price 99:-  |  Östergatankort 94:-\n\n\t* Fläskschnitzel med stekt potatis, gröna ärter & dragonsås\n\t* Janssonsfrestelse med stekt prinskorv & senap\n\t* Grönsaksfylld paprika med Quornfilé, bulgur & örtdressing "),
-                markdownSection("*<https://www.restaurangfuturum.se/dagens-lunch%7CFuturum>*\nOpen 11:00 - 13:30  |  Price 98:-  |  Take-away 98:-\n\n\t* Wallenbergare med potatismos, lingon & rödvinssås\n\t* Rotfruktsgratäng med stekt quornfilé & örtcreme"),
-                Blocks.actions(buttonElement())
-        );
-        return new Gson().toJson(message);
+        return new Gson().toJson(Message.home(blocks));
     }
 
     private String compileMenu(Restaurant menuSource) {
@@ -66,6 +66,6 @@ public class ListMenu {
         for (Dish dish : menuSource.getTodaysDishes()) {
             alternativeDescriptionBuilder.append("    * ").append(dish.name).append("\n");
         }
-        return format("%s: %s", menuSource.getName(), alternativeDescriptionBuilder.toString());
+        return format("%s: %s", menuSource.getName(), alternativeDescriptionBuilder);
     }
 }

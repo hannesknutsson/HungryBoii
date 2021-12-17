@@ -11,8 +11,8 @@ public class Message {
         this.blocks = blocks;
     }
 
-    public static Message home(Block... blocks) {
-        return new Message("home", List.of(blocks));
+    public static Message home(List<Block> blocks) {
+        return new Message("home", blocks);
     }
 
     public String getType() {

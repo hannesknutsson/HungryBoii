@@ -31,10 +31,10 @@ import static com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantSt
 public class VidaArena extends SimpleRestaurant {
 
     private static final Logger LOG = LoggerFactory.getLogger(VidaArena.class);
-
+    private static final String targetUrl = "https://www.vaxjolakers.se/mat-dryck/lunchmeny";
 
     public VidaArena() {
-        super("Vida Arena", 115, new OpenHours(new Time(11, 30), new Time(14, 0)));
+        super("Vida Arena", targetUrl, 115, new OpenHours(new Time(11, 30), new Time(14, 0)));
     }
 
     @Override

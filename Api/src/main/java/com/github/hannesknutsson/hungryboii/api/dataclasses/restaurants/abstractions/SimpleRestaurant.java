@@ -10,15 +10,17 @@ import static com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantSt
 
 public abstract class SimpleRestaurant implements Restaurant {
 
-    private String name;
-    private OpenHours openHours;
-    private int price;
+    private final String name;
+    private final String url;
+    private final OpenHours openHours;
+    private final int price;
 
     protected RestaurantStatus status;
     protected CopyOnWriteArrayList<Dish> availableDishes;
 
-    public SimpleRestaurant(String name, int price, OpenHours openHours) {
+    public SimpleRestaurant(String name, String url, int price, OpenHours openHours) {
         this.name = name;
+        this.url = url;
         this.openHours = openHours;
         this.price = price;
         availableDishes = new CopyOnWriteArrayList<>();
@@ -36,6 +38,11 @@ public abstract class SimpleRestaurant implements Restaurant {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getUrl() {
+        return url;
     }
 
     @Override
