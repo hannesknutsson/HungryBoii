@@ -20,7 +20,6 @@ import static com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper.
 public class Futurum extends SimpleRestaurant {
 
     private static final String targetUrl = "https://www.restaurangfuturum.se/dagens-lunch";
-//    private static final String filterQuery = "div:eq(0) > div:eq(0) > span.day:eq(0), div > section.day-alternative > strong > span";
     private static final String filterQuery = "div#TRANSITION_GROUP > div > div:eq(1) > div > div > div > section > div:eq(1) > div:eq(0) > div > div:eq(0) > div:eq(1) > p > span > span";
 
     public Futurum() {

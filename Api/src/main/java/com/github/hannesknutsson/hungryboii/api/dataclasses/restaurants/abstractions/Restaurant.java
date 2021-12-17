@@ -23,4 +23,6 @@ public interface Restaurant  {
     RestaurantStatus getStatus();
 
     void refreshData();
+
+    String getRestaurantInfo();
 }

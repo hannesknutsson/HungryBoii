@@ -24,7 +24,7 @@ public class ListMenu {
         StringBuilder response = new StringBuilder();
         for (Restaurant restaurant : restaurants) {
             switch (restaurant.getStatus()) {
-                case OK -> response.append(compileMenu(restaurant));
+                case OK -> response.append(getTextMenuEntry(restaurant));
                 case UNINITIALIZED -> response.append(format("%s: Has not yet been fetched from their website for the first time yet... You're one quick little bugger :)\n", restaurant.getName()));
                 case WEBSITE_BROKEN -> response.append(format("%s: Seems to be having technical difficulties... (Probably my fault haha whatever)\n", restaurant.getName()));
                 case PARSING_BROKEN -> response.append(format("%s: The parsing for this restaurants website has broken. Why do they update that sort of stuff anyway? (my fault, not theirs)\n", restaurant.getName()));
@@ -41,16 +41,11 @@ public class ListMenu {
         List<Block> blocks = new ArrayList<>();
         blocks.add(markdownSection("*Todays lunch* :fork_and_knife:"));
         blocks.add(divider());
-        String[] numbers = {"one", "two", "three", "four", "five", "six", "seven", "eighth", "nine"};
+
         for (Restaurant restaurant : restaurants) {
             if (restaurant.getStatus().equals(RestaurantStatus.OK)) {
-                String restaurantInfo = "Open: " + restaurant.getOpenHours() + " | Price: " + restaurant.getPrice() + ":-\n";
-                StringBuilder dishes = new StringBuilder();
-                for (Dish dish : restaurant.getTodaysDishes()) {
-                    dishes.append("\t* ").append(dish.name).append("\n");
-                }
                 int index = restaurants.indexOf(restaurant);
-                String sectionText = format(":%s:  *<%s|%s>*\n%s\n%s", numbers[index], restaurant.getUrl(), restaurant.getName(), restaurantInfo, dishes);
+                String sectionText = getSlackMenuEntry(index, restaurant);
                 blocks.add(markdownSection(sectionText));
             }
         }
@@ -59,15 +54,21 @@ public class ListMenu {
         return new Gson().toJson(Message.home(blocks));
     }
 
-    private String compileMenu(Restaurant menuSource) {
+    private String getTextMenuEntry(Restaurant restaurant) {
+        return format("%s: %s%s", restaurant.getName(), restaurant.getRestaurantInfo(), getFoodList(restaurant));
+    }
 
-        StringBuilder alternativeDescriptionBuilder = new StringBuilder();
-        String restaurantInfo = "Open: " + menuSource.getOpenHours() + " | Price: " + menuSource.getPrice() + ":-\n";
-        alternativeDescriptionBuilder.append(restaurantInfo);
+    private String getSlackMenuEntry(int index, Restaurant restaurant) {
+        String[] numbers = {"one", "two", "three", "four", "five", "six", "seven", "eighth", "nine"};
+        String counterEmoji = format(":%s:  ", numbers[index]);
+        return format("%s*<%s|%s>*\n%s\n%s", counterEmoji, restaurant.getUrl(), restaurant.getName(), restaurant.getRestaurantInfo(), getFoodList(restaurant));
+    }
 
-        for (Dish dish : menuSource.getTodaysDishes()) {
-            alternativeDescriptionBuilder.append("    * ").append(dish.name).append("\n");
+    private String getFoodList(Restaurant restaurant) {
+        StringBuilder dishes = new StringBuilder();
+        for (Dish dish : restaurant.getTodaysDishes()) {
+            dishes.append("\t* ").append(dish.name).append("\n");
         }
-        return format("%s: %s", menuSource.getName(), alternativeDescriptionBuilder);
+        return dishes.toString();
     }
 }
