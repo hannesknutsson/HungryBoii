@@ -1,5 +1,6 @@
 package com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.implementations;
 
+import com.github.hannesknutsson.hungryboii.api.ApiApplication;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Dish;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.OpenHours;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Time;
@@ -13,12 +14,15 @@ import com.github.hannesknutsson.hungryboii.api.statichelpers.OpticalCharacterRe
 import com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,8 +30,11 @@ import static com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantSt
 
 public class VidaArena extends SimpleRestaurant {
 
+    private static final Logger LOG = LoggerFactory.getLogger(VidaArena.class);
+
+
     public VidaArena() {
-        super("Vida Arena", 109, new OpenHours(new Time(11, 30), new Time(14, 0)));
+        super("Vida Arena", 115, new OpenHours(new Time(11, 30), new Time(14, 0)));
     }
 
     @Override
@@ -45,6 +52,7 @@ public class VidaArena extends SimpleRestaurant {
                 url = new URL(imageSource);
                 image = ImageIO.read(url);
             } catch (IOException e) {
+                LOG.warn(e.toString());
                 throw new WebPageBroken(e);
             }
 
@@ -52,19 +60,19 @@ public class VidaArena extends SimpleRestaurant {
             Rectangle areaToCapture;
             switch(TimeHelper.getDayOfWeek()) {
                 case MONDAY:
-                    areaToCapture = new Rectangle(465, 105,950, 130);
+                    areaToCapture = new Rectangle(387, 105,800, 115);
                     break;
                 case TUESDAY:
-                    areaToCapture = new Rectangle(465, 285,1395, 135);
+                    areaToCapture = new Rectangle(387, 250,800, 115);
                     break;
                 case WEDNESDAY:
-                    areaToCapture = new Rectangle(465, 460,1395, 135);
+                    areaToCapture = new Rectangle(387, 400,800, 115);
                     break;
                 case THURSDAY:
-                    areaToCapture = new Rectangle(465, 645,1395, 135);
+                    areaToCapture = new Rectangle(387, 550,800, 115);
                     break;
                 case FRIDAY:
-                    areaToCapture = new Rectangle(465, 815,1365, 195);
+                    areaToCapture = new Rectangle(387, 695,800, 115);
                     break;
                 default:
                     throw new TotallyBrokenDudeException();
@@ -74,6 +82,7 @@ public class VidaArena extends SimpleRestaurant {
             try {
                 resultlist = OpticalCharacterRecognitionHelper.parseImageArea(image, areaToCapture);
             } catch (OCRException e) {
+                LOG.warn(e.toString());
                 throw new ParsingOutdated("Failed parsing image");
             }
 
@@ -86,11 +95,16 @@ public class VidaArena extends SimpleRestaurant {
 
             status = OK;
         } catch (WebPageBroken exception) {
+            LOG.warn(exception.toString());
             status = WEBSITE_BROKEN;
         } catch (TotallyBrokenDudeException weekend) {
+            LOG.warn(weekend.toString());
             status = WEEKEND;
         } catch (ParsingOutdated ocrBroken) {
+            LOG.warn(ocrBroken.toString());
             status = PARSING_BROKEN;
+        } catch (Exception e) {
+            LOG.warn(e.toString());
         }
     }
 

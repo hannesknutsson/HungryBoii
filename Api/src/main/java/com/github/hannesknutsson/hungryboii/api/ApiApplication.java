@@ -22,7 +22,7 @@ public class ApiApplication {
         RestaurantManager.getInstance().register(new Futurum());
         //RestaurantManager.getInstance().register(new Ostergatan());
         RestaurantManager.getInstance().register(new Kok11());
-        //RestaurantManager.getInstance().register(new VidaArena());
+        RestaurantManager.getInstance().register(new VidaArena());
 
         MenuGatherer.startGathering();
     }

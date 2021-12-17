@@ -35,7 +35,6 @@ public class MenuGatherer {
             gatheringTask = new Retriever();
         }
 
-        System.out.printf("Scheduling worker to refresh restaurant menus every %s %ss%n", intervalTime, intervalUnit.toString().toLowerCase());
         LOG.info("Scheduling worker to refresh restaurant menus every {} {}s", intervalTime, intervalUnit.toString().toLowerCase());
         executorService.scheduleAtFixedRate(gatheringTask, 0, intervalTime, intervalUnit);
         LOG.info("Worker started");
@@ -45,8 +44,6 @@ public class MenuGatherer {
     }
 
     private static void refreshRestaurant(Restaurant target) {
-        System.out.printf("Refreshing menu for %s%n", target.getName());
-
         LOG.info("Refreshing menu for {}", target.getName());
         target.refreshData();
     }

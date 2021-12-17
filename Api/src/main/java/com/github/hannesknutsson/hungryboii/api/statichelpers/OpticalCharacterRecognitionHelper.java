@@ -26,7 +26,7 @@ public class OpticalCharacterRecognitionHelper {
     private static Tesseract getTesseract() {
         if (tessInstance == null) {
             tessInstance = new Tesseract();
-            tessInstance.setDatapath("./tess");
+            tessInstance.setDatapath("src/main/resources/tessdata");
             tessInstance.setLanguage("swe");
             tessInstance.setHocr(false);
         }
