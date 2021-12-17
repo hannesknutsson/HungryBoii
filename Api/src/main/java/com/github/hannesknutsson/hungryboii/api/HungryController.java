@@ -2,14 +2,18 @@ package com.github.hannesknutsson.hungryboii.api;
 
 
 import com.google.gson.Gson;
-import com.google.gson.annotations.Expose;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.logging.Logger;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 
 import static java.lang.String.format;
 
@@ -28,14 +32,26 @@ public class HungryController {
     }
 
     @PostMapping(value = "/action")
-    public void postToChannel(@RequestBody String payload) {
+    public void postToChannel(@RequestBody String payload) throws IOException {
         Gson gson = new Gson();
 
         Payload p = gson.fromJson(payload, Payload.class);
-        System.out.println(p.channel.name);
 
+        URL url = p.response_url;
+        URLConnection con = url.openConnection();
+        HttpURLConnection http = (HttpURLConnection)con;
+        http.setRequestMethod("POST");
+
+        byte[] out = postMenus().getBytes(StandardCharsets.UTF_8);
+        int length = out.length;
+
+        http.setFixedLengthStreamingMode(length);
+        http.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        http.connect();
+        try(OutputStream os = http.getOutputStream()) {
+            os.write(out);
+        }
     }
-
 
     /**
      * POST http://localhost:8080/action
@@ -44,6 +60,7 @@ public class HungryController {
      */
     class Payload {
         Channel channel;
+        URL response_url;
     }
 
     class Channel {
