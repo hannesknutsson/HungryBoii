@@ -38,9 +38,10 @@ public class ListMenu {
 
     public String getSlackMenus() {
         List<Restaurant> restaurants = RestaurantManager.getInstance().getRegisteredRestaurants();
-        List<Block> blocks = new ArrayList<Block>();
+        List<Block> blocks = new ArrayList<>();
         blocks.add(markdownSection("*Todays lunch* :fork_and_knife:"));
         blocks.add(divider());
+        String[] numbers = {"one", "two", "three", "four", "five", "six", "seven", "eighth", "nine"};
         for (Restaurant restaurant : restaurants) {
             if (restaurant.getStatus().equals(RestaurantStatus.OK)) {
                 String restaurantInfo = "Open: " + restaurant.getOpenHours() + " | Price: " + restaurant.getPrice() + ":-\n";
@@ -48,7 +49,8 @@ public class ListMenu {
                 for (Dish dish : restaurant.getTodaysDishes()) {
                     dishes.append("\t* ").append(dish.name).append("\n");
                 }
-                String sectionText = format("*<%s%s%s>*\n%s\n%s", restaurant.getUrl(), "%7C", restaurant.getName(), restaurantInfo, dishes);
+                int index = restaurants.indexOf(restaurant);
+                String sectionText = format(":%s:  *<%s|%s>*\n%s\n%s", numbers[index], restaurant.getUrl(), restaurant.getName(), restaurantInfo, dishes);
                 blocks.add(markdownSection(sectionText));
             }
         }
