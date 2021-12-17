@@ -12,6 +12,7 @@ import com.github.hannesknutsson.hungryboii.api.statichelpers.HttpHelper;
 import com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
 import java.util.ArrayList;
@@ -26,17 +27,19 @@ import static com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper.
 
 public class Ostergatan extends SimpleRestaurant {
 
-    private static final String targetUrl = "https://www.ostergatansrestaurang.se/";
+    private static final String targetUrl = "https://ostergatansrestaurang.se/lunch/";
 
     public Ostergatan() {
-        super("Östergatans restaurang", 95, new OpenHours(new Time(11, 30), new Time(14, 0)));
+        super("Östergatans restaurang", 99, new OpenHours(new Time(11, 00), new Time(13, 30)));
     }
 
     @Override
     public void refreshData() {
         try {
             Document webPage = HttpHelper.getWebPage(targetUrl);
-            List<Element> elementList = filterWebPage(webPage, "body > div > div > div > div > p:eq(8)");
+            //List<Element> elementList = filterWebPage(webPage, "div#main-content > article > div > div > div > div > div > div > div > div > div > h4 > p > i");
+            List<Element> elementList = filterWebPage(webPage, "div#main-content > article > div > div > div > div > div > div > div > div > div > div > p > *");
+            //List<String> filtereElements = elementList.stream().flatMap(e -> e.childNodesCopy().stream()).map(Node::toString).collect(Collectors.toList());
             Map<Weekday, List<String>> mealsGroupedByDays = parseElementsToMealMap(elementList);
             List<String> todaysAlternatives = mealsGroupedByDays.get(getDayOfWeek());
             availableDishes.clear();
@@ -75,25 +78,15 @@ public class Ostergatan extends SimpleRestaurant {
                 .map(node -> (TextNode) node)
                 .collect(Collectors.toList());
 
-        textNodes.remove(0);
-        textNodes.remove(textNodes.size() - 1);
-        textNodes.remove(textNodes.size() - 1);
-        textNodes.remove(textNodes.size() - 1);
-        textNodes.remove(textNodes.size() - 1);
-
-        List<String> tmpList = null;
-        for (TextNode node : textNodes) {
-            String nodeString = node.text();
-            Weekday attemptToParsedDay = TimeHelper.parseStringToWeekday(nodeString);
-            if (attemptToParsedDay == NOT_A_WEEKDAY) {
-                if (tmpList != null) {
-                    tmpList.add(nodeString);
-                }
-            } else {
-                tmpList = new ArrayList<>();
-                mealsGroupedByDays.put(attemptToParsedDay, tmpList);
-            }
+        if (textNodes.size() != 11) {
+            throw new ParsingOutdated("Unexected number of dishes");
         }
+
+        for (int i = 0; i < 10 ; i += 2) {
+            List<String> meals = List.of(textNodes.get(i).text(), textNodes.get(i+1).text(), textNodes.get(10).text());
+            mealsGroupedByDays.put(Weekday.values()[i / 2], meals);
+        }
+
         return mealsGroupedByDays;
     }
 }

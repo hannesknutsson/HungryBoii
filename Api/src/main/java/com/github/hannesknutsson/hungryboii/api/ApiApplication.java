@@ -20,7 +20,7 @@ public class ApiApplication {
         SpringApplication.run(ApiApplication.class, args);
         //Register any new restaurants here (implementations of interface "Restaurant")
         RestaurantManager.getInstance().register(new Futurum());
-        //RestaurantManager.getInstance().register(new Ostergatan());
+        RestaurantManager.getInstance().register(new Ostergatan());
         RestaurantManager.getInstance().register(new Kok11());
         RestaurantManager.getInstance().register(new VidaArena());
 
