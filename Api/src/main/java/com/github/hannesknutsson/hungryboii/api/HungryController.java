@@ -20,15 +20,15 @@ import java.nio.charset.StandardCharsets;
 import static java.lang.String.format;
 
 @RestController
-@RequestMapping(path="api/")
+@RequestMapping(path="api/hungryboii")
 public class HungryController {
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public String getMenus() {
         ListMenu menu = new ListMenu();
         return format("%s", menu.getTextMenus());
     }
 
-    @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public String postMenus() {
         ListMenu menu = new ListMenu();
         return menu.getSlackMenus();
