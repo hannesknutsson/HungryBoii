@@ -9,20 +9,16 @@ import com.github.hannesknutsson.hungryboii.api.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.api.exceptions.TotallyBrokenDudeException;
 import com.github.hannesknutsson.hungryboii.api.exceptions.WebPageBroken;
 import com.github.hannesknutsson.hungryboii.api.statichelpers.HttpHelper;
-import com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus.*;
-import static com.github.hannesknutsson.hungryboii.api.enumerations.Weekday.NOT_A_WEEKDAY;
 import static com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper.getDayOfWeek;
 
 public class Ostergatan extends SimpleRestaurant {
@@ -30,16 +26,14 @@ public class Ostergatan extends SimpleRestaurant {
     private static final String targetUrl = "https://ostergatansrestaurang.se/lunch/";
 
     public Ostergatan() {
-        super("Östergatans restaurang", targetUrl, 99, new OpenHours(new Time(11, 00), new Time(13, 30)));
+        super("Östergatans restaurang", targetUrl, 99, new OpenHours(new Time(11, 0), new Time(13, 30)));
     }
 
     @Override
     public void refreshData() {
         try {
             Document webPage = HttpHelper.getWebPage(targetUrl);
-            //List<Element> elementList = filterWebPage(webPage, "div#main-content > article > div > div > div > div > div > div > div > div > div > h4 > p > i");
-            List<Element> elementList = filterWebPage(webPage, "div#main-content > article > div > div > div > div > div > div > div > div > div > div > p > *");
-            //List<String> filtereElements = elementList.stream().flatMap(e -> e.childNodesCopy().stream()).map(Node::toString).collect(Collectors.toList());
+            List<Element> elementList = filterWebPage(webPage, "div#main-content > article > div > div > div > div > div > div > div > div > div > div");
             Map<Weekday, List<String>> mealsGroupedByDays = parseElementsToMealMap(elementList);
             List<String> todaysAlternatives = mealsGroupedByDays.get(getDayOfWeek());
             availableDishes.clear();
@@ -69,22 +63,27 @@ public class Ostergatan extends SimpleRestaurant {
     private Map<Weekday, List<String>> parseElementsToMealMap(List<Element> elementList) throws ParsingOutdated {
         Map<Weekday, List<String>> mealsGroupedByDays = new HashMap<>();
 
-        List<TextNode> textNodes = new ArrayList<>(elementList)
-                .stream()
-                .flatMap(element -> element.childNodesCopy().stream())
-                .collect(Collectors.toList())
-                .stream()
-                .filter(node -> node instanceof TextNode)
-                .map(node -> (TextNode) node)
-                .collect(Collectors.toList());
+        var nodesGroupedByWeekday = elementList.stream().map(Node::childNodesCopy).toList();
 
-        if (textNodes.size() != 11) {
-            throw new ParsingOutdated("Unexected number of dishes");
+        if (nodesGroupedByWeekday.size() < 6) {
+            throw new ParsingOutdated("Did not find expected weekdays");
         }
 
-        for (int i = 0; i < 10 ; i += 2) {
-            List<String> meals = List.of(textNodes.get(i).text(), textNodes.get(i+1).text(), textNodes.get(10).text());
-            mealsGroupedByDays.put(Weekday.values()[i / 2], meals);
+        var vegAlt = nodesGroupedByWeekday.get(5).stream()
+                .filter(node -> node instanceof Element)
+                .filter(element -> !((Element) element).text().isBlank())
+                .map(element -> ((Element) element).text())
+                .toList();
+
+        for (int i = 0; i < 5; i++) {
+            List<String> meals = nodesGroupedByWeekday.get(i).stream()
+                    .filter(node -> node instanceof Element)
+                    .filter(element -> !((Element) element).text().isBlank())
+                    .map(element -> ((Element) element).text())
+                    .collect(Collectors.toList());
+            var weekday = Weekday.values()[i];
+            meals.addAll(vegAlt);
+            mealsGroupedByDays.put(weekday, meals);
         }
 
         return mealsGroupedByDays;
