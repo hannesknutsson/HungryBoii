@@ -23,8 +23,8 @@ public class MenuGatherer {
     private static ScheduledExecutorService executorService;
     private static Retriever gatheringTask;
 
-    private static final int intervalTime = 10;
-    private static final TimeUnit intervalUnit = TimeUnit.MINUTES;
+    private static final int intervalTime = 1;
+    private static final TimeUnit intervalUnit = TimeUnit.HOURS;
 
     public static void startGathering() {
         if (executorService == null) {
