@@ -29,8 +29,12 @@ public class Blocks {
         return new Actions(List.of(elements));
     }
 
-    public static ButtonElement buttonElement() {
-        return new ButtonElement();
+    public static ShareButton shareButton() {
+        return new ShareButton();
+    }
+
+    public static CloseButton closeButton() {
+        return new CloseButton();
     }
 
     public static class MarkdownSection implements Block {
@@ -63,10 +67,6 @@ public class Blocks {
         public String getType() {
             return type;
         }
-
-        public String getText() {
-            return text;
-        }
     }
 
     public static class Actions implements Block {
@@ -85,44 +85,28 @@ public class Blocks {
 
     public interface Element {} // marker
 
-    public static class ButtonElement implements Element {
+    public static class ShareButton implements Element {
         private String type = "button";
-        private ButtonText text = new ButtonText();
-        private String value = "click_me_123";
+        private ButtonText text = new ButtonText("Send");
+        private String value = "share_menu";
         private String action_id = "actionId-0";
+        private String style = "primary";
+    }
 
-        public String getType() {
-            return type;
-        }
-
-        public ButtonText getText() {
-            return text;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public String getAction_id() {
-            return action_id;
-        }
+    public static class CloseButton implements Element {
+        private String type = "button";
+        private ButtonText text = new ButtonText("Close");
+        private String value = "close";
+        private String action_id = "actionId-1";
     }
 
     public static class ButtonText {
         private String type = "plain_text";
-        private String text = "Send";
+        private String text;
         private boolean emoji = true;
 
-        public String getType() {
-            return type;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public boolean isEmoji() {
-            return emoji;
+        public ButtonText(String text) {
+            this.text = text;
         }
     }
 }
