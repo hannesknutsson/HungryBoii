@@ -76,9 +76,12 @@ public class Futurum extends SimpleRestaurant {
                         tmpList.add(e.text());
                     }
                 }
-            } else {
-                if (tmpList != null) {
+            } else if (tmpList != null) {
+                if (Character.isUpperCase(e.text().charAt(0))) {
                     tmpList.add(e.text());
+                } else if (!tmpList.isEmpty()) {
+                    String previousDish = tmpList.remove(tmpList.size() - 1);
+                    tmpList.add(previousDish + " " + e.text());
                 }
             }
         }

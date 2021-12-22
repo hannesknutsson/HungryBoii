@@ -82,7 +82,10 @@ public class Ostergatan extends SimpleRestaurant {
                     .map(element -> ((Element) element).text())
                     .collect(Collectors.toList());
             var weekday = Weekday.values()[i];
-            meals.addAll(vegAlt);
+            if (meals.size() >= 2) {
+                // If there are less than 2 meals they are probably closed. Meal string could be "Stängt".
+                meals.addAll(vegAlt);
+            }
             mealsGroupedByDays.put(weekday, meals);
         }
 
