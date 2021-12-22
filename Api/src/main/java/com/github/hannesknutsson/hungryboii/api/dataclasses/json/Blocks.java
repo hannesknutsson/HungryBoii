@@ -7,7 +7,6 @@ public class Blocks {
 
     private Blocks() {}
 
-
     public static Divider divider() {
         return DIVIDER;
     }
@@ -16,13 +15,12 @@ public class Blocks {
         return new MarkdownSection(new MarkdownText(text));
     }
 
+    public static Header header(String text) {
+        return new Header(text);
+    }
+
     public static class Divider implements Block {
         private String type = "divider";
-
-        @Override
-        public String getType() {
-            return type;
-        }
     }
 
     public static Actions actions(Element... elements) {
@@ -37,21 +35,21 @@ public class Blocks {
         return new CloseButton();
     }
 
+    public static class Header implements Block {
+        private String type = "header";
+        private final PlainText text;
+
+        public Header(String text) {
+            this.text = new PlainText(text);
+        }
+    }
+
     public static class MarkdownSection implements Block {
         private String type = "section";
         private final MarkdownText text;
 
         public MarkdownSection(MarkdownText text) {
             this.text = text;
-        }
-
-        @Override
-        public String getType() {
-            return type;
-        }
-
-        public MarkdownText getText() {
-            return text;
         }
     }
 
@@ -62,10 +60,15 @@ public class Blocks {
         public MarkdownText(String text) {
             this.text = text;
         }
+    }
 
-        @Override
-        public String getType() {
-            return type;
+    public static class PlainText implements Block {
+        private String type = "plain_text";
+        private boolean emoji = true;
+        private final String text;
+
+        public PlainText(String text) {
+            this.text = text;
         }
     }
 
@@ -75,11 +78,6 @@ public class Blocks {
 
         public Actions(List<Element> elements) {
             this.elements = elements;
-        }
-
-        @Override
-        public String getType() {
-            return type;
         }
     }
 

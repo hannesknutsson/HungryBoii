@@ -37,8 +37,7 @@ public class ListMenu {
     private static List<Block> commonBlocks() {
         List<Restaurant> restaurants = RestaurantManager.getInstance().getRegisteredRestaurants();
         List<Block> blocks = new ArrayList<>();
-        blocks.add(markdownSection("*Todays lunch* :fork_and_knife:"));
-        blocks.add(divider());
+        blocks.add(header("Today's lunch:fork_and_knife:"));
 
         for (Restaurant restaurant : restaurants) {
             if (restaurant.getStatus().equals(RestaurantStatus.OK)) {
@@ -78,7 +77,7 @@ public class ListMenu {
     private static String getFoodList(Restaurant restaurant) {
         StringBuilder dishes = new StringBuilder();
         for (Dish dish : restaurant.getTodaysDishes()) {
-            dishes.append("\t* ").append(dish.name).append("\n");
+            dishes.append("\t• ").append(dish.name).append("\n");
         }
         return dishes.toString();
     }
