@@ -67,7 +67,7 @@ public abstract class SimpleRestaurant implements Restaurant {
 
     @Override
     public String getRestaurantInfo() {
-        return "Open: " + getOpenHours() + " | Price: " + getPrice() + ":-\n";
+        return "Open: " + getOpenHours() + " | Price: " + getPrice() + ":-";
 
     }
 }

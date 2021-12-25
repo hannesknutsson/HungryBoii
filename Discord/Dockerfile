@@ -29,7 +29,7 @@ RUN apk add tesseract-ocr
 #RUN adduser -S appuser -G appgroup
 
 #Add logging directory and allow unprivileged user to create files there
-RUN mkdir /HungryBoii/log
+RUN mkdir /HungryBoii/logs
 
 #Bring these commands back later
 #RUN chown -R appuser /HungryBoii/log

@@ -9,7 +9,7 @@ import java.time.Instant;
 
 public class EmbedHelper {
 
-    private static Color embedColor = Color.green;
+    private static final Color embedColor = Color.green;
 
     public static EmbedBuilder getCommandReplyEmbedNoUser() {
         return setEmbedFields(new EmbedBuilder(), (User) null);

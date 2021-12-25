@@ -1,10 +1,6 @@
 package com.github.hannesknutsson.hungryboii.discord;
 
 import com.github.hannesknutsson.hungryboii.discord.configuration.ArgumentParser;
-import com.github.hannesknutsson.hungryboii.discord.structure.dataclasses.restaurants.implementations.Futurum;
-import com.github.hannesknutsson.hungryboii.discord.structure.dataclasses.restaurants.implementations.Kok11;
-import com.github.hannesknutsson.hungryboii.discord.structure.dataclasses.restaurants.implementations.Ostergatan;
-import com.github.hannesknutsson.hungryboii.discord.structure.dataclasses.restaurants.implementations.VidaArena;
 import com.github.hannesknutsson.hungryboii.discord.structure.discord.commands.implementations.*;
 import com.github.hannesknutsson.hungryboii.discord.structure.discord.events.GuildMessageReceived;
 import com.github.hannesknutsson.hungryboii.discord.structure.discord.events.InvitedToNewGuild;
@@ -14,12 +10,10 @@ import com.github.hannesknutsson.hungryboii.discord.structure.discord.privateCom
 import com.github.hannesknutsson.hungryboii.discord.structure.discord.privateCommands.implementations.SetPresence;
 import com.github.hannesknutsson.hungryboii.discord.utilities.managers.implementations.CommandManager;
 import com.github.hannesknutsson.hungryboii.discord.utilities.managers.implementations.PrivateCommandManager;
-import com.github.hannesknutsson.hungryboii.discord.utilities.managers.implementations.RestaurantManager;
 import com.github.hannesknutsson.hungryboii.discord.utilities.managers.implementations.SubscriptionManager;
 import com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.database.hibernate.EntityCoupler;
 import com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.database.liquibase.DbUpdater;
 import com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.discord.DiscordHelper;
-import com.github.hannesknutsson.hungryboii.discord.utilities.workers.MenuGatherer;
 import liquibase.exception.LiquibaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,12 +45,6 @@ public class Application {
         //Temporarily disabling this one. I sure look forward to using OSGI for this type of thing..
         //ReactionActionManager.getInstance().register(new RemoveReplyOnRequest());
 
-        //Register any new restaurants here (implementations of interface "Restaurant")
-        RestaurantManager.getInstance().register(new Futurum());
-        RestaurantManager.getInstance().register(new Ostergatan());
-        RestaurantManager.getInstance().register(new Kok11());
-        RestaurantManager.getInstance().register(new VidaArena());
-
         start(args);
     }
 
@@ -71,7 +59,6 @@ public class Application {
                 DiscordHelper.addEventListener(new InvitedToNewGuild());
                 DiscordHelper.addEventListener(new PrivateMessageReceived());
                 DiscordHelper.addEventListener(new ReactionReceived());
-                MenuGatherer.startGathering();
                 LOG.debug("Application started successfully!");
                 botHasStarted = true;
             } catch (LoginException | IllegalArgumentException | LiquibaseException e) {

@@ -15,14 +15,18 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import static com.github.hannesknutsson.hungryboii.api.ListMenu.*;
-import static java.lang.String.format;
 
 @RestController
 @RequestMapping(path="api/hungryboii")
 public class HungryController {
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getMenus() {
-        return format("%s", getTextMenus());
+    @GetMapping()
+    public String getTxtMenus() {
+        return ListMenu.getTxtMenus();
+    }
+
+    @GetMapping(value = "/xml")
+    public String getXmlMenus() {
+        return ListMenu.getXmlMenus();
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)

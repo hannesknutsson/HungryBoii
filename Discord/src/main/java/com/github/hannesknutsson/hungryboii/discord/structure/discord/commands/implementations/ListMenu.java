@@ -1,17 +1,12 @@
 package com.github.hannesknutsson.hungryboii.discord.structure.discord.commands.implementations;
 
-import com.github.hannesknutsson.hungryboii.discord.structure.dataclasses.Dish;
 import com.github.hannesknutsson.hungryboii.discord.structure.discord.commands.abstractions.Command;
 import com.github.hannesknutsson.hungryboii.discord.exceptions.TotallyBrokenDudeException;
-import com.github.hannesknutsson.hungryboii.discord.structure.dataclasses.restaurants.abstractions.Restaurant;
-import com.github.hannesknutsson.hungryboii.discord.utilities.managers.implementations.RestaurantManager;
 import com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.discord.EmbedHelper;
+import com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.discord.ListMenuHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
-
-import java.util.List;
 
 import static com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.TimeHelper.isWeekend;
 
@@ -37,7 +32,7 @@ public class ListMenu implements Command {
 
         try {
             weekend = isWeekend();
-            if (!weekend) {
+            if (weekend) { //TODO change back to !weekend when done debugging
                 response = sendMenuReply(embedObject, event);
             } else {
                 response = sendWeekendReply(embedObject, event);
@@ -50,32 +45,7 @@ public class ListMenu implements Command {
     }
 
     private MessageAction sendMenuReply(EmbedBuilder embedObject, GuildMessageReceivedEvent event) {
-        List<Restaurant> restaurants = RestaurantManager.getInstance().getRegisteredRestaurants();
-        for (Restaurant restaurant : restaurants) {
-            MessageEmbed.Field addToEmbed;
-            switch (restaurant.getStatus()) {
-                case OK:
-                    addToEmbed = compileMenu(restaurant);
-                    break;
-                case UNINITIALIZED:
-                    addToEmbed = new MessageEmbed.Field(restaurant.getName(), "Has not yet been fetched from their website for the first time yet... You're one quick little bugger :)", false);
-                    break;
-                case WEBSITE_BROKEN:
-                    addToEmbed = new MessageEmbed.Field(restaurant.getName(), "Seems to be having technical difficulties... (Probably my fault haha whatever)", false);
-                    break;
-                case PARSING_BROKEN:
-                    addToEmbed = new MessageEmbed.Field(restaurant.getName(), "The parsing for this restaurants website has broken. Why do they update that sort of stuff anyway? (my fault, not theirs)", false);
-                    break;
-                case WEEKEND:
-                    addToEmbed = new MessageEmbed.Field(restaurant.getName(), "I do not provide lunch alternatives on weekdays. You should never see this message in the wild...", false);
-                    break;
-                default:
-                    addToEmbed = new MessageEmbed.Field(restaurant.getName(), "If you see this, something has gone terribly wrong...", false);
-                    break;
-            }
-            embedObject.addField(addToEmbed);
-        }
-
+        ListMenuHelper.getMenus(embedObject);
         embedObject.setTitle("Todays lunch alternatives");
         embedObject.setDescription("Before using the services of this bot, please consider using a låda in the future.\nThese are the lunch alternatives the restaurants are offering today:");
 
@@ -94,17 +64,5 @@ public class ListMenu implements Command {
         embedObject.setDescription("I just received a TotallyBrokenDudeException. Something must have broken spectacularly!");
 
         return event.getChannel().sendMessage(embedObject.build());
-    }
-
-    public MessageEmbed.Field compileMenu(Restaurant menuSource) {
-
-        StringBuilder alternativeDescriptionBuilder = new StringBuilder();
-        String restaurantInfo = "Open: " + menuSource.getOpenHours() + " | Price: " + menuSource.getPrice() + ":-\n";
-        alternativeDescriptionBuilder.append(restaurantInfo);
-
-        for (Dish dish : menuSource.getTodaysDishes()) {
-            alternativeDescriptionBuilder.append("    * ").append(dish.name).append("\n");
-        }
-        return new MessageEmbed.Field(menuSource.getName(), alternativeDescriptionBuilder.toString(), false);
     }
 }

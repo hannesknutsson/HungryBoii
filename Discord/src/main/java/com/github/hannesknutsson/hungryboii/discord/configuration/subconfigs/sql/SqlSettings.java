@@ -13,6 +13,7 @@ public class SqlSettings {
     private int port;
     private String driver;
     private String databaseName;
+    private boolean ssl;
 
     private SqlUser liquibaseUser;
     private SqlUser hibernateUser;
@@ -49,9 +50,13 @@ public class SqlSettings {
         return databaseName;
     }
 
+    public boolean isSsl() {
+        return ssl;
+    }
+
     public String getConnectionString() {
         SqlSettings sqlSettings = SqlSettings.getInstance();
-        return sqlSettings.getDriver() + "://" + sqlSettings.getIp() + ":" + sqlSettings.getPort() + "/" + sqlSettings.getDatabaseName();
+        return sqlSettings.getDriver() + "://" + sqlSettings.getIp() + ":" + sqlSettings.getPort() + "/" + sqlSettings.getDatabaseName() + "?useSSL=" + sqlSettings.isSsl();
     }
 
     public SqlUser getLiquibaseUser() {
@@ -76,6 +81,7 @@ public class SqlSettings {
         this.port = serverConfig.getInt("port");
         this.driver = serverConfig.getString("driver");
         this.databaseName = serverConfig.getString("databaseName");
+        this.ssl = serverConfig.getBoolean("ssl");
     }
 
     private void readUsers() {

@@ -13,7 +13,7 @@ public class TimeHelper {
         return getDayOfWeek() == SATURDAY || getDayOfWeek() == SUNDAY;
     }
 
-    public static Weekday getDayOfWeek() throws TotallyBrokenDudeException {
+    private static Weekday getDayOfWeek() throws TotallyBrokenDudeException {
         Calendar myDate = Calendar.getInstance();
         int dayNumber = myDate.get(Calendar.DAY_OF_WEEK);
         return getDayOfWeek(dayNumber);
@@ -48,44 +48,4 @@ public class TimeHelper {
         }
         return today;
     }
-
-    public static Weekday parseStringToWeekday(String toParse) {
-        toParse = toParse.trim().toLowerCase();
-        Weekday actualDay;
-        switch (toParse) {
-            case "måndag":
-            case "monday":
-                actualDay = MONDAY;
-                break;
-            case "tisdag":
-            case "tuesday":
-                actualDay = TUESDAY;
-                break;
-            case "onsdag":
-            case "wednesday":
-                actualDay = WEDNESDAY;
-                break;
-            case "torsdag":
-            case "thursday":
-                actualDay = THURSDAY;
-                break;
-            case "fredag":
-            case "friday":
-                actualDay = FRIDAY;
-                break;
-            case "lördag":
-            case "saturday":
-                actualDay = SATURDAY;
-                break;
-            case "söndag":
-            case "sunday":
-                actualDay = SUNDAY;
-                break;
-            default:
-                actualDay = NOT_A_WEEKDAY;
-        }
-        return actualDay;
-    }
-
-
 }

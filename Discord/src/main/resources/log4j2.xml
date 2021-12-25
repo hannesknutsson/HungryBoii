@@ -6,7 +6,7 @@
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss}{GMT+1} [%-5p] %-48.48C : %-5.5L -  %msg%n"/>
         </Console>
 
-        <RollingFile name="RollingFile" filename="log/HungryBoii.log"
+        <RollingFile name="RollingFile" filename="logs/HungryBoii.log"
                      filepattern="${logPath}/%d{yyyyMMddHHmmss}-fargo.log">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss Z}{GMT+1} [%t] [%p] %-50.50C : %-5.5L -  %msg%n"/>
             <Policies>

@@ -71,11 +71,7 @@ public class Subscribe implements Command {
         int hour = Integer.parseInt(timeArr[0]);
         int minute = Integer.parseInt(timeArr[1]);
 
-        if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
-            return false;
-        }
-
-        return true;
+        return hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59;
     }
 
     private LunchSubscription getLunchSubscriptionFromGuildMessageReceivedEvent(GuildMessageReceivedEvent event) {
