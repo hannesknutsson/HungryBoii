@@ -1,8 +1,6 @@
 package com.github.hannesknutsson.hungryboii.api.statichelpers;
 
 import com.github.hannesknutsson.hungryboii.api.enumerations.Weekday;
-import com.github.hannesknutsson.hungryboii.api.exceptions.TotallyBrokenDudeException;
-
 
 import java.util.Calendar;
 
@@ -18,83 +16,22 @@ import static com.github.hannesknutsson.hungryboii.api.enumerations.Weekday.WEDN
 
 public class TimeHelper {
 
-    public static boolean isWeekend() throws TotallyBrokenDudeException {
-        return getDayOfWeek() == SATURDAY || getDayOfWeek() == SUNDAY;
-    }
-
-    public static Weekday getDayOfWeek() throws TotallyBrokenDudeException {
+    public static Weekday getDayOfWeek() {
         Calendar myDate = Calendar.getInstance();
         int dayNumber = myDate.get(Calendar.DAY_OF_WEEK);
         return getDayOfWeek(dayNumber);
     }
 
-    private static Weekday getDayOfWeek(int dayNumber) throws TotallyBrokenDudeException {
-        Weekday today;
-        switch (dayNumber) {
-            case 2:
-                today = MONDAY;
-                break;
-            case 3:
-                today = TUESDAY;
-                break;
-            case 4:
-                today = WEDNESDAY;
-                break;
-            case 5:
-                today = THURSDAY;
-                break;
-            case 6:
-                today = FRIDAY;
-                break;
-            case 7:
-                today = SATURDAY;
-                break;
-            case 1:
-                today = SUNDAY;
-                break;
-            default:
-                throw new TotallyBrokenDudeException();
-        }
-        return today;
+    private static Weekday getDayOfWeek(int dayNumber) {
+        return switch (dayNumber) {
+            case 2 -> MONDAY;
+            case 3 -> TUESDAY;
+            case 4 -> WEDNESDAY;
+            case 5 -> THURSDAY;
+            case 6 -> FRIDAY;
+            case 7 -> SATURDAY;
+            case 1 -> SUNDAY;
+            default -> NOT_A_WEEKDAY;
+        };
     }
-
-    public static Weekday parseStringToWeekday(String toParse) {
-        toParse = toParse.trim().toLowerCase();
-        Weekday actualDay;
-        switch (toParse) {
-            case "måndag":
-            case "monday":
-                actualDay = MONDAY;
-                break;
-            case "tisdag":
-            case "tuesday":
-                actualDay = TUESDAY;
-                break;
-            case "onsdag":
-            case "wednesday":
-                actualDay = WEDNESDAY;
-                break;
-            case "torsdag":
-            case "thursday":
-                actualDay = THURSDAY;
-                break;
-            case "fredag":
-            case "friday":
-                actualDay = FRIDAY;
-                break;
-            case "lördag":
-            case "saturday":
-                actualDay = SATURDAY;
-                break;
-            case "söndag":
-            case "sunday":
-                actualDay = SUNDAY;
-                break;
-            default:
-                actualDay = NOT_A_WEEKDAY;
-        }
-        return actualDay;
-    }
-
-
 }

@@ -26,7 +26,7 @@ public class SetPresence implements PrivateCommand {
             if (activity != null) {
                 DiscordHelper.setPresence(activity);
             }
-        } else if (splitArr.length == 2 && splitArr[1].trim().toUpperCase().equals("RESET")) {
+        } else if (splitArr.length == 2 && splitArr[1].trim().equalsIgnoreCase("RESET")) {
             DiscordHelper.setPresence(null);
         }
     }

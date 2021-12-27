@@ -1,9 +1,8 @@
-package com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.implementations;
+package com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants;
 
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Dish;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.OpenHours;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Time;
-import com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.abstractions.SimpleRestaurant;
 import com.github.hannesknutsson.hungryboii.api.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.api.exceptions.WebPageBroken;
 import com.github.hannesknutsson.hungryboii.api.statichelpers.HttpHelper;

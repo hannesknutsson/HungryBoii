@@ -1,6 +1,5 @@
 package com.github.hannesknutsson.hungryboii.discord.utilities.workers;
 
-import com.github.hannesknutsson.hungryboii.discord.exceptions.TotallyBrokenDudeException;
 import com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.TimeHelper;
 import com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.discord.DiscordHelper;
 import com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.discord.EmbedHelper;
@@ -25,22 +24,18 @@ public class ScheduledMenu implements Runnable {
         User discordUser = DiscordHelper.getUserById(userId);
         LOG.info("Daily subscription for \"{}\" activated", discordUser.getAsTag());
         discordUser.openPrivateChannel().queue(privateChannel -> {
-            try {
-                if (!TimeHelper.isWeekend()) {
+            if (!TimeHelper.isWeekend()) {
 
-                    EmbedBuilder toSend = EmbedHelper.setEmbedFields(new EmbedBuilder(), discordUser);
+                EmbedBuilder toSend = EmbedHelper.setEmbedFields(new EmbedBuilder(), discordUser);
 
-                    ListMenuHelper.getMenus(toSend);
+                ListMenuHelper.getMenus(toSend);
 
-                    toSend.setTitle("Your daily subscription");
-                    toSend.setDescription("This is your daily subscription. You can cancel this at any time by typing \"!unsubscribe\" in the server chat (we don't support private chat commands yet..).");
+                toSend.setTitle("Your daily subscription");
+                toSend.setDescription("This is your daily subscription. You can cancel this at any time by typing \"!unsubscribe\" in the server chat (we don't support private chat commands yet..).");
 
-                    LOG.info("Sending daily subscription to \"{}\"", discordUser.getAsTag());
+                LOG.info("Sending daily subscription to \"{}\"", discordUser.getAsTag());
 
-                    privateChannel.sendMessage(toSend.build()).queue();
-                }
-            } catch (TotallyBrokenDudeException e) {
-                LOG.error("Received a TotallyBrokenDudeException when trying to send {} their daily subscription", discordUser.getAsTag());
+                privateChannel.sendMessage(toSend.build()).queue();
             }
         });
     }

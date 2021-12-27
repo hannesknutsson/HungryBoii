@@ -1,7 +1,7 @@
 package com.github.hannesknutsson.hungryboii.api.managers.implementations;
 
 import com.github.hannesknutsson.hungryboii.api.managers.abstractions.ListingManager;
-import com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.abstractions.Restaurant;
+import com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.Restaurant;
 
 import java.util.List;
 

@@ -1,12 +1,10 @@
-package com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.implementations;
+package com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants;
 
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Dish;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.OpenHours;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Time;
-import com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.abstractions.SimpleRestaurant;
 import com.github.hannesknutsson.hungryboii.api.enumerations.Weekday;
 import com.github.hannesknutsson.hungryboii.api.exceptions.ParsingOutdated;
-import com.github.hannesknutsson.hungryboii.api.exceptions.TotallyBrokenDudeException;
 import com.github.hannesknutsson.hungryboii.api.exceptions.WebPageBroken;
 import com.github.hannesknutsson.hungryboii.api.statichelpers.HttpHelper;
 import org.jsoup.nodes.Document;
@@ -51,7 +49,7 @@ public class Ostergatan extends SimpleRestaurant {
             status = OK;
         } catch (WebPageBroken exception) {
             status = WEBSITE_BROKEN;
-        } catch (ParsingOutdated | TotallyBrokenDudeException parsingOutdated) {
+        } catch (ParsingOutdated parsingOutdated) {
             status = PARSING_BROKEN;
         }
     }

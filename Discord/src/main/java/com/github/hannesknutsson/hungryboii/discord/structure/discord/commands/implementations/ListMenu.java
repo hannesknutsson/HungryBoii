@@ -1,7 +1,6 @@
 package com.github.hannesknutsson.hungryboii.discord.structure.discord.commands.implementations;
 
 import com.github.hannesknutsson.hungryboii.discord.structure.discord.commands.abstractions.Command;
-import com.github.hannesknutsson.hungryboii.discord.exceptions.TotallyBrokenDudeException;
 import com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.discord.EmbedHelper;
 import com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.discord.ListMenuHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -30,15 +29,11 @@ public class ListMenu implements Command {
 
         MessageAction response;
 
-        try {
-            weekend = isWeekend();
-            if (weekend) { //TODO change back to !weekend when done debugging
-                response = sendMenuReply(embedObject, event);
-            } else {
-                response = sendWeekendReply(embedObject, event);
-            }
-        } catch (TotallyBrokenDudeException e) {
-            response = sendApologyReply(embedObject, event);
+        weekend = isWeekend();
+        if (!weekend) {
+            response = sendMenuReply(embedObject, event);
+        } else {
+            response = sendWeekendReply(embedObject, event);
         }
 
         response.queue();
@@ -55,13 +50,6 @@ public class ListMenu implements Command {
     private MessageAction sendWeekendReply(EmbedBuilder embedObject, GuildMessageReceivedEvent event) {
         embedObject.setTitle("Weekend");
         embedObject.setDescription("I'm not able to retrieve lunch alternatives for the restaurants on weekends.");
-
-        return event.getChannel().sendMessage(embedObject.build());
-    }
-
-    private MessageAction sendApologyReply(EmbedBuilder embedObject, GuildMessageReceivedEvent event) {
-        embedObject.setTitle("Ooopsie");
-        embedObject.setDescription("I just received a TotallyBrokenDudeException. Something must have broken spectacularly!");
 
         return event.getChannel().sendMessage(embedObject.build());
     }

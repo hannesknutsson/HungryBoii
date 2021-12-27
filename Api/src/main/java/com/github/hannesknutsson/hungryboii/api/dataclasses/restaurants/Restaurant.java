@@ -1,4 +1,4 @@
-package com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.abstractions;
+package com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants;
 
 import com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Dish;

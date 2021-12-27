@@ -4,7 +4,7 @@ import com.github.hannesknutsson.hungryboii.api.dataclasses.Dish;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.json.Block;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.json.Blocks;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.json.MenuMessage;
-import com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.abstractions.Restaurant;
+import com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.Restaurant;
 import com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus;
 import com.github.hannesknutsson.hungryboii.api.managers.implementations.RestaurantManager;
 import com.google.gson.Gson;
@@ -49,10 +49,10 @@ public class ListMenu {
 
     private static String getErrorResponse(RestaurantStatus status) {
         return switch (status) {
-            case UNINITIALIZED -> "Has not yet been fetched from their website for the first time yet... You're one quick little bugger :)";
-            case WEBSITE_BROKEN -> "Seems to be having technical difficulties... (Probably my fault haha whatever)";
-            case PARSING_BROKEN -> "The parsing for this restaurants website has broken. Why do they update that sort of stuff anyway? (my fault, not theirs)";
-            case WEEKEND -> "I do not provide lunch alternatives on weekdays. You should never see this message in the wild...";
+            case UNINITIALIZED -> "Has not yet been fetched from their website for the first time yet.";
+            case WEBSITE_BROKEN -> "Seems to be having technical difficulties.";
+            case PARSING_BROKEN -> "The parsing for this restaurants website has broken.";
+            case WEEKEND -> "I do not provide lunch alternatives on weekdays.";
             default -> "If you see this, something has gone terribly wrong...";
         };
     }

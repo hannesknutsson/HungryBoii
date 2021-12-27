@@ -19,7 +19,7 @@ import static com.github.hannesknutsson.hungryboii.api.ListMenu.*;
 @RestController
 @RequestMapping(path="api/hungryboii")
 public class HungryController {
-    @GetMapping()
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public String getTxtMenus() {
         return ListMenu.getTxtMenus();
     }

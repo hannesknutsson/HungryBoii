@@ -1,10 +1,8 @@
-package com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.implementations;
+package com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants;
 
-import com.github.hannesknutsson.hungryboii.api.ApiApplication;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Dish;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.OpenHours;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Time;
-import com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.abstractions.SimpleRestaurant;
 import com.github.hannesknutsson.hungryboii.api.exceptions.OCRException;
 import com.github.hannesknutsson.hungryboii.api.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.api.exceptions.TotallyBrokenDudeException;
@@ -22,7 +20,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +40,7 @@ public class VidaArena extends SimpleRestaurant {
             //Retrieve image URL
             Document webPage = HttpHelper.getWebPage("https://www.vaxjolakers.se/mat-dryck/lunchmeny");
             List<Element> elementList = filterWebPage(webPage, "body > div > div > div > div > div > div > div > div > img");
-                ///html/body/div[4]/div[2]/div/div[2]/div[2]/div[1]/div/div/img
+
             //Retrieve image
             String imageSource = elementList.get(1).getAllElements().get(0).attributes().asList().get(1).toString().replace("\"", "").substring(4);
             URL url;
@@ -57,26 +54,14 @@ public class VidaArena extends SimpleRestaurant {
             }
 
             //Parse image
-            Rectangle areaToCapture;
-            switch(TimeHelper.getDayOfWeek()) {
-                case MONDAY:
-                    areaToCapture = new Rectangle(387, 105,800, 115);
-                    break;
-                case TUESDAY:
-                    areaToCapture = new Rectangle(387, 250,800, 115);
-                    break;
-                case WEDNESDAY:
-                    areaToCapture = new Rectangle(387, 400,800, 115);
-                    break;
-                case THURSDAY:
-                    areaToCapture = new Rectangle(387, 550,800, 115);
-                    break;
-                case FRIDAY:
-                    areaToCapture = new Rectangle(387, 695,800, 115);
-                    break;
-                default:
-                    throw new TotallyBrokenDudeException();
-            }
+            Rectangle areaToCapture = switch (TimeHelper.getDayOfWeek()) {
+                case MONDAY -> new Rectangle(387, 105, 800, 115);
+                case TUESDAY -> new Rectangle(387, 250, 800, 115);
+                case WEDNESDAY -> new Rectangle(387, 400, 800, 115);
+                case THURSDAY -> new Rectangle(387, 550, 800, 115);
+                case FRIDAY -> new Rectangle(387, 695, 800, 115);
+                default -> throw new TotallyBrokenDudeException();
+            };
 
             List<String> resultlist;
             try {
