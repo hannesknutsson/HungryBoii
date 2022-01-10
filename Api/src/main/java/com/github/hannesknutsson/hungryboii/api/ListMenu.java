@@ -81,10 +81,7 @@ public class ListMenu {
     }
 
     public static String shareSlackMenu() {
-        List<Block> blocks = commonBlocks();
-        blocks.add(Blocks.actions(closeButton()));
-
-        return new Gson().toJson(MenuMessage.share(blocks));
+        return new Gson().toJson(MenuMessage.share(commonBlocks()));
     }
 
     private static String getTextMenuEntry(Restaurant restaurant) {
