@@ -25,7 +25,7 @@ public class MKCatering extends SimpleRestaurant {
     private static final String filterQuery = "body > div > div > div > div > div.dagens";
 
     public MKCatering() {
-        super("MK Catering", targetUrl, 90, new OpenHours(new Time(11, 30), new Time(14, 0)));
+        super("MK Catering", targetUrl, 99, new OpenHours(new Time(11, 30), new Time(14, 0)));
     }
 
     @Override
