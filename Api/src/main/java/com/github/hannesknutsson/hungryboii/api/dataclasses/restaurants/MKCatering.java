@@ -9,6 +9,7 @@ import com.github.hannesknutsson.hungryboii.api.exceptions.WebPageBroken;
 import com.github.hannesknutsson.hungryboii.api.statichelpers.HttpHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +65,13 @@ public class MKCatering extends SimpleRestaurant {
         Map<Weekday, List<String>> mealsGroupedByDays = new HashMap<>();
 
         for (Element e : elementList) {
-            var meals = List.of(e.select("p").text());
+            var meals = e.select("p")
+                    .get(0)
+                    .childNodesCopy()
+                    .stream()
+                    .map(node -> node.toString().trim().replaceAll("&amp;", "&"))
+                    .filter(text -> !text.equals("<br>"))
+                    .toList();
             var dayIndex = elementList.indexOf(e);
             mealsGroupedByDays.put(Weekday.values()[dayIndex], meals);
         }
