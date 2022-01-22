@@ -1,0 +1,75 @@
+package com.github.hannesknutsson.hungryboii.discord;
+
+import com.github.hannesknutsson.hungryboii.discord.configuration.ArgumentParser;
+import com.github.hannesknutsson.hungryboii.discord.structure.discord.commands.implementations.*;
+import com.github.hannesknutsson.hungryboii.discord.structure.discord.events.GuildMessageReceived;
+import com.github.hannesknutsson.hungryboii.discord.structure.discord.events.InvitedToNewGuild;
+import com.github.hannesknutsson.hungryboii.discord.structure.discord.events.PrivateMessageReceived;
+import com.github.hannesknutsson.hungryboii.discord.structure.discord.events.ReactionReceived;
+import com.github.hannesknutsson.hungryboii.discord.structure.discord.privateCommands.implementations.Announce;
+import com.github.hannesknutsson.hungryboii.discord.structure.discord.privateCommands.implementations.SetPresence;
+import com.github.hannesknutsson.hungryboii.discord.utilities.managers.implementations.CommandManager;
+import com.github.hannesknutsson.hungryboii.discord.utilities.managers.implementations.PrivateCommandManager;
+import com.github.hannesknutsson.hungryboii.discord.utilities.managers.implementations.SubscriptionManager;
+import com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.database.hibernate.EntityCoupler;
+import com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.database.liquibase.DbUpdater;
+import com.github.hannesknutsson.hungryboii.discord.utilities.statichelpers.discord.DiscordHelper;
+import liquibase.exception.LiquibaseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.security.auth.login.LoginException;
+
+public class Application {
+
+    private static Logger LOG = LoggerFactory.getLogger(Application.class);
+
+    private static boolean botHasStarted = false;
+
+    public static void main(String[] args) {
+
+        LOG.info("Initializing HungryBoii...");
+
+        //Register any new commands here (derivatives of interface class "Command")
+        CommandManager.getInstance().register(new ListMenu());
+        CommandManager.getInstance().register(new Subscribe());
+        CommandManager.getInstance().register(new Unsubscribe());
+        CommandManager.getInstance().register(new Info());
+        CommandManager.getInstance().register(new Help());
+
+        //Register any new private commands here (derivatives of interface class "PrivateCommand")
+        PrivateCommandManager.getInstance().register(new Announce());
+        PrivateCommandManager.getInstance().register(new SetPresence());
+
+        //Register any new reaction actions here (derivatives of interface class "ReactionAction")
+        //Temporarily disabling this one. I sure look forward to using OSGI for this type of thing..
+        //ReactionActionManager.getInstance().register(new RemoveReplyOnRequest());
+
+        start(args);
+    }
+
+    private static Boolean start(String[] args) {
+        if (!botHasStarted && ArgumentParser.parseArguments(args)) {
+            try {
+                DbUpdater.verifyAndUpdateDatabase();
+                EntityCoupler.initialize();
+                DiscordHelper.initialize();
+                SubscriptionManager.initialize();
+                DiscordHelper.addEventListener(new GuildMessageReceived());
+                DiscordHelper.addEventListener(new InvitedToNewGuild());
+                DiscordHelper.addEventListener(new PrivateMessageReceived());
+                DiscordHelper.addEventListener(new ReactionReceived());
+                LOG.debug("Application started successfully!");
+                botHasStarted = true;
+            } catch (LoginException | IllegalArgumentException | LiquibaseException e) {
+                LOG.error("Application failed to start, {} received", e.toString());
+                botHasStarted = false;
+            }
+
+            return botHasStarted;
+        } else {
+            LOG.error("Application failed to start, already running");
+            return false;
+        }
+    }
+}
