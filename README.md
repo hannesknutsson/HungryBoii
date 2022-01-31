@@ -4,7 +4,7 @@ This README is viciously stolen from https://gist.github.com/PurpleBooth/109311b
 
 # HungryBoii
 
-A simple but beautiful bot for your Discord server made to retrieve daily lunch alternatives at local restaurants.
+A simple but beautiful API for your Discord and Slack server made to retrieve daily lunch alternatives at local restaurants.
 
 ## Getting Started
 
@@ -14,11 +14,21 @@ These instructions will get you a copy of the project up and running on your loc
 2. Import the project into your favourite IDE using the pom.xml file
 3. Build the project by running ```mvn clean install``` in the project's base directory
 4. In your IDE, set up a profile for running the bot in your development environment by specifying the following properties
+
+### API
 ```
-Main class:         com.github.hannesknutsson.hungryboii.Application
+Main class:         com.github.hannesknutsson.hungryboii.api.ApiApplication
+Environment varibles:  TESSDATA_PREFIX=tessdata
+Working directory:  <wherever you placed the project>/HungryBoii/Api
+Module classpath:   Api
+```
+
+### Discord bot
+```
+Main class:         com.github.hannesknutsson.hungryboii.discord.Application
 Program arguments:  -t <your Discord bot API token>
-Working directory:  <wherever you placed the project>/HungryBoii/target/HungryBoii-distributable
-Module classpath:   hungryboii
+Working directory:  <wherever you placed the project>/HungryBoii/Discord/target/HungryBoii-distributable
+Module classpath:   Discord
 ```
 
 After this, you should be ready to run and develop the bot in your IDE using the profile you created.
@@ -34,7 +44,7 @@ Depending on your environment and whether you will make use of optical character
 To develop this project you **will require** the following software:
 
 * Your favourite Java IDE
-* Java 12 JDK
+* Java 17 JDK
 * Maven (most recent versions should work, 3.6.1 is verified to work)
 
 
@@ -42,13 +52,13 @@ To develop this project you **will require** the following software:
 
 To deploy this project you **will require** the following software:
 
-* Java 12 JRE
+* Java 17 JRE
 
 OR
 
 * A Docker environment
 
-### Installation/Deployment
+### Installation/Deployment (Discord bot)
 
 There are some different ways of getting this project spinning on your machine.
 
@@ -67,7 +77,7 @@ git clone https://github.com/hannesknutsson/HungryBoii.git
 Enter the newly cloned project repository.
 
 ```
-cd HungryBoii
+cd HungryBoii/Discord
 ```
 
 Build the project from its sources.
@@ -76,12 +86,12 @@ Build the project from its sources.
 mvn clean install
 ```
 
-Extract the directory ```HungryBoii/target/HungryBoii-distributable``` onto whatever machine you wish to install the project (or just do all these steps on the machine you wish to install to from the beginning).
+Extract the directory ```HungryBoii/Discord/target/HungryBoii-distributable``` onto whatever machine you wish to install the project (or just do all these steps on the machine you wish to install to from the beginning).
 
 On the machine you wish to install to, enter the HungryBoii-distributable directory and run the project.
 
 ```
-ce HungryBoii-distributable
+cd Discord-distributable
 java -jar HungryBoii-<whatever version we're at>.jar -t <your Discord bot API token>
 ```
 
@@ -100,8 +110,8 @@ The bot should by now have replied to your command with a list of commands it re
 In an environment with Docker installed, run the following commands.
 
 ```
-mkdir HungryBoii
-docker run --name HungryBoii -e TZ=Europe/Stockholm -d -v HungryBoii/log/:/HungryBoii/log/ -v HungryBoii/conf/:/HungryBoii/conf/ hannesknutsson/hungryboii:latest -t <your Discord bot API token>
+mkdir Discord
+docker run --name HungryBoii -e TZ=Europe/Stockholm -d -v Discord/logs/:/Discord/logs/ -v Discord/conf/:/Discord/conf/ hannesknutsson/hungryboii:latest -t <your Discord bot API token>
 ```
 
 These simple commands will pull the latest Docker image from DockerHub and run it as a daemon for you.
@@ -109,17 +119,6 @@ These simple commands will pull the latest Docker image from DockerHub and run i
 If you want to run a more stable version of the bot, swap out ```hannesknutsson/hungryboii:latest``` to ```hannesknutsson/hungryboii:release-1.0```.
 
 Change the time zone parameter to fit the time zone where it will be used. This enables the subscription feature to be in sync with its users.
-
-#### 3. Building and running a custom Docker image
-
-At the moment there is only one Dockerfile. This Dockerfile is meant for automated builds from the GitHub repository.
-
-If you wish to build your own version of this project, you can try modifying the Dockerfile found in ```src/Dockerfiles/Dockerfile``` so that it builds from your local sources instead of from the GitHub repository.
-
-If you do this, please share the resulting Dockerfile so that others can use it in the future.
-
-A Dockerfile for this purpose may be created and added here later if anyone would like, but until then I will be focusing on other things.
-
 <!--
 
 Here starts the comment of eternal shame.
@@ -169,7 +168,8 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-Yeeeeeeah, if it has not yet become apparent, it's only me, [Hannes Knutsson](https://www.github.com/hannesknutsson), who has contributed to this project so far.
+[Hannes Knutsson](https://www.github.com/hannesknutsson)  
+Team Nature@Fortnox
 
 ## Acknowledgments
 
