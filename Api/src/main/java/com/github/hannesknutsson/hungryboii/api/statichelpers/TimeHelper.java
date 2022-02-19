@@ -16,6 +16,10 @@ import static com.github.hannesknutsson.hungryboii.api.enumerations.Weekday.WEDN
 
 public class TimeHelper {
 
+    public static boolean isWeekend() {
+        return getDayOfWeek() == SATURDAY || getDayOfWeek() == SUNDAY;
+    }
+
     public static Weekday getDayOfWeek() {
         Calendar myDate = Calendar.getInstance();
         int dayNumber = myDate.get(Calendar.DAY_OF_WEEK);

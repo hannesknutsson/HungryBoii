@@ -2,6 +2,7 @@ package com.github.hannesknutsson.hungryboii.api.workers;
 
 import com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants.Restaurant;
 import com.github.hannesknutsson.hungryboii.api.managers.implementations.RestaurantManager;
+import com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +36,7 @@ public class MenuGatherer {
             gatheringTask = new Retriever();
         }
 
-        LOG.info("Scheduling worker to refresh restaurant menus every {} {}s", intervalTime, intervalUnit.toString().toLowerCase());
+        LOG.info("Scheduling worker to refresh restaurant menus every {} {}", intervalTime, intervalUnit.toString().toLowerCase());
         executorService.scheduleAtFixedRate(gatheringTask, 0, intervalTime, intervalUnit);
         LOG.info("Worker started");
     }
@@ -45,6 +46,10 @@ public class MenuGatherer {
 
     private static void refreshRestaurant(Restaurant target) {
         LOG.info("Refreshing menu for {}", target.getName());
-        target.refreshData();
+        if (TimeHelper.isWeekend()) {
+            target.resetForWeekend();
+        } else {
+            target.refreshData();
+        }
     }
 }

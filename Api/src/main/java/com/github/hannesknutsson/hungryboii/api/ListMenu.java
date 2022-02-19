@@ -52,7 +52,7 @@ public class ListMenu {
             case UNINITIALIZED -> "Has not yet been fetched from their website for the first time yet.";
             case WEBSITE_BROKEN -> "Seems to be having technical difficulties.";
             case PARSING_BROKEN -> "The parsing for this restaurants website has broken.";
-            case WEEKEND -> "I do not provide lunch alternatives on weekdays.";
+            case WEEKEND -> "I do not provide lunch alternatives on weekends.";
             default -> "If you see this, something has gone terribly wrong...";
         };
     }
