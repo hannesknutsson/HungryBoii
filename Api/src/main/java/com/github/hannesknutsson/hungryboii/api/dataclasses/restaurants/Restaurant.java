@@ -24,5 +24,7 @@ public interface Restaurant  {
 
     void refreshData();
 
+    void resetForWeekend();
+
     String getRestaurantInfo();
 }

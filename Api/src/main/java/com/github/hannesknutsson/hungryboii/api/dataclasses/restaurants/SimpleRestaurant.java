@@ -7,6 +7,7 @@ import com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus.UNINITIALIZED;
+import static com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus.WEEKEND;
 
 public abstract class SimpleRestaurant implements Restaurant {
 
@@ -34,6 +35,12 @@ public abstract class SimpleRestaurant implements Restaurant {
 
     @Override
     public abstract void refreshData();
+
+    @Override
+    public void resetForWeekend() {
+        availableDishes.clear();
+        status = WEEKEND;
+    }
 
     @Override
     public String getName() {
