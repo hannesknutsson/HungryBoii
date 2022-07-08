@@ -18,10 +18,10 @@ import static com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper.
 public class Futurum extends SimpleRestaurant {
 
     private static final String targetUrl = "https://www.restaurangfuturum.se/dagens-lunch";
-    private static final String filterQuery = "div#TRANSITION_GROUP > div > div:eq(1) > div > div > div > section > div:eq(1) > div:eq(0) > div > div:eq(0) > div:eq(1) > p > span > span > span";
+    private static final String filterQuery = "div#SITE_PAGES_TRANSITION_GROUP > div > div:eq(1) > div > div > div > section > div:eq(1) > div:eq(0) > div > div:eq(0) > div:eq(1) > p";
 
     public Futurum() {
-        super("Futurum", targetUrl, 105, new OpenHours(new Time(11, 0), new Time(13, 30)));
+        super("Futurum", targetUrl, 120, new OpenHours(new Time(11, 0), new Time(13, 30)));
     }
 
     @Override
@@ -63,18 +63,11 @@ public class Futurum extends SimpleRestaurant {
         int dayCounter = 0;
 
         for (Element e : elementList) {
-            if (e.childrenSize() > 0) {
-                if (dayCounter < 5 && e.text().contains(sweDays.get(dayCounter)))  {
-                    tmpList = new ArrayList<>();
-                    mealsGroupedByDays.put(Weekday.values()[dayCounter], tmpList);
-                    dayCounter++;
-                } else if (e.children().select("br").size() > 0) { // They have a bug where monday's veg is grouped differently
-                    e.children().remove();
-                    if (tmpList != null) {
-                        tmpList.add(e.text());
-                    }
-                }
-            } else if (tmpList != null) {
+            if (dayCounter < 5 && e.text().contains(sweDays.get(dayCounter)))  {
+                tmpList = new ArrayList<>();
+                mealsGroupedByDays.put(Weekday.values()[dayCounter], tmpList);
+                dayCounter++;
+            } else if (tmpList != null && e.text().length() > 0 && !e.text().equals("Vegetariskt alternativ") && !e.text().equals("Vid allergi, fråga personalen.")) {
                 if (Character.isUpperCase(e.text().charAt(0))) {
                     tmpList.add(e.text());
                 } else if (!tmpList.isEmpty()) {
