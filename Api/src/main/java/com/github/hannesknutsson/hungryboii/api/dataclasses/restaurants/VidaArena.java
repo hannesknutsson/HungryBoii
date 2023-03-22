@@ -3,12 +3,9 @@ package com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Dish;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.OpenHours;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Time;
-import com.github.hannesknutsson.hungryboii.api.exceptions.OCRException;
-import com.github.hannesknutsson.hungryboii.api.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.api.exceptions.TotallyBrokenDudeException;
 import com.github.hannesknutsson.hungryboii.api.exceptions.WebPageBroken;
 import com.github.hannesknutsson.hungryboii.api.statichelpers.HttpHelper;
-import com.github.hannesknutsson.hungryboii.api.statichelpers.OpticalCharacterRecognitionHelper;
 import com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,6 +17,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,13 +61,8 @@ public class VidaArena extends SimpleRestaurant {
                 default -> throw new TotallyBrokenDudeException();
             };
 
-            List<String> resultlist;
-            try {
-                resultlist = OpticalCharacterRecognitionHelper.parseImageArea(image, areaToCapture);
-            } catch (OCRException e) {
-                LOG.warn(e.toString());
-                throw new ParsingOutdated("Failed parsing image");
-            }
+            List<String> resultlist = new ArrayList<>();
+
 
             resultlist = resultlist.stream().filter(str -> !str.isEmpty()).collect(Collectors.toList());
 
@@ -85,9 +78,6 @@ public class VidaArena extends SimpleRestaurant {
         } catch (TotallyBrokenDudeException weekend) {
             LOG.warn(weekend.toString());
             status = WEEKEND;
-        } catch (ParsingOutdated ocrBroken) {
-            LOG.warn(ocrBroken.toString());
-            status = PARSING_BROKEN;
         } catch (Exception e) {
             LOG.warn(e.toString());
         }

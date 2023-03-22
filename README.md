@@ -18,7 +18,6 @@ These instructions will get you a copy of the project up and running on your loc
 ### API
 ```
 Main class:         com.github.hannesknutsson.hungryboii.api.ApiApplication
-Environment varibles:  TESSDATA_PREFIX=tessdata
 Working directory:  <wherever you placed the project>/HungryBoii/Api
 Module classpath:   Api
 ```
@@ -36,8 +35,6 @@ After this, you should be ready to run and develop the bot in your IDE using the
 ### Prerequisites
 
 The software that is required to develop and deploy the project will be specified below. This will be split into two sections, one for development and one for deployment.
-
-Depending on your environment and whether you will make use of optical character recognition you **may require** the Tesseract package for the project to use. I recommend waiting with installing this package until you are certain you need it. This applies to both development and deployment environments. For installation instructions see [the Tesseract project](https://github.com/tesseract-ocr/tesseract/wiki).
 
 #### Development
 

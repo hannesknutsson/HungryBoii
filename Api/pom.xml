@@ -42,22 +42,6 @@
             <version>1.15.3</version>
         </dependency>
 
-        <!-- To be able to parse image menus -->
-        <dependency>
-            <groupId>net.sourceforge.tess4j</groupId>
-            <artifactId>tess4j</artifactId>
-            <!-- Why we use old version https://github.com/nguyenq/tess4j/issues/105 -->
-            <!-- 4.1.0 might just work https://github.com/sirfz/tesserocr/issues/165 -->
-            <!-- 5.0.0 will probably work when it is released -->
-            <version>4.0.0</version>
-            <!-- We do NOT want duplicate implementations of slf4j -->
-            <exclusions>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-classic</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
