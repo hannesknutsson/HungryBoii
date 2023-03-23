@@ -14,16 +14,14 @@ public abstract class SimpleRestaurant implements Restaurant {
     private final String name;
     private final String url;
     private final OpenHours openHours;
-    private final int price;
 
     protected RestaurantStatus status;
     protected CopyOnWriteArrayList<Dish> availableDishes;
 
-    public SimpleRestaurant(String name, String url, int price, OpenHours openHours) {
+    public SimpleRestaurant(String name, String url, OpenHours openHours) {
         this.name = name;
         this.url = url;
         this.openHours = openHours;
-        this.price = price;
         availableDishes = new CopyOnWriteArrayList<>();
         status = UNINITIALIZED;
     }
@@ -32,9 +30,6 @@ public abstract class SimpleRestaurant implements Restaurant {
     public final CopyOnWriteArrayList<Dish> getTodaysDishes() {
         return availableDishes;
     }
-
-    @Override
-    public abstract void refreshData();
 
     @Override
     public void resetForWeekend() {
@@ -63,18 +58,12 @@ public abstract class SimpleRestaurant implements Restaurant {
     }
 
     @Override
-    public int getPrice() {
-        return price;
-    }
-
-    @Override
     public RestaurantStatus getStatus() {
         return status;
     }
 
     @Override
     public String getRestaurantInfo() {
-        return "Open: " + getOpenHours() + " | Price: " + getPrice() + ":-";
-
+        return "Open: " + getOpenHours();
     }
 }

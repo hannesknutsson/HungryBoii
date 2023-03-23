@@ -21,7 +21,7 @@ public class Futurum extends SimpleRestaurant {
     private static final String filterQuery = "div#SITE_PAGES_TRANSITION_GROUP > div > div:eq(1) > div > div > div > section > div:eq(1) > div:eq(0) > div > div:eq(0) > div:eq(1) > p";
 
     public Futurum() {
-        super("Futurum", targetUrl, 120, new OpenHours(new Time(11, 0), new Time(13, 30)));
+        super("Futurum", targetUrl, new OpenHours(new Time(11, 0), new Time(13, 30)));
     }
 
     @Override
