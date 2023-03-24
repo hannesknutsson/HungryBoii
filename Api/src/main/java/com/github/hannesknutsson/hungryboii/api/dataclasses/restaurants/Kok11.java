@@ -26,7 +26,7 @@ public class Kok11 extends SimpleRestaurant {
     private static final String filterQuery = "div > div > div > div > div > div > ul > li";
 
     public Kok11() {
-        super("Kök 11", targetUrl, 115, new OpenHours(new Time(11, 30), new Time(13, 30)));
+        super("Kök 11", targetUrl, new OpenHours(new Time(11, 30), new Time(13, 30)));
     }
 
     @Override

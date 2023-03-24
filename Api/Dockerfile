@@ -4,9 +4,6 @@ FROM openjdk:17-alpine AS BuildingStage
 #Get APK up to date
 RUN apk update && apk upgrade
 
-#Install Maven and Tesseract package and environment variables
-ENV LC_ALL C
-RUN apk add maven tesseract-ocr
 
 COPY . /api
 
@@ -30,6 +27,5 @@ RUN mkdir -p /api/logs
 #Bring this command back later
 #USER appuser
 WORKDIR /api/target
-ENV TESSDATA_PREFIX=/api/tessdata
 ENTRYPOINT ["java", "-jar", "HungryBoii-0.0.1-SNAPSHOT.jar"]
 EXPOSE 8080
