@@ -1,0 +1,6 @@
+version: "3"
+services:
+  api:
+    build: ./Api
+    ports:
+    - "8085:8080"
