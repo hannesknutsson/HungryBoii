@@ -1,10 +1,5 @@
 #Start building from here
-FROM openjdk:17-alpine AS BuildingStage
-
-#Get APK up to date
-RUN apk update && apk upgrade
-
-
+FROM maven:3-openjdk-18-slim
 COPY . /api
 
 #Build
