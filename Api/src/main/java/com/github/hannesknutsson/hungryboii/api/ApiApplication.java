@@ -11,8 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class ApiApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(ApiApplication.class);
@@ -25,8 +27,6 @@ public class ApiApplication {
         RestaurantManager.getInstance().register(new Kok11());
         RestaurantManager.getInstance().register(new VidaArena());
         RestaurantManager.getInstance().register(new MKCatering());
-
-        MenuGatherer.startGathering();
     }
 
 }

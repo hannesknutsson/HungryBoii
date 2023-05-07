@@ -5,51 +5,29 @@ import com.github.hannesknutsson.hungryboii.api.managers.implementations.Restaur
 import com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@Component
 public class MenuGatherer {
-
     private static final Logger LOG = LoggerFactory.getLogger(MenuGatherer.class);
 
-    private static class Retriever implements Runnable {
-        @Override
-        public void run() {
-            RestaurantManager.getInstance().getRegisteredRestaurants().parallelStream().forEach(MenuGatherer::refreshRestaurant);
-        }
-    }
+    @Scheduled(cron = "0 0 * * * *")
+    private static void refreshRestaurant() {
+        List<Restaurant> restaurants = RestaurantManager.getInstance().getRegisteredRestaurants();
 
-    private static ScheduledExecutorService executorService;
-    private static Retriever gatheringTask;
-
-    private static final int intervalTime = 1;
-    private static final TimeUnit intervalUnit = TimeUnit.HOURS;
-
-    public static void startGathering() {
-        if (executorService == null) {
-            executorService = Executors.newSingleThreadScheduledExecutor();
-        }
-
-        if (gatheringTask == null) {
-            gatheringTask = new Retriever();
-        }
-
-        LOG.info("Scheduling worker to refresh restaurant menus every {} {}", intervalTime, intervalUnit.toString().toLowerCase());
-        executorService.scheduleAtFixedRate(gatheringTask, 0, intervalTime, intervalUnit);
-        LOG.info("Worker started");
-    }
-
-    private MenuGatherer() {
-    }
-
-    private static void refreshRestaurant(Restaurant target) {
-        LOG.info("Refreshing menu for {}", target.getName());
-        if (TimeHelper.isWeekend()) {
-            target.resetForWeekend();
-        } else {
-            target.updateMenu();
+        for (Restaurant restaurant : restaurants) {
+            LOG.info("Refreshing menu for {}", restaurant.getName());
+            if (TimeHelper.isWeekend()) {
+                restaurant.resetForWeekend();
+            } else {
+                restaurant.updateMenu();
+            }
         }
     }
 }
