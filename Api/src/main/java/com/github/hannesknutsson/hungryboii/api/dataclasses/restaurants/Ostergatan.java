@@ -10,6 +10,8 @@ import com.github.hannesknutsson.hungryboii.api.statichelpers.HttpHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +23,7 @@ import static com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper.
 
 public class Ostergatan extends SimpleRestaurant {
 
+    private static final Logger LOG = LoggerFactory.getLogger(Ostergatan.class);
     private static final String targetUrl = "https://ostergatansrestaurang.se/lunch/";
 
     public Ostergatan() {
@@ -28,29 +31,21 @@ public class Ostergatan extends SimpleRestaurant {
     }
 
     @Override
-    public void refreshData() {
-        try {
-            Document webPage = HttpHelper.getWebPage(targetUrl);
-            List<Element> elementList = filterWebPage(webPage, "div#main-content > article > div > div > div > div > div > div > div > div > div > div");
-            Map<Weekday, List<String>> mealsGroupedByDays = parseElementsToMealMap(elementList);
-            List<String> todaysAlternatives = mealsGroupedByDays.get(getDayOfWeek());
-            availableDishes.clear();
+    public void refreshData() throws WebPageBroken, ParsingOutdated {
+        Document webPage = HttpHelper.getWebPage(targetUrl);
+        List<Element> elementList = filterWebPage(webPage, "div#main-content > article > div > div > div > div > div > div > div > div > div > div");
+        Map<Weekday, List<String>> mealsGroupedByDays = parseElementsToMealMap(elementList);
+        List<String> todaysAlternatives = mealsGroupedByDays.get(getDayOfWeek());
 
-            if (mealsGroupedByDays.size() != 5 && todaysAlternatives.size() <= 0) {
-                throw new ParsingOutdated();
-            }
+        if (mealsGroupedByDays.size() != 5) {
+            throw new ParsingOutdated("The number of retrieved days in the menu were not 5");
+        }
+        if (todaysAlternatives.isEmpty()) {
+            throw new ParsingOutdated("The number of retrieved dishes for today were less than 0");
+        }
 
-            if (todaysAlternatives != null) {
-                for (String alternative : todaysAlternatives) {
-                    availableDishes.add(new Dish(alternative));
-                }
-            }
-
-            status = OK;
-        } catch (WebPageBroken exception) {
-            status = WEBSITE_BROKEN;
-        } catch (ParsingOutdated parsingOutdated) {
-            status = PARSING_BROKEN;
+        for (String alternative : todaysAlternatives) {
+            availableDishes.add(new Dish(alternative));
         }
     }
 
@@ -63,6 +58,7 @@ public class Ostergatan extends SimpleRestaurant {
 
         var nodesGroupedByWeekday = elementList.stream().map(Node::childNodesCopy).toList();
 
+        // 5 weekdays + veggie/pasta of the week = 6
         if (nodesGroupedByWeekday.size() < 6) {
             throw new ParsingOutdated("Did not find expected weekdays");
         }

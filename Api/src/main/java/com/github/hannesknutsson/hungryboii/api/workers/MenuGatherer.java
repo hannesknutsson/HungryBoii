@@ -49,7 +49,7 @@ public class MenuGatherer {
         if (TimeHelper.isWeekend()) {
             target.resetForWeekend();
         } else {
-            target.refreshData();
+            target.updateMenu();
         }
     }
 }

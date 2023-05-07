@@ -21,7 +21,6 @@ public class Kok11 extends SimpleRestaurant {
 
     private static final Logger LOG = LoggerFactory.getLogger(Kok11.class);
 
-
     private static final String targetUrl = "https://www.kok11.se/dagens-lunch/";
     private static final String filterQuery = "div > div > div > div > div > div > ul > li";
 
@@ -30,31 +29,19 @@ public class Kok11 extends SimpleRestaurant {
     }
 
     @Override
-    public void refreshData() {
-        try {
+    public void refreshData() throws ParsingOutdated, WebPageBroken {
             Document webPage = HttpHelper.getWebPage(targetUrl);
             List<Element> elementlist = webPage.select(filterQuery);
             List<String> alternatives = elementlist.stream().flatMap(e -> e.childNodesCopy().stream()).map(Node::toString).collect(Collectors.toList());
-            if (alternatives.size() > 0) {
+            if (!alternatives.isEmpty()) {
                 alternatives.remove(0);
             }
-            List<Dish> dishes = alternatives.stream().map(Dish::new).collect(Collectors.toList());
+            List<Dish> dishes = alternatives.stream().map(Dish::new).toList();
 
-            availableDishes.clear();
-
-            if (dishes.size() <= 0) {
-                throw new ParsingOutdated();
+            if (dishes.isEmpty()) {
+                throw new ParsingOutdated("The number of dishes parsed was 0");
             }
 
             availableDishes.addAll(dishes);
-            status = OK;
-
-        } catch (WebPageBroken exception) {
-            LOG.warn(exception.toString());
-            status = WEBSITE_BROKEN;
-        } catch (ParsingOutdated parsingOutdated) {
-            LOG.warn(parsingOutdated.toString());
-            status = PARSING_BROKEN;
-        }
     }
 }

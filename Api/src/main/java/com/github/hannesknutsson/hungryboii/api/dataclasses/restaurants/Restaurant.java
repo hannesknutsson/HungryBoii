@@ -3,6 +3,8 @@ package com.github.hannesknutsson.hungryboii.api.dataclasses.restaurants;
 import com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.Dish;
 import com.github.hannesknutsson.hungryboii.api.dataclasses.OpenHours;
+import com.github.hannesknutsson.hungryboii.api.exceptions.ParsingOutdated;
+import com.github.hannesknutsson.hungryboii.api.exceptions.WebPageBroken;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -20,7 +22,7 @@ public interface Restaurant  {
 
     RestaurantStatus getStatus();
 
-    void refreshData();
+    void updateMenu();
 
     void resetForWeekend();
 

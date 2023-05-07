@@ -25,30 +25,22 @@ public class Futurum extends SimpleRestaurant {
     }
 
     @Override
-    public void refreshData() {
-        try {
-            Document webPage = HttpHelper.getWebPage(targetUrl);
-            List<Element> elementList = filterWebpage(webPage, filterQuery);
-            Map<Weekday, List<String>> mealsGroupedByDays = parseElementsToMealMap(elementList);
-            List<String> todaysAlternatives = mealsGroupedByDays.get(getDayOfWeek());
+    public void refreshData() throws WebPageBroken, ParsingOutdated {
+        Document webPage = HttpHelper.getWebPage(targetUrl);
+        List<Element> elementList = filterWebpage(webPage, filterQuery);
+        Map<Weekday, List<String>> mealsGroupedByDays = parseElementsToMealMap(elementList);
 
-            availableDishes.clear();
+        if (mealsGroupedByDays.size() != 5) {
+            throw new ParsingOutdated("The number of retrieved days in the menu were not 5");
+        }
 
-            //We should have five days worth of alternatives and more than one alternative for today to have succeeded
-            if (mealsGroupedByDays.size() != 5 || todaysAlternatives.size() <= 0) {
-                throw new ParsingOutdated();
-            }
+        List<String> todaysAlternatives = mealsGroupedByDays.get(getDayOfWeek());
+        if (todaysAlternatives.isEmpty()) {
+            throw new ParsingOutdated("The number of retrieved dishes for today were less than 0");
+        }
 
-            for (String alternative : todaysAlternatives) {
-                availableDishes.add(new Dish(alternative));
-            }
-
-            status = OK;
-
-        } catch (WebPageBroken exception) {
-            status = WEBSITE_BROKEN;
-        } catch (ParsingOutdated parsingOutdated) {
-            status = PARSING_BROKEN;
+        for (String alternative : todaysAlternatives) {
+            availableDishes.add(new Dish(alternative));
         }
     }
 

@@ -28,7 +28,6 @@ import static com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper.
 
 public class VidaArena extends SimpleRestaurant {
 
-    private static final Logger LOG = LoggerFactory.getLogger(VidaArena.class);
     private static final String targetUrl = "https://www.vaxjolakers.se/api/layouts/site-layouts/";
 
     public VidaArena() {
@@ -36,7 +35,7 @@ public class VidaArena extends SimpleRestaurant {
     }
 
     @Override
-    public void refreshData() {
+    public void refreshData() throws ParsingOutdated, WebPageBroken {
         try {
             var url = new URL(targetUrl);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -77,23 +76,16 @@ public class VidaArena extends SimpleRestaurant {
 
             Map<Weekday, List<String>> mealsGroupedByDays = parseElementsToMealMap(jsonMenu);
             List<String> todaysAlternatives = mealsGroupedByDays.get(getDayOfWeek());
-            availableDishes.clear();
 
             if (todaysAlternatives.isEmpty()) {
-                throw new ParsingOutdated();
+                throw new ParsingOutdated("Found zero menu alternatives");
             }
 
             for (String alternative : todaysAlternatives) {
                 availableDishes.add(new Dish(alternative));
             }
-
-            status = OK;
-        } catch (WebPageBroken exception) {
-            status = WEBSITE_BROKEN;
-        } catch (ParsingOutdated parsingOutdated) {
-            status = PARSING_BROKEN;
         } catch (IOException e) {
-            LOG.warn(e.toString());
+            throw new WebPageBroken(e);
         }
     }
 
