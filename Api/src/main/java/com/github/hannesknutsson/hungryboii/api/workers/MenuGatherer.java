@@ -18,7 +18,7 @@ public class MenuGatherer {
     private static final Logger LOG = LoggerFactory.getLogger(MenuGatherer.class);
 
     @Scheduled(cron = "0 0 * * * *")
-    private static void refreshRestaurant() {
+    public static void refreshRestaurant() {
         List<Restaurant> restaurants = RestaurantManager.getInstance().getRegisteredRestaurants();
 
         for (Restaurant restaurant : restaurants) {

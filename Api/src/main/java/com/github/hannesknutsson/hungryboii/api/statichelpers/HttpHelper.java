@@ -10,7 +10,7 @@ public class HttpHelper {
 
     public static Document getWebPage(String targetUrl) throws WebPageBroken {
         try {
-            return Jsoup.connect(targetUrl).followRedirects(false).timeout(6000).get();
+            return Jsoup.connect(targetUrl).followRedirects(false).userAgent("Opera").timeout(30000).get();
         } catch (IOException e) {
             throw new WebPageBroken(e);
         }
