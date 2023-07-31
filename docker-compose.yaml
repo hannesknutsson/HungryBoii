@@ -1,6 +1,7 @@
 version: "3"
 services:
   api:
+    restart: always
     build: ./Api
     ports:
     - "8085:8080"
