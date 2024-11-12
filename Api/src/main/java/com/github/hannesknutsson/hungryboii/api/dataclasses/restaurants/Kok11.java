@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus.*;
-
 public class Kok11 extends SimpleRestaurant {
 
     private static final Logger LOG = LoggerFactory.getLogger(Kok11.class);

@@ -7,8 +7,6 @@ import com.github.hannesknutsson.hungryboii.api.enumerations.Weekday;
 import com.github.hannesknutsson.hungryboii.api.exceptions.ParsingOutdated;
 import com.github.hannesknutsson.hungryboii.api.exceptions.WebPageBroken;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,7 +21,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus.*;
 import static com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper.getDayOfWeek;
 
 public class VidaArena extends SimpleRestaurant {
