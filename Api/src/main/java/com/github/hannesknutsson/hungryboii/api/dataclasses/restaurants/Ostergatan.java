@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus.*;
 import static com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper.getDayOfWeek;
 
 public class Ostergatan extends SimpleRestaurant {

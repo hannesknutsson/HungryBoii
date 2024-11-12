@@ -14,9 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus.OK;
-import static com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus.PARSING_BROKEN;
-import static com.github.hannesknutsson.hungryboii.api.enumerations.RestaurantStatus.WEBSITE_BROKEN;
 import static com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper.getDayOfWeek;
 
 public class MKCatering extends SimpleRestaurant {
