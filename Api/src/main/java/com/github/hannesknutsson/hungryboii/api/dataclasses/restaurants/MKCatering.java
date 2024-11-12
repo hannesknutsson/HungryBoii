@@ -18,8 +18,8 @@ import static com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper.
 
 public class MKCatering extends SimpleRestaurant {
 
-    private static final String targetUrl = "https://mkcatering.se/dagens.html";
-    private static final String filterQuery = "body > div > div > div > div > div.dagens";
+    private static final String targetUrl = "https://www.mkcatering.se/#lunch";
+    private static final String filterQuery = "div.elementor-image-box-content";
 
     public MKCatering() {
         super("MK Catering", targetUrl, new OpenHours(new Time(11, 30), new Time(14, 0)));
@@ -51,7 +51,7 @@ public class MKCatering extends SimpleRestaurant {
     private Map<Weekday, List<String>> parseElementsToMealMap(List<Element> elementList) {
         Map<Weekday, List<String>> mealsGroupedByDays = new HashMap<>();
 
-        for (Element e : elementList) {
+        for (Element e : elementList.subList(0, 5)) {
             var meals = e.select("p")
                     .get(0)
                     .childNodesCopy()
