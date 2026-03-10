@@ -56,8 +56,8 @@ public class MKCatering extends SimpleRestaurant {
                     .get(0)
                     .childNodesCopy()
                     .stream()
-                    .map(node -> node.toString().trim().replaceAll("&amp;", "&"))
-                    .filter(text -> !text.equals("<br>"))
+                    .map(node -> node.toString().trim().replaceAll("&amp;", "&").replaceAll("^•\\s*", ""))
+                    .filter(text -> !text.equals("<br>") && !text.isEmpty())
                     .toList();
             var dayIndex = elementList.indexOf(e);
             mealsGroupedByDays.put(Weekday.values()[dayIndex], meals);
