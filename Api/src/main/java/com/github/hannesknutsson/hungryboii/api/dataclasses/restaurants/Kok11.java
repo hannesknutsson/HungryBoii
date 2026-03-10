@@ -21,6 +21,7 @@ public class Kok11 extends SimpleRestaurant {
 
     private static final String targetUrl = "https://www.kok11.se/dagens-lunch/";
     private static final String filterQuery = "div > div > div > div > div > div > ul > li";
+    private static final List<String> nonFoodPrefixes = List.of("tack");
 
     public Kok11() {
         super("Kök 11", targetUrl, new OpenHours(new Time(11, 30), new Time(13, 30)));
@@ -34,7 +35,9 @@ public class Kok11 extends SimpleRestaurant {
             if (!alternatives.isEmpty()) {
                 alternatives.remove(0);
             }
-            List<Dish> dishes = alternatives.stream().map(Dish::new).toList();
+            List<Dish> dishes = alternatives.stream()
+                    .filter(s -> nonFoodPrefixes.stream().noneMatch(prefix -> s.trim().toLowerCase().startsWith(prefix)))
+                    .map(Dish::new).toList();
 
             if (dishes.isEmpty()) {
                 throw new ParsingOutdated("The number of dishes parsed was 0");
