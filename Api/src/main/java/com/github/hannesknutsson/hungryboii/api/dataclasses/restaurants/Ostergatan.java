@@ -9,14 +9,14 @@ import com.github.hannesknutsson.hungryboii.api.exceptions.WebPageBroken;
 import com.github.hannesknutsson.hungryboii.api.statichelpers.HttpHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper.getDayOfWeek;
 
@@ -32,14 +32,14 @@ public class Ostergatan extends SimpleRestaurant {
     @Override
     public void refreshData() throws WebPageBroken, ParsingOutdated {
         Document webPage = HttpHelper.getWebPage(targetUrl);
-        List<Element> elementList = filterWebPage(webPage, "div#main-content > article > div > div > div > div > div > div > div > div > div > div");
+        List<Element> elementList = filterWebPage(webPage, "article div.grid-container > div.flex-container");
         Map<Weekday, List<String>> mealsGroupedByDays = parseElementsToMealMap(elementList);
         List<String> todaysAlternatives = mealsGroupedByDays.get(getDayOfWeek());
 
         if (mealsGroupedByDays.size() != 5) {
             throw new ParsingOutdated("The number of retrieved days in the menu were not 5");
         }
-        if (todaysAlternatives.isEmpty()) {
+        if (todaysAlternatives == null || todaysAlternatives.isEmpty()) {
             throw new ParsingOutdated("The number of retrieved dishes for today were less than 0");
         }
 
@@ -55,30 +55,42 @@ public class Ostergatan extends SimpleRestaurant {
     private Map<Weekday, List<String>> parseElementsToMealMap(List<Element> elementList) throws ParsingOutdated {
         Map<Weekday, List<String>> mealsGroupedByDays = new HashMap<>();
 
-        var nodesGroupedByWeekday = elementList.stream().map(Node::childNodesCopy).toList();
-
         // 5 weekdays + veggie/pasta of the week = 6
-        if (nodesGroupedByWeekday.size() < 6) {
+        if (elementList.size() < 6) {
             throw new ParsingOutdated("Did not find expected weekdays");
         }
 
-        var vegAlt = nodesGroupedByWeekday.get(5).stream()
-                .filter(node -> node instanceof Element)
-                .filter(element -> !((Element) element).text().isBlank())
-                .map(element -> ((Element) element).text())
-                .toList();
+        var vegAlt = extractDishes(elementList.get(5));
 
         for (int i = 0; i < 5; i++) {
-            List<String> meals = nodesGroupedByWeekday.get(i).stream()
-                    .filter(node -> node instanceof Element)
-                    .filter(element -> !((Element) element).text().isBlank())
-                    .map(element -> ((Element) element).text())
-                    .collect(Collectors.toList());
+            List<String> meals = extractDishes(elementList.get(i));
             var weekday = Weekday.values()[i];
             meals.addAll(vegAlt);
             mealsGroupedByDays.put(weekday, meals);
         }
 
         return mealsGroupedByDays;
+    }
+
+    private List<String> extractDishes(Element dayContainer) {
+        List<String> dishes = new ArrayList<>();
+        Elements paragraphs = dayContainer.select("div.textarea-block p");
+        for (Element p : paragraphs) {
+            Elements strongElements = p.select("strong");
+            if (strongElements.isEmpty()) {
+                String text = p.text().trim();
+                if (!text.isBlank()) {
+                    dishes.add(text);
+                }
+            } else {
+                for (Element strong : strongElements) {
+                    String text = strong.text().trim();
+                    if (!text.isBlank()) {
+                        dishes.add(text);
+                    }
+                }
+            }
+        }
+        return dishes;
     }
 }
