@@ -23,7 +23,7 @@ import static com.github.hannesknutsson.hungryboii.api.statichelpers.TimeHelper.
 public class Ostergatan extends SimpleRestaurant {
 
     private static final Logger LOG = LoggerFactory.getLogger(Ostergatan.class);
-    private static final String targetUrl = "https://ostergatansrestaurang.se/lunch/";
+    private static final String targetUrl = "https://ostergatansrestaurang.se/dagens-lunch";
 
     public Ostergatan() {
         super("Östergatans restaurang", targetUrl, new OpenHours(new Time(11, 0), new Time(13, 30)));
